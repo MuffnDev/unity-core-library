@@ -19,6 +19,7 @@ namespace MuffinDev.EditorUtils.Demos
 
         private const string MENU_ITEM = "Tools/Muffin Dev/Demos/Assets Tree View";
         private const string WINDOW_TITLE = "Assets Tree View";
+        private const int WINDOW_ORDER = 50;
 
         [SerializeField]
         private TreeViewState m_TreeViewState = null;
@@ -68,7 +69,7 @@ namespace MuffinDev.EditorUtils.Demos
         /// <summary>
         /// Gets the window of this tool, or create it if it's not already open.
         /// </summary>
-        [MenuItem(MENU_ITEM, false)]
+        [MenuItem(MENU_ITEM, false, WINDOW_ORDER)]
         private static void ShowWindow()
         {
             AssetsTreeViewDemoEditor window = EditorWindow.GetWindow<AssetsTreeViewDemoEditor>(true, WINDOW_TITLE, true) as AssetsTreeViewDemoEditor;
