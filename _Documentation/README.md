@@ -13,5 +13,3 @@ This module contains the main Muffin Dev library features. It also contains basi
 - [Generics](./Generics/README.md): Utility template classes
 - [Others](./Others/README.md): Unclassified utility classes
 - [Patterns](./Patterns/README.md): Unity-friendly design pattern implementations
-- [Reorderables](./Reorderables/README.md): Base classes and implementations for easily making reorderable lists in the editor
-- [Utilities](./Utilities/README.md): A collection of tools and utility classes
