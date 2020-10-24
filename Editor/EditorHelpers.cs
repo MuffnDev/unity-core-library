@@ -29,6 +29,10 @@ namespace MuffinDev.EditorUtils
         public const float EDITOR_WINDOW_PADDING = 2f;
         public const float INSPECTOR_FOLDOUT_LEFT_OFFSET = 14f;
 
+        private const float BOOLEAN_SWITCH_TOOLBAR_WIDTH = 134f;
+
+        private static readonly string[] BOOLEAN_SWITCH_LABELS = { "On", "Off" };
+
         private static Object s_ObjectToFocus = null;
         private static Object s_ObjectToSelect = null;
 
@@ -637,6 +641,72 @@ namespace MuffinDev.EditorUtils
             }
             EditorGUILayout.EndHorizontal();
             return output;
+        }
+
+        /// <summary>
+        /// Draws a "On/Off" switch field.
+        /// </summary>
+        /// <param name="_Value">The current property value.</param>
+        /// <returns>Returns true if "On" is selected, otherwise false.</returns>
+        public static bool SwitchField(bool _Value)
+        {
+            int selectedIndex = GUILayout.Toolbar(_Value ? 0 : 1, BOOLEAN_SWITCH_LABELS, GUILayout.Width(BOOLEAN_SWITCH_TOOLBAR_WIDTH));
+            _Value = selectedIndex == 0;
+            return _Value;
+        }
+
+        /// <summary>
+        /// Draws a "On/Off" switch field.
+        /// </summary>
+        /// <param name="_Label">The label of the property.</param>
+        /// <param name="_Value">The current property value.</param>
+        /// <returns>Returns true if "On" is selected, otherwise false.</returns>
+        public static bool SwitchField(string _Label, bool _Value)
+        {
+            EditorGUILayout.BeginHorizontal();
+            {
+                GUILayout.Label(_Label, GUILayout.Width(EditorGUIUtility.labelWidth));
+                int selectedIndex = GUILayout.Toolbar(_Value ? 0 : 1, BOOLEAN_SWITCH_LABELS, GUILayout.Width(BOOLEAN_SWITCH_TOOLBAR_WIDTH));
+                _Value = selectedIndex == 0;
+            }
+            EditorGUILayout.EndHorizontal();
+            return _Value;
+        }
+
+        /// <summary>
+        /// Draws the default inspector of the given object.
+        /// </summary>
+        /// <param name="_Asset">The asset of which you want to draw the inspector.</param>
+        /// <param name="_IncludeScriptProperty">If enabled, skip the first "Script" property of the asset.</param>
+        /// <param name="_CustomLabelWidth">If more than 0 given, set the Editor's label width for all the object properties.</param>
+        public static void DrawDefaultInspector(Object _Asset, bool _IncludeScriptProperty = false, float _CustomLabelWidth = -1f)
+        {
+            // Set the label width if needed
+            float lastLabelWidth = EditorGUIUtility.labelWidth;
+            EditorGUIUtility.labelWidth = _CustomLabelWidth > 0f ? _CustomLabelWidth : lastLabelWidth;
+
+            // Setup data
+            SerializedObject obj = new SerializedObject(_Asset);
+            SerializedProperty prop = obj.GetIterator();
+            prop.NextVisible(true);
+            bool hasDrawnScriptProperty = false;
+
+            // Draw all properties
+            do
+            {
+                if(!hasDrawnScriptProperty && prop.name == "m_Script")
+                {
+                    hasDrawnScriptProperty = true;
+                    if (!_IncludeScriptProperty)
+                        continue;
+                }
+                EditorGUILayout.PropertyField(prop, true);
+            }
+            while (prop.NextVisible(true));
+            obj.ApplyModifiedProperties();
+
+            // Reset label width
+            EditorGUIUtility.labelWidth = lastLabelWidth;
         }
 
         #endregion

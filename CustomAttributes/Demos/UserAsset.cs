@@ -13,7 +13,7 @@ namespace MuffinDev
 	///<summary>
 	/// 
 	///</summary>
-	[CreateAssetMenu(fileName ="NewUserAsset", menuName = "Muffin Dev/User Asset")]
+	[CreateAssetMenu(fileName ="NewUserAsset", menuName = "Muffin Dev/Demos/User Asset")]
 	public class UserAsset : ScriptableObject
 	{
 

@@ -267,6 +267,32 @@ Draws a search bar field using GUI Layout.
 - `GUIStyle _SearchBarStyle`: The `GUIStyle` to apply on the search bar field
 - `GUIStyle _CancelButtonStyle`: The `GUIStyle` to apply on the cancel button
 
+---
+
+```cs
+public static bool SwitchField(bool _Value);
+public static bool SwitchField(string _Label, bool _Value);
+```
+
+Draws a "On/Off" switch field.
+
+- `bool _Value`: The current property value.
+- `string _Label`: The label of the property.
+
+Returns `true` if *On* is selected, otherwise `false`.
+
+---
+
+```cs
+public static void DrawDefaultInspector(Object _Asset, bool _IncludeScriptProperty = false, float _CustomLabelWidth = -1f)
+```
+
+Draws the default inspector of the given object.
+
+- `Object _Asset`: The asset of which you want to draw the inspector.
+- `bool _IncludeScriptProperty = false`: If enabled, skip the first "Script" property of the asset.
+- `float _CustomLabelWidth = -1f`: If more than 0 given, set the Editor's label width for all the object properties.
+
 ## Editor styles helpers
 
 ```cs

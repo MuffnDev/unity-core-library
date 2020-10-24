@@ -4,7 +4,7 @@ using UnityEngine.UI;
 namespace MuffinDev.Core.Demos
 {
 
-    [AddComponentMenu("Muffin Dev/Observables UI")]
+    [AddComponentMenu("Muffin Dev/Demos/Observables UI")]
     public class ObservablesDemoUI : MonoBehaviour
     {
 

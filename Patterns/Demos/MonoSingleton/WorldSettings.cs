@@ -3,7 +3,7 @@
 namespace MuffinDev.Core.Demos
 {
 
-    [AddComponentMenu("Muffin Dev/World Settings")]
+    [AddComponentMenu("Muffin Dev/Demos/World Settings")]
     public class WorldSettings : MonoSingleton<WorldSettings>
     {
 
