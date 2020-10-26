@@ -284,7 +284,9 @@ Returns `true` if *On* is selected, otherwise `false`.
 ---
 
 ```cs
-public static void DrawDefaultInspector(Object _Asset, bool _IncludeScriptProperty = false, float _CustomLabelWidth = -1f)
+public static void DrawDefaultInspector(Object _Asset, bool _IncludeScriptProperty = false, float _CustomLabelWidth = -1f);
+public static void DrawDefaultInspector(SerializedObject _Object, bool _IncludeScriptProperty = false, float _CustomLabelWidth = -1f);
+public static void DrawDefaultInspector(SerializedProperty _Property, bool _IncludeScriptProperty = false, float _CustomLabelWidth = -1f);
 ```
 
 Draws the default inspector of the given object.
@@ -292,6 +294,8 @@ Draws the default inspector of the given object.
 - `Object _Asset`: The asset of which you want to draw the inspector.
 - `bool _IncludeScriptProperty = false`: If enabled, skip the first "Script" property of the asset.
 - `float _CustomLabelWidth = -1f`: If more than 0 given, set the Editor's label width for all the object properties.
+- `SerializedObject _Object`: The `SerializedObject` of which you want to draw the custom inspector.
+- `SerializedProperty _Property`: The `SerializedProperty` of which you want to draw the custom inspector.
 
 ## Editor styles helpers
 
