@@ -104,6 +104,7 @@ public static void DisplayPrompt(string _Title, EditorWindow _OwnerWindow, Vecto
 public static void DisplayPrompt(string _Title, string _Message, EditorWindow _OwnerWindow, Vector2 _Size, OnConfirmDelegate _OnConfirmCallback, OnCancelDelegate _OnCancelCallback = null);
 public static void DisplayPrompt(string _Title, EditorWindow _OwnerWindow, Vector2 _Offset, Vector2 _Size, OnConfirmDelegate _OnConfirmCallback, OnCancelDelegate _OnCancelCallback = null);
 public static void DisplayPrompt(string _Title, string _Message, EditorWindow _OwnerWindow, Vector2 _Offset, Vector2 _Size, OnConfirmDelegate _OnConfirmCallback, OnCancelDelegate _OnCancelCallback = null);
+public static void DisplayPrompt(string _Title, Rect _Position, OnConfirmDelegate _OnConfirmCallback, OnCancelDelegate _OnCancelCallback = null);
 public static void DisplayPrompt(string _Title, string _Message, Rect _Position, OnConfirmDelegate _OnConfirmCallback, OnCancelDelegate _OnCancelCallback = null);
 ```
 

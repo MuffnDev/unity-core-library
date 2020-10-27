@@ -207,6 +207,19 @@ namespace MuffinDev.EditorUtils
 		/// Display a prompt utility window.
 		/// </summary>
 		/// <param name="_Title">The window title.</param>
+		/// <param name="_Position">The position and size of the prompt window.</param>
+		/// <param name="_OnConfirmCallback">This method will be called once the user clicks on the "Ok" button.</param>
+		/// <param name="_OnCancelCallback">This method will be called once the user clicks on the "Cancel" button or clicks out of the prompt
+		/// window.</param>
+		public static void DisplayPrompt(string _Title, Rect _Position, OnConfirmDelegate _OnConfirmCallback, OnCancelDelegate _OnCancelCallback = null)
+        {
+			DisplayPrompt(_Title, string.Empty, _Position, _OnConfirmCallback, _OnCancelCallback = null);
+		}
+
+		/// <summary>
+		/// Display a prompt utility window.
+		/// </summary>
+		/// <param name="_Title">The window title.</param>
 		/// <param name="_Message">The message to display to the user.</param>
 		/// <param name="_Position">The position and size of the prompt window.</param>
 		/// <param name="_OnConfirmCallback">This method will be called once the user clicks on the "Ok" button.</param>
