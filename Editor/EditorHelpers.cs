@@ -724,7 +724,7 @@ namespace MuffinDev.EditorUtils
                 EditorGUILayout.PropertyField(_Property, true);
                 _Property.serializedObject.ApplyModifiedProperties();
             }
-            while (_Property.NextVisible(true));
+            while (_Property.NextVisible(false));
 
             EditorGUIUtility.labelWidth = lastLabelWidth;
         }
