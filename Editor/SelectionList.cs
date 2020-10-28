@@ -2,12 +2,13 @@
 
 using UnityEngine;
 using UnityEditor;
+using System.Linq;
 
 namespace MuffinDev.EditorUtils
 {
 
 	///<summary>
-	/// Draws a list with selectable labels.
+	/// Draws a list with selectable labels. This editor utility is quite a simplified version of Unity's IMGUI Tree view.
 	///</summary>
 	[System.Serializable]
 	public class SelectionList
@@ -15,7 +16,13 @@ namespace MuffinDev.EditorUtils
 
 		#region Properties
 
-		public delegate bool SelectItemDelegate(int _Index, string _Item, int _LastSelectedIndex);
+		/// <summary>
+		/// Used to send feedback when the selected item of this selection list changes.
+		/// </summary>
+		/// <param name="_Index">The index of the selected item in the list.</param>
+		/// <param name="_Item">The content of the selected item.</param>
+		/// <param name="_LastSelectedIndex">The previous selected item index in the list.</param>
+		public delegate void SelectItemDelegate(int _Index, string _Item, int _LastSelectedIndex);
 
 		[SerializeField]
 		private List<string> m_Items = new List<string>();
@@ -24,10 +31,9 @@ namespace MuffinDev.EditorUtils
 		private int m_SelectedIndex = 0;
 
 		[SerializeField]
-		private SelectItemDelegate m_OnSelectItem = null;
-
-		[SerializeField]
 		private Vector2 m_ScrollPosition = Vector2.zero;
+
+		public SelectItemDelegate OnSelectItem = null;
 
 		private static GUIStyle s_ItemsListStyle = null;
 		private static GUIStyle s_SelectedItemStyle = null;
@@ -46,6 +52,7 @@ namespace MuffinDev.EditorUtils
 		/// <summary>
 		/// Creates a SelectionList instance, and initializes its items list with the given collection.
 		/// </summary>
+		/// <param name="_Items">The array or list of items you want to set for this selection list.</param>
 		public SelectionList(IEnumerable<string> _Items)
         {
 			m_Items = new List<string>(_Items);
@@ -72,9 +79,9 @@ namespace MuffinDev.EditorUtils
         {
 			m_ScrollPosition = EditorGUILayout.BeginScrollView(m_ScrollPosition, _Style);
             {
-				for (int i = 0; i < Items.Count; i++)
+				for (int i = 0; i < Items.Count(); i++)
 				{
-					DrawItemLayout(i, Items[i]);
+					DrawItemLayout(i, Items.ElementAt(i));
 				}
 			}
 			EditorGUILayout.EndScrollView();
@@ -105,10 +112,10 @@ namespace MuffinDev.EditorUtils
 		/// <summary>
 		/// Gets/Sets the items list.
 		/// </summary>
-		public List<string> Items
+		public IEnumerable<string> Items
 		{
-			get { return m_Items; }
-			set { m_Items = value; }
+			get { return m_Items.AsEnumerable(); }
+			set { m_Items = new List<string>(value); }
 		}
 
 		/// <summary>
@@ -122,8 +129,8 @@ namespace MuffinDev.EditorUtils
 				{
 					int lastSelectedIndex = m_SelectedIndex;
 					m_SelectedIndex = 0;
-					if (m_OnSelectItem != null)
-						m_OnSelectItem.Invoke(m_SelectedIndex, m_Items[m_SelectedIndex], lastSelectedIndex);
+					if (OnSelectItem != null)
+						OnSelectItem.Invoke(m_SelectedIndex, m_Items[m_SelectedIndex], lastSelectedIndex);
 				}
 				return m_SelectedIndex;
 			}
@@ -131,8 +138,8 @@ namespace MuffinDev.EditorUtils
             {
 				int lastSelectedIndex = m_SelectedIndex;
 				m_SelectedIndex = value;
-				if(m_OnSelectItem != null)
-					m_OnSelectItem.Invoke(m_SelectedIndex, m_Items[m_SelectedIndex], lastSelectedIndex);
+				if(OnSelectItem != null)
+					OnSelectItem.Invoke(m_SelectedIndex, m_Items[m_SelectedIndex], lastSelectedIndex);
             }
 		}
 

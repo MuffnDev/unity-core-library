@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 
 namespace MuffinDev.EditorUtils.Demos
@@ -27,6 +25,7 @@ namespace MuffinDev.EditorUtils.Demos
 		[SerializeField]
 		private Vector2 m_ScrollPosition = Vector2.zero;
 
+		private string m_LastSelectedItem = string.Empty;
 		private SerializedProperty m_ItemsProp = null;
 
 		#endregion
@@ -40,7 +39,9 @@ namespace MuffinDev.EditorUtils.Demos
 			{
 				m_Items = new string[] { "Apple", "Banana", "Lemon" };
 			}
+
 			m_SelectionList = new SelectionList(m_Items);
+			m_SelectionList.OnSelectItem += OnSelectItem;
 
 			SerializedObject obj = new SerializedObject(this);
 			m_ItemsProp = obj.FindProperty(nameof(m_Items));
@@ -53,16 +54,19 @@ namespace MuffinDev.EditorUtils.Demos
 
 		private void OnGUI()
 		{
-			m_ScrollPosition = EditorGUILayout.BeginScrollView(m_ScrollPosition, GUILayout.Height(120f));
-			{
-				m_SelectionList.Items = new List<string>(m_Items);
-				EditorGUILayout.PropertyField(m_ItemsProp, true);
-				m_ItemsProp.serializedObject.ApplyModifiedProperties();
-			}
-			EditorGUILayout.EndScrollView();
+            m_ScrollPosition = EditorGUILayout.BeginScrollView(m_ScrollPosition, GUILayout.Height(120f));
+            {
+                m_SelectionList.Items = m_Items;
+                EditorGUILayout.PropertyField(m_ItemsProp, true);
+                m_ItemsProp.serializedObject.ApplyModifiedProperties();
+            }
+            EditorGUILayout.EndScrollView();
 
-			EditorGUILayout.Space();
-			m_SelectionList.DrawLayout();
+            EditorGUILayout.Space();
+			GUI.enabled = false;
+			EditorGUILayout.TextField("Last Selected Item", m_LastSelectedItem);
+			GUI.enabled = true;
+            m_SelectionList.DrawLayout();
 		}
 
 		/// <summary>
@@ -75,8 +79,18 @@ namespace MuffinDev.EditorUtils.Demos
 			window.Show();
 		}
 
-		#endregion
+        #endregion
 
-	}
+
+        #region Private methods
+
+		private void OnSelectItem(int _Index, string _Item, int _LastSelectedIndex)
+        {
+			m_LastSelectedItem = _Item;
+		}
+
+        #endregion
+
+    }
 
 }

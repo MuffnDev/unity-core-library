@@ -11,4 +11,5 @@ Bundle of Editor tools and shortcuts.
 - [`Prompt`](./prompt.md): Editor utility that displays a *Prompt* dialog window, allowing the user to type a text, validate or cancel
 - [`Recompiler`](./recompiler.md): Allows you to force Unity to recompile code
 - [`ReflectionUtility`](./reflection-utility.md): Contains some utility methods for C# reflection
+- [`SelectionList`](./selection-list.md): Contains some utility methods for C# reflection
 - [`TEditor`](./teditor.md): Shortcut for making custom editors containing a "typed" target object
