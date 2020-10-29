@@ -1,0 +1,17 @@
+{
+    "name": "MuffinDev.CoreLibrary.Patterns.Demos.CustomObservableSerializedDemo.Editor",
+    "references": [
+        "MuffinDev.CoreLibrary",
+        "MuffinDev.CoreLibrary.Editor"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
