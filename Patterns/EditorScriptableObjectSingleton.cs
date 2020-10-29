@@ -19,7 +19,9 @@ namespace MuffinDev
         where TSingletonType : ScriptableObject
     {
 
+#if UNITY_EDITOR
         private static TSingletonType s_Instance = null;
+#endif
 
         /// <summary>
         /// Gets the unique instance of this asset, or creates it if it doesn't exist yet.
