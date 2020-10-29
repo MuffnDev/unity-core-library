@@ -681,31 +681,51 @@ namespace MuffinDev.EditorUtils
         /// <param name="_CustomLabelWidth">If more than 0 given, set the Editor's label width for all the object properties.</param>
         public static void DrawDefaultInspector(Object _Asset, bool _IncludeScriptProperty = false, float _CustomLabelWidth = -1f)
         {
+            SerializedObject obj = new SerializedObject(_Asset);
+            DrawDefaultInspector(obj, _IncludeScriptProperty, _CustomLabelWidth);
+        }
+
+        /// <summary>
+        /// Draws the default inspector of the given object.
+        /// </summary>
+        /// <param name="_Object">The SerializedObject of which you want to draw the inspector.</param>
+        /// <param name="_IncludeScriptProperty">If enabled, skip the first "Script" property of the asset.</param>
+        /// <param name="_CustomLabelWidth">If more than 0 given, set the Editor's label width for all the object properties.</param>
+        public static void DrawDefaultInspector(SerializedObject _Object, bool _IncludeScriptProperty = false, float _CustomLabelWidth = -1f)
+        {
+            SerializedProperty prop = _Object.GetIterator();
+            DrawDefaultInspector(prop, _IncludeScriptProperty, _CustomLabelWidth);
+        }
+
+        /// <summary>
+        /// Draws the default inspector of the given object.
+        /// </summary>
+        /// <param name="_Property">The SerializedProperty of which you want to draw the inspector.</param>
+        /// <param name="_IncludeScriptProperty">If enabled, skip the first "Script" property of the asset.</param>
+        /// <param name="_CustomLabelWidth">If more than 0 given, set the Editor's label width for all the object properties.</param>
+        public static void DrawDefaultInspector(SerializedProperty _Property, bool _IncludeScriptProperty = false, float _CustomLabelWidth = -1f)
+        {
             // Set the label width if needed
             float lastLabelWidth = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = _CustomLabelWidth > 0f ? _CustomLabelWidth : lastLabelWidth;
 
-            // Setup data
-            SerializedObject obj = new SerializedObject(_Asset);
-            SerializedProperty prop = obj.GetIterator();
-            prop.NextVisible(true);
+            _Property.NextVisible(true);
             bool hasDrawnScriptProperty = false;
 
             // Draw all properties
             do
             {
-                if(!hasDrawnScriptProperty && prop.name == "m_Script")
+                if (!hasDrawnScriptProperty && _Property.name == "m_Script")
                 {
                     hasDrawnScriptProperty = true;
                     if (!_IncludeScriptProperty)
                         continue;
                 }
-                EditorGUILayout.PropertyField(prop, true);
+                EditorGUILayout.PropertyField(_Property, true);
+                _Property.serializedObject.ApplyModifiedProperties();
             }
-            while (prop.NextVisible(true));
-            obj.ApplyModifiedProperties();
+            while (_Property.NextVisible(false));
 
-            // Reset label width
             EditorGUIUtility.labelWidth = lastLabelWidth;
         }
 
