@@ -2,19 +2,29 @@
 
 Bundle of utility methods for Editor operations.
 
-## Constants
+## Public API
+
+### Constants
+
+#### `ASSETS_FOLDER`
 
 ```cs
 public const string ASSETS_FOLDER = "Assets"
 ```
 
----
+#### `RESOURCES_FOLDER`
 
 ```cs
 public const string RESOURCES_FOLDER = "Resources"
 ```
 
----
+#### `DEFAULT_ASSET_EXTENSION`
+
+```cs
+public const string DEFAULT_ASSET_EXTENSION = "asset"
+```
+
+#### `HORIZONTAL_MARGIN`
 
 ```cs
 public static readonly float HORIZONTAL_MARGIN = EditorGUIUtility.standardVerticalSpacing
@@ -22,7 +32,7 @@ public static readonly float HORIZONTAL_MARGIN = EditorGUIUtility.standardVertic
 
 Default Muffin Dev' editor tools horizontal margin.
 
----
+#### `VERTICAL_MARGIN`
 
 ```cs
 public static readonly float VERTICAL_MARGIN = EditorGUIUtility.standardVerticalSpacing
@@ -30,7 +40,7 @@ public static readonly float VERTICAL_MARGIN = EditorGUIUtility.standardVertical
 
 Default Muffin Dev' editor tools vertical margin.
 
----
+#### `LINE_HEIGHT`
 
 ```cs
 public static readonly float LINE_HEIGHT = EditorGUIUtility.singleLineHeight
@@ -38,7 +48,7 @@ public static readonly float LINE_HEIGHT = EditorGUIUtility.singleLineHeight
 
 Default Muffin Dev' editor tools property line height.
 
----
+#### `EDITOR_WINDOW_PADDING`
 
 ```cs
 public const float EDITOR_WINDOW_PADDING = 2f
@@ -46,7 +56,15 @@ public const float EDITOR_WINDOW_PADDING = 2f
 
 Default Muffin Dev' editor windows padding.
 
-## Generic helpers
+#### `INSPECTOR_FOLDOUT_LEFT_OFFSET`
+
+```cs
+public const float INSPECTOR_FOLDOUT_LEFT_OFFSET = 14f
+```
+
+### Generic helpers
+
+#### `FocusAsset()`
 
 ```cs
 public static void FocusAsset(Object _Object, bool _SelectAsset = true, bool _PingAsset = true)
@@ -54,7 +72,7 @@ public static void FocusAsset(Object _Object, bool _SelectAsset = true, bool _Pi
 
 Focuses the given object in the project view, by selecting it and/or highlight it in the Project view.
 
----
+#### `CreateProjectFolder()`
 
 ```cs
 public static void CreateProjectFolder(string _AssetsRelativePath)
@@ -62,7 +80,7 @@ public static void CreateProjectFolder(string _AssetsRelativePath)
 
 Creates a folder in this project if it doesn't exist.
 
----
+#### `FindEditorWindow()`
 
 ```cs
 public static EditorWindow FindEditorWindow(string _WindowTitle)
@@ -72,7 +90,7 @@ Gets the EditorWindow instance of the named window.
 
 * `string _WindowTitle`: The name of the window to get. For example, you can get the Inspector view by passing "Inspector" as parameter
 
----
+#### `GetPropertyType()`
 
 ```cs
 public static Type GetPropertyType(SerializedProperty _Property)
@@ -82,7 +100,19 @@ Gets the C# type of the given SerializedProperty.
 
 Returns the found property type, or null if the property path can't be used to get final type.
 
-## Assets helpers
+#### `IsPropertyAnArrayEntry()`
+
+```cs
+public static bool IsPropertyAnArrayEntry(SerializedProperty _Property)
+```
+
+Checks if the given `SerializedProperty` is contained in an array.
+
+- `SerializedProperty _Property`: The property you want to check.
+
+### Assets helpers`
+
+#### `CreateAsset()`
 
 ```cs
 public static AssetCreationResult CreateAsset<TAssetType>(string _FileName = "", string _RelativePath = "", string _FileExtension = DEFAULT_ASSET_EXTENSION, bool _FocusAsset = true);
@@ -98,7 +128,7 @@ Creates an asset of the given type.
 * `string _FileExtension = "asset"`: Default extension of the asset file
 * `bool _FocusAsset = true`: Defines if the asset should be selected and highlighted in the Project view after its creation
 
----
+#### `CreateAssetPanel()`
 
 ```cs
 public static AssetCreationResult CreateAssetPanel(Type _AssetType, string _PanelTitle = "Save new asset", string _FileName = "", string _DefaultPath = "", string _FileExtension = DEFAULT_ASSET_EXTENSION, bool _FocusAsset = true);
@@ -118,31 +148,25 @@ Creates an asset of the given type.
 * `bool _FocusAsset = true`: Defines if the asset should be selected and highlighted in the Project view after its creation
 * `out Object _CreatedAsset`: The created asset
 
-## Path helpers
+### Path helpers
+
+#### `GetAssetAbsolutePath()`
 
 ```cs
-public static string GetAssetAbsolutePath(Object _Asset)
+public static string GetAssetAbsolutePath(Object _Asset);
+public static string GetAssetAbsolutePath(int _InstanceID);
+public static string GetAssetAbsolutePath(string _RelativePath);
 ```
 
 Gets the absolute path to the given asset.
 
----
+- `Object _Asset`: The asset of which you want to get the absolute path.
+- `int _InstanceID`: The InstanceID of the asset which you want the absolute path.
+- `string _RelativePath`: The relative path (from  `/Assets` directory) of the asset you want the absolute path
 
-```cs
-public static string GetAssetAbsolutePath(int _InstanceID)
-```
+Returns the absolute path, or string.Empty if the asset doesn't exist
 
-Gets the absolute path to the asset that has the given instance ID.
-
----
-
-```cs
-public static string GetAssetAbsolutePath(string _RelativePath)
-```
-
-Gets the absolute path, from a given relative path to the current Unity project.
-
----
+#### `IsPathRelativeToCurrentProjectFolder()`
 
 ```cs
 public static bool IsPathRelativeToCurrentProjectFolder(string _AbsolutePath)
@@ -150,7 +174,7 @@ public static bool IsPathRelativeToCurrentProjectFolder(string _AbsolutePath)
 
 Checks if the given path points to a folder of the current Unity project.
 
----
+#### `GetPathRelativeToCurrentProjectFolder()`
 
 ```cs
 public static string GetPathRelativeToCurrentProjectFolder(string _AbsolutePath, bool _IncludeAssetsFolder = true)
@@ -158,7 +182,7 @@ public static string GetPathRelativeToCurrentProjectFolder(string _AbsolutePath,
 
 Gets a path relative to this project's Assets folder from a given absolute path. Note that this method will write a log if the given path is not valid.
 
----
+#### `GetResourcesPath()`
 
 ```cs
 public static string GetResourcesPath(string _AbsolutePath, string _ExpectedExtension, bool _IncludeResourcesFolder = false)
@@ -166,7 +190,9 @@ public static string GetResourcesPath(string _AbsolutePath, string _ExpectedExte
 
 Gets the path to the asset pointed by the given absolute path, from Resources folder of this project.
 
-## GUI helpers
+### GUI helpers
+
+#### `FloatField()`
 
 ```cs
 public static float FloatField(Rect _Position, Rect _DragHotZone, float _Value)
@@ -174,7 +200,7 @@ public static float FloatField(Rect _Position, Rect _DragHotZone, float _Value)
 
 Makes a text field for entering floats (just as `EditorGUI.FloatField()`), but allows you to define the "drag hot zone" of the control.
 
----
+#### `HorizontalLine()`
 
 ```cs
 public static void HorizontalLine(Rect _Rect);
@@ -186,7 +212,7 @@ Draws an horizontal line.
 - `Rect _Rect`: The position and size of the line.
 - `Color _Color`: The color of the line.
 
----
+#### `HorizontalLineLayout()`
 
 ```cs
 public static void HorizontalLineLayout(bool _Wide = false);
@@ -200,7 +226,7 @@ Draws an horizontal line using layout GUI.
 - `Color _Color`: The color of the line.
 - `bool _Wide = false`: If true, the line will have the exact same with as the window where it's drawn.
 
----
+#### `SearchBar()`
 
 ```cs
 public static string SearchBar(string _Text, Action _OnCancel = null);
@@ -217,7 +243,7 @@ Draws a search bar field using GUI Layout.
 - `GUIStyle _SearchBarStyle`: The `GUIStyle` to apply on the search bar field
 - `GUIStyle _CancelButtonStyle`: The `GUIStyle` to apply on the cancel button
 
----
+#### `SwitchField()`
 
 ```cs
 public static bool SwitchField(bool _Value);
@@ -231,7 +257,7 @@ Draws a "On/Off" switch field.
 
 Returns `true` if *On* is selected, otherwise `false`.
 
----
+#### `ObjectField()`
 
 ```cs
 public static void ObjectField<TObjectType>(Rect _Position, GUIContent _Label, SerializedProperty _Property, string _PanelTitle = null, bool _AllowSceneObjects = true)
@@ -249,7 +275,7 @@ Draws an `Object` field with a *Create new* button on the right.
 - `string _PanelTitle = null`: The title of the SavePanel utility.
 - `bool _AllowSceneObjects = true`: If true, allow user to pass scene object in the object field.
 
----
+#### `DrawDefaultInspector()`
 
 ```cs
 public static void DrawDefaultInspector(Object _Asset, bool _IncludeScriptProperty = false, float _CustomLabelWidth = -1f);
@@ -265,13 +291,15 @@ Draws the default inspector of the given object.
 - `SerializedObject _Object`: The `SerializedObject` of which you want to draw the custom inspector.
 - `SerializedProperty _Property`: The `SerializedProperty` of which you want to draw the custom inspector.
 
-## Editor styles helpers
+### Editor styles helpers
+
+#### `HelpBoxStyle`
 
 ```cs
 public static GUIStyle HelpBoxStyle { get; }
 ```
 
----
+#### `ReorderableListHeaderStyle`
 
 ```cs
 public static GUIStyle ReorderableListHeaderStyle { get; }
@@ -279,13 +307,13 @@ public static GUIStyle ReorderableListHeaderStyle { get; }
 
 Returns the Unity's reorderable lists style.
 
----
+#### `ReorderableListBoxStyle`
 
 ```cs
 public static GUIStyle ReorderableListBoxStyle { get; }
 ```
 
----
+#### `PropertyFieldButtonStyle`
 
 ```cs
 public static GUIStyle PropertyFieldButtonStyle { get; }
