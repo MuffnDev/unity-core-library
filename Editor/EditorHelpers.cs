@@ -23,12 +23,17 @@ namespace MuffinDev.EditorUtils
         public const string RESOURCES_FOLDER = "Resources";
         public const string DEFAULT_ASSET_EXTENSION = "asset";
 
+        // Default Muffin Dev' editor tools horizontal margin.
         public static readonly float HORIZONTAL_MARGIN = EditorGUIUtility.standardVerticalSpacing;
+        // Default Muffin Dev' editor tools vertical margin.
         public static readonly float VERTICAL_MARGIN = EditorGUIUtility.standardVerticalSpacing;
+        // Default Muffin Dev' editor tools property line height.
         public static readonly float LINE_HEIGHT = EditorGUIUtility.singleLineHeight;
+        // Default Muffin Dev' editor windows padding.
         public const float EDITOR_WINDOW_PADDING = 2f;
         public const float INSPECTOR_FOLDOUT_LEFT_OFFSET = 14f;
 
+        private const string PPROPERTY_ARRAY_MEMBER_PATH = "Array.data";
         private const float BOOLEAN_SWITCH_TOOLBAR_WIDTH = 134f;
 
         private static readonly string[] BOOLEAN_SWITCH_LABELS = { "On", "Off" };
@@ -137,7 +142,16 @@ namespace MuffinDev.EditorUtils
         {
             Type parentType = _Property.serializedObject.targetObject.GetType();
             FieldInfo propertyField = parentType.GetField(_Property.propertyPath, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-            return propertyField.FieldType;
+            return propertyField != null ? propertyField.FieldType : null;
+        }
+
+        /// <summary>
+        /// Checks if the given SerializedProperty is contained in an array.
+        /// </summary>
+        /// <param name="_Property">The property you want to check.</param>
+        public static bool IsPropertyAnArrayEntry(SerializedProperty _Property)
+        {
+            return _Property.propertyPath.Contains(PPROPERTY_ARRAY_MEMBER_PATH);
         }
 
         #endregion
@@ -403,6 +417,8 @@ namespace MuffinDev.EditorUtils
         /// <summary>
         /// Gets the absolute path to an asset.
         /// </summary>
+        /// <param name="_Asset">The asset of which you want to get the absolute path.</param>
+        /// <returns>Returns the absolute path, or string.Empty if the asset doesn't exist.</returns>
         public static string GetAssetAbsolutePath(Object _Asset)
         {
             return GetAssetAbsolutePath(_Asset.GetInstanceID());
@@ -411,6 +427,7 @@ namespace MuffinDev.EditorUtils
         /// <summary>
         /// Gets the absolute path to an asset.
         /// </summary>
+        /// <param name="_InstanceID">The InstanceID of the asset you want the absolute path.</param>
         /// <returns>Returns the absolute path, or string.Empty if the asset doesn't exist.</returns>
         public static string GetAssetAbsolutePath(int _InstanceID)
         {
@@ -421,6 +438,8 @@ namespace MuffinDev.EditorUtils
         /// <summary>
         /// Gets the absolute path, from a given relative path to the current Unity project.
         /// </summary>
+        /// <param name="_RelativePath">The relative path (from /Assets directory) of the asset you want the absolute path.</param>
+        /// <returns>Returns the absolute path, or string.Empty if the asset doesn't exist.</returns>
         public static string GetAssetAbsolutePath(string _RelativePath)
         {
             if (_RelativePath == string.Empty)
