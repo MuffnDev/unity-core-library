@@ -26,7 +26,7 @@ namespace MuffinDev
         /// <summary>
         /// Reverses the gradient color and alpha keys.
         /// </summary>
-        /// <param name="_Gradient">The original gradient you want to reverse..</param>
+        /// <param name="_Gradient">The original gradient you want to reverse.</param>
         /// <returns>Returns a new Gradient instance with the reversed keys of the input Gradient.</returns>
         public static Gradient Reverse(this Gradient _Gradient)
         {
