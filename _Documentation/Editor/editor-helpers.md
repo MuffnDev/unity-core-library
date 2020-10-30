@@ -85,18 +85,13 @@ Returns the found property type, or null if the property path can't be used to g
 ## Assets helpers
 
 ```cs
-public static AssetCreationResult CreateAsset
-(
-    Type _AssetType,
-    string _FileName = "",
-    string _RelativePath = "",
-    string _FileExtension = "asset",
-    bool _FocusAsset = true
-)
+public static AssetCreationResult CreateAsset<TAssetType>(string _FileName = "", string _RelativePath = "", string _FileExtension = DEFAULT_ASSET_EXTENSION, bool _FocusAsset = true);
+public static AssetCreationResult CreateAsset(Type _AssetType, string _FileName = "", string _RelativePath = "", string _FileExtension = DEFAULT_ASSET_EXTENSION, bool _FocusAsset = true);
 ```
 
 Creates an asset of the given type.
 
+* `<TAssetType>`: The type of the asset to create
 * `Type _AssetType`: The type of the asset to create
 * `string _FileName = ""`: Default name of the asset file
 * `string _RelativePath = ""`: Default path to the folder of the asset file
@@ -106,67 +101,22 @@ Creates an asset of the given type.
 ---
 
 ```cs
-public static AssetCreationResult CreateAsset<TAssetType>
-(
-    string _FileName = "",
-    string _RelativePath = "",
-    string _FileExtension = "asset",
-    bool _FocusAsset = true
-)
+public static AssetCreationResult CreateAssetPanel(Type _AssetType, string _PanelTitle = "Save new asset", string _FileName = "", string _DefaultPath = "", string _FileExtension = DEFAULT_ASSET_EXTENSION, bool _FocusAsset = true);
+public static AssetCreationResult CreateAssetPanel(Type _AssetType, out Object _CreatedAsset, string _PanelTitle = "Save new asset", string _FileName = "", string _DefaultPath = "", string _FileExtension = DEFAULT_ASSET_EXTENSION, bool _FocusAsset = true);
+public static AssetCreationResult CreateAssetPanel<TAssetType>(string _PanelTitle, string _FileName = "", string _DefaultPath = "", string _FileExtension = DEFAULT_ASSET_EXTENSION, bool _FocusAsset = true);
+public static AssetCreationResult CreateAssetPanel<TAssetType>(out TAssetType _CreatedAsset, string _PanelTitle, string _FileName = "", string _DefaultPath = "", string _FileExtension = DEFAULT_ASSET_EXTENSION, bool _FocusAsset = true);
 ```
 
 Creates an asset of the given type.
 
+* `Type _AssetType`: The type of the Scriptable Object to create
 * `<TAssetType>`: The type of the asset to create
+* `string _PanelTitle_ = ""`: Title of the panel window
 * `string _FileName = ""`: Default name of the asset file
-* `string _RelativePath = ""`: Default path to the folder of the asset file
+* `string _DefaultPath = ""`: Default extension of the asset file
 * `string _FileExtension = "asset"`: Default extension of the asset file
 * `bool _FocusAsset = true`: Defines if the asset should be selected and highlighted in the Project view after its creation
-
----
-
-```cs
-public static AssetCreationResult CreateAssetPanel
-(
-    Type _AssetType,
-    string _PanelTitle = "Save new asset",
-    string _FileName = "",
-    string _DefaultPath = "",
-    string _FileExtension = "asset",
-    bool _FocusAsset = true
-)
-```
-
-Creates an asset of the given type, using a Save File Panel.
-
-* `Type _AssetType`: The type of the asset to create
-* `string _PanelTitle = "Save new asset"`: Title of the save file popup
-* `string _FileName = ""`: Default name of the asset file
-* `string _RelativePath = ""`: Default path to the folder of the asset file
-* `string _FileExtension = "asset"`: Default extension of the asset file
-* `bool _FocusAsset = true`: Defines if the asset should be selected and highlighted in the Project view after its creation
-
----
-
-```cs
-public static AssetCreationResult CreateAssetPanel<TAssetType>
-(
-    string _PanelTitle,
-    string _FileName = "",
-    string _DefaultPath = "",
-    string _DefaultFileExtension = "asset",
-    bool _FocusAsset = true
-)
-```
-
-Creates an asset of the given type, using a Save File Panel.
-
-* `<TAssetType>`: The type of the asset to create
-* `string _PanelTitle = "Save new asset"`: Title of the save file popup
-* `string _FileName = ""`: Default name of the asset file
-* `string _RelativePath = ""`: Default path to the folder of the asset file
-* `string _FileExtension = "asset"`: Default extension of the asset file
-* `bool _FocusAsset = true`: Defines if the asset should be selected and highlighted in the Project view after its creation
+* `out Object _CreatedAsset`: The created asset
 
 ## Path helpers
 
@@ -280,6 +230,24 @@ Draws a "On/Off" switch field.
 - `string _Label`: The label of the property.
 
 Returns `true` if *On* is selected, otherwise `false`.
+
+---
+
+```cs
+public static void ObjectField<TObjectType>(Rect _Position, GUIContent _Label, SerializedProperty _Property, string _PanelTitle = null, bool _AllowSceneObjects = true)
+    where TObjectType : Object;
+public static void ObjectField(Rect _Position, Type _ObjectType, GUIContent _Label, SerializedProperty _Property, string _PanelTitle = null, bool _AllowSceneObjects = true);
+```
+
+Draws an `Object` field with a *Create new* button on the right.
+
+- `<TObjectType>`: The type of the object that can be passed to the Object field.
+- `Type _ObjectType`: The type of the object that can be passed to the Object field.
+- `Rect _Position`: The position and size of the field.
+- `GUIContent _Label`: The label to display on the left of the field.
+- `SerializedProperty _Property`: The property on which you want to set the field value.
+- `string _PanelTitle = null`: The title of the SavePanel utility.
+- `bool _AllowSceneObjects = true`: If true, allow user to pass scene object in the object field.
 
 ---
 

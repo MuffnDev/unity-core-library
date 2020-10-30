@@ -298,6 +298,40 @@ namespace MuffinDev.EditorUtils
         }
 
         /// <summary>
+        /// Creates an asset of the given type, using a Save File Panel to define the path to that new asset.
+        /// </summary>
+        /// <param name="_AssetType">The type of the asset to create</param>
+        /// <param name="_CreatedAsset">The created asset</param>
+        /// <param name="_PanelTitle">Title of the panel window</param>
+        /// <param name="_FileName">The asset file's name. If empty, the asset name will be New[_AssetType]</param>
+        /// <param name="_DefaultPath">Path to focus when the panel will open</param>
+        /// <param name="_FileExtension">The asset file's extension</param>
+        /// <param name="_FocusAsset">Should the asset be selected and highlighted after its creation ?</param>
+        public static AssetCreationResult CreateAssetPanel
+        (
+            Type _AssetType,
+            out Object _CreatedAsset,
+            string _PanelTitle = "Save new asset",
+            string _FileName = "",
+            string _DefaultPath = "",
+            string _FileExtension = DEFAULT_ASSET_EXTENSION,
+            bool _FocusAsset = true
+        )
+        {
+            AssetCreationResult result = CreateAssetPanel
+            (
+                _AssetType,
+                _PanelTitle,
+                _FileName,
+                _DefaultPath,
+                _FileExtension,
+                _FocusAsset
+            );
+            _CreatedAsset = result.AssetObject;
+            return result;
+        }
+
+        /// <summary>
         /// Creates an asset of the specified type, using a Save File Panel to define the path to that new asset.
         /// </summary>
         /// <typeparam name="TAssetType">The type of the Scriptable Object to create.</param>
@@ -311,7 +345,7 @@ namespace MuffinDev.EditorUtils
             string _PanelTitle,
             string _FileName = "",
             string _DefaultPath = "",
-            string _DefaultFileExtension = DEFAULT_ASSET_EXTENSION,
+            string _FileExtension = DEFAULT_ASSET_EXTENSION,
             bool _FocusAsset = true
         )
             where TAssetType : Object
@@ -322,9 +356,43 @@ namespace MuffinDev.EditorUtils
                 _PanelTitle,
                 _FileName,
                 _DefaultPath,
-                _DefaultFileExtension,
+                _FileExtension,
                 _FocusAsset
             );
+        }
+
+        /// <summary>
+        /// Creates an asset of the specified type, using a Save File Panel to define the path to that new asset.
+        /// </summary>
+        /// <typeparam name="TAssetType">The type of the Scriptable Object to create.</param>
+        /// <param name="_PanelTitle">Title of the panel window</param>
+        /// <param name="_CreatedAsset">The created asset</param>
+        /// <param name="_FileName">The asset file's name. If empty, the asset name will be New[_AssetType]</param>
+        /// <param name="_DefaultPath">Path to focus when the panel will open</param>
+        /// <param name="_FileExtension">The asset file's extension</param>
+        /// <param name="_FocusAsset">Should the asset be selected and highlighted after its creation ?</param>
+        public static AssetCreationResult CreateAssetPanel<TAssetType>
+        (
+            out TAssetType _CreatedAsset,
+            string _PanelTitle,
+            string _FileName = "",
+            string _DefaultPath = "",
+            string _FileExtension = DEFAULT_ASSET_EXTENSION,
+            bool _FocusAsset = true
+        )
+            where TAssetType : Object
+        {
+            AssetCreationResult result = CreateAssetPanel
+            (
+                typeof(TAssetType),
+                _PanelTitle,
+                _FileName,
+                _DefaultPath,
+                _FileExtension,
+                _FocusAsset
+            );
+            _CreatedAsset = result.AssetObject ? result.AssetObject as TAssetType : null;
+            return result;
         }
 
         #endregion
@@ -671,6 +739,55 @@ namespace MuffinDev.EditorUtils
             }
             EditorGUILayout.EndHorizontal();
             return _Value;
+        }
+
+        /// <summary>
+        /// Draws an Object field with a "Create new" button on the right.
+        /// </summary>
+        /// <typeparam name="TObjectType">The type of the object that can be passed to the Object field.</typeparam>
+        /// <param name="_Position">The position and size of the field.</param>
+        /// <param name="_Label">The label to display on the left of the field.</param>
+        /// <param name="_Property">The property on which you want to set the field value.</param>
+        /// <param name="_PanelTitle">The title of the SavePanel utility.</param>
+        /// <param name="_AllowSceneObjects">If true, allow user to pass scene object in the object field.</param>
+        public static void ObjectField<TObjectType>(Rect _Position, GUIContent _Label, SerializedProperty _Property, string _PanelTitle = null, bool _AllowSceneObjects = true)
+            where TObjectType : Object
+        {
+            ObjectField(_Position, typeof(TObjectType), _Label, _Property, _PanelTitle, _AllowSceneObjects);
+        }
+
+        /// <summary>
+        /// Draws an Object field with a "Create new" button on the right.
+        /// </summary>
+        /// <param name="_Position">The position and size of the field.</param>
+        /// <param name="_ObjectType">The type of the object that can be passed to the Object field.</param>
+        /// <param name="_Label">The label to display on the left of the field.</param>
+        /// <param name="_Property">The property on which you want to set the field value.</param>
+        /// <param name="_AllowSceneObjects">If true, allow user to pass scene object in the object field.</param>
+        public static void ObjectField(Rect _Position, Type _ObjectType, GUIContent _Label, SerializedProperty _Property, string _PanelTitle = null, bool _AllowSceneObjects = true)
+        {
+            Rect rect = _Position;
+            // Label
+            rect.width = EditorGUIUtility.labelWidth;
+            EditorGUI.LabelField(rect, _Label);
+
+            // Object field
+            rect.x += rect.width;
+            rect.width = _Position.width - rect.width - rect.height - HORIZONTAL_MARGIN * 2;
+            _Property.objectReferenceValue = EditorGUI.ObjectField(rect, _Property.objectReferenceValue, _ObjectType, _AllowSceneObjects);
+
+            // "Create new" button
+            rect.x += rect.width + HORIZONTAL_MARGIN * 2;
+            rect.width = rect.height;
+            GUIContent content = EditorGUIUtility.IconContent("Toolbar Plus");
+            if (GUI.Button(rect, content, PropertyFieldButtonStyle))
+            {
+                CreateAssetPanel(_ObjectType, out Object asset, _PanelTitle, "New" + _ObjectType.Name, "", "asset", false);
+                if (asset != null)
+                {
+                    _Property.objectReferenceValue = asset;
+                }
+            }
         }
 
         /// <summary>
