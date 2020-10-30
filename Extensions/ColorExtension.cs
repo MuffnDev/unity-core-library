@@ -34,6 +34,7 @@ namespace MuffinDev
         /// <summary>
         /// Gets a Color value from an hexadecimal string.
         /// </summary>
+        /// <param name="_HexadecimalString">The hexadecimal string (like F9F9F9, F9F9F9F9, #F9F9F9, #F9F9F9F9).</param>
         public static Color FromHex(string _HexadecimalString)
         {
             _HexadecimalString = _HexadecimalString.Replace("#", "");
