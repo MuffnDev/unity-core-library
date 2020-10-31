@@ -6,8 +6,9 @@ This attribute can be used on these following property types:
 
 - `float`
 - `int`
-- `Vector2`: locks both x and y to minimum value
-- `Vector3`: locks x, y and z to minimum value
+- `Vector2` and `Vector2Int`: locks both x and y to minimum value
+- `Vector3` and `Vector3Int`: locks x, y and z to minimum value
+- `Vector4`: locks x, y, z and w to minimum value
 
 ***Note**: Unity 2018 added a new `Min` attribute, working only with `int` and `float` values. It can conflicts with Muffin Dev' `Min` attribute, so you can use `Minimum` attribute instead (see below).*
 

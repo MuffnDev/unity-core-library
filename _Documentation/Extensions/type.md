@@ -1,4 +1,4 @@
-# Muffin Dev for Unity - `IntExtension`
+# Muffin Dev for Unity - `TypeExtension`
 
 Extension methods for `Type`.
 
