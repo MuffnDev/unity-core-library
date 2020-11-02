@@ -27,15 +27,8 @@ namespace MuffinDev.EditorUtils
 
         #region Lifecycle
 
-#if MUFFINDEV_CORE_1_0_0
-        protected override void OnEnable()
-#else
         protected virtual void OnEnable()
-#endif
         {
-#if MUFFINDEV_CORE_1_0_0
-            base.OnEnable();
-#endif
             // Gets the default inspector view of GameObject
             m_DefaultGameObjectEditor = CreateEditor(target, Type.GetType("UnityEditor.GameObjectInspector, UnityEditor"));
         }
