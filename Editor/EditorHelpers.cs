@@ -221,7 +221,7 @@ namespace MuffinDev.EditorUtils
                 Debug.LogWarning("The given asset type is not valid.");
             }
 
-            return AssetCreationResult.failedAssetCreation;
+            return AssetCreationResult.FAILED_ASSET_CREATION;
         }
 
         /// <summary>
@@ -278,7 +278,7 @@ namespace MuffinDev.EditorUtils
             // If the user close the Save File Panel, the path will be Empty.
             // Then, we can stop this method.
             if (absolutePath == string.Empty)
-                return AssetCreationResult.failedAssetCreation;
+                return AssetCreationResult.FAILED_ASSET_CREATION;
 
             // If the selected path is in the current project's folder.
             if (absolutePath.StartsWith(Application.dataPath))
@@ -307,7 +307,7 @@ namespace MuffinDev.EditorUtils
             else
             {
                 Debug.LogWarning("You must select a folder relative to the \"Assets\" folder of this project.");
-                return AssetCreationResult.failedAssetCreation;
+                return AssetCreationResult.FAILED_ASSET_CREATION;
             }
         }
 
@@ -569,8 +569,8 @@ namespace MuffinDev.EditorUtils
             int controlID = GUIUtility.GetControlID("EditorTextField".GetHashCode(), FocusType.Keyboard, _Position);
             Type editorGUIType = typeof(EditorGUI);
 
-            Type RecycledTextEditorType = Assembly.GetAssembly(editorGUIType).GetType("UnityEditor.EditorGUI+RecycledTextEditor");
-            Type[] argumentTypes = new Type[] { RecycledTextEditorType, typeof(Rect), typeof(Rect), typeof(int), typeof(float), typeof(string), typeof(GUIStyle), typeof(bool) };
+            Type recycledTextEditorType = Assembly.GetAssembly(editorGUIType).GetType("UnityEditor.EditorGUI+RecycledTextEditor");
+            Type[] argumentTypes = new Type[] { recycledTextEditorType, typeof(Rect), typeof(Rect), typeof(int), typeof(float), typeof(string), typeof(GUIStyle), typeof(bool) };
             MethodInfo doFloatFieldMethod = editorGUIType.GetMethod("DoFloatField", BindingFlags.NonPublic | BindingFlags.Static, null, argumentTypes, null);
 
             FieldInfo fieldInfo = editorGUIType.GetField("s_RecycledEditor", BindingFlags.NonPublic | BindingFlags.Static);

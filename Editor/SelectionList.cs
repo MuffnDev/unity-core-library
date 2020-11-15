@@ -33,7 +33,7 @@ namespace MuffinDev.EditorUtils
 		[SerializeField]
 		private Vector2 m_ScrollPosition = Vector2.zero;
 
-		public SelectItemDelegate OnSelectItem = null;
+		private SelectItemDelegate m_OnSelectItem = null;
 
 		private static GUIStyle s_ItemsListStyle = null;
 		private static GUIStyle s_SelectedItemStyle = null;
@@ -117,6 +117,12 @@ namespace MuffinDev.EditorUtils
 			get { return m_Items.AsEnumerable(); }
 			set { m_Items = new List<string>(value); }
 		}
+
+		public SelectItemDelegate OnSelectItem
+        {
+            get { return m_OnSelectItem; }
+            set { m_OnSelectItem = value; }
+        }
 
 		/// <summary>
 		/// Gets/Sets the index of the selected item.

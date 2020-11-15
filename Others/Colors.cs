@@ -57,26 +57,26 @@ namespace MuffinDev
 
         #region Properties
 
-        public static readonly Color aqua = Get(EColor.Aqua);
-        public static readonly Color azure = Get(EColor.Azure);
-        public static readonly Color black = Get(EColor.Black);
-        public static readonly Color blue = Get(EColor.Blue);
-        public static readonly Color cyan = Get(EColor.Cyan);
-        public static readonly Color fuchsia = Get(EColor.Fuchsia);
-        public static readonly Color green = Get(EColor.Green);
-        public static readonly Color grey = Get(EColor.Grey);
-        public static readonly Color lime = Get(EColor.Lime);
-        public static readonly Color magenta = Get(EColor.Magenta);
-        public static readonly Color maroon = Get(EColor.Maroon);
-        public static readonly Color navy = Get(EColor.Navy);
-        public static readonly Color olive = Get(EColor.Olive);
-        public static readonly Color orange = Get(EColor.Orange);
-        public static readonly Color pink = Get(EColor.Pink);
-        public static readonly Color purple = Get(EColor.Purple);
-        public static readonly Color red = Get(EColor.Red);
-        public static readonly Color teal = Get(EColor.Teal);
-        public static readonly Color white = Get(EColor.White);
-        public static readonly Color yellow = Get(EColor.Yellow);
+        public static readonly Color Aqua = Get(EColor.Aqua);
+        public static readonly Color Azure = Get(EColor.Azure);
+        public static readonly Color Black = Get(EColor.Black);
+        public static readonly Color Blue = Get(EColor.Blue);
+        public static readonly Color Cyan = Get(EColor.Cyan);
+        public static readonly Color Fuchsia = Get(EColor.Fuchsia);
+        public static readonly Color Green = Get(EColor.Green);
+        public static readonly Color Grey = Get(EColor.Grey);
+        public static readonly Color Lime = Get(EColor.Lime);
+        public static readonly Color Magenta = Get(EColor.Magenta);
+        public static readonly Color Maroon = Get(EColor.Maroon);
+        public static readonly Color Navy = Get(EColor.Navy);
+        public static readonly Color Olive = Get(EColor.Olive);
+        public static readonly Color Orange = Get(EColor.Orange);
+        public static readonly Color Pink = Get(EColor.Pink);
+        public static readonly Color Purple = Get(EColor.Purple);
+        public static readonly Color Red = Get(EColor.Red);
+        public static readonly Color Teal = Get(EColor.Teal);
+        public static readonly Color White = Get(EColor.White);
+        public static readonly Color Yellow = Get(EColor.Yellow);
 
         #endregion
 

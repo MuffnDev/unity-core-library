@@ -26,7 +26,7 @@ namespace MuffinDev.EditorUtils
 		private const string ANSWER_FIELD_NAME = "PromptAnswer";
 		private const float INPUT_HEIGHT = 24f;
 
-		private static Prompt m_OpenedWindow = null;
+		private static Prompt s_OpenedWindow = null;
 		private static GUIStyle s_PromptMessageBoxStyle = null;
 		private static GUIStyle s_PromptInputStyle = null;
 
@@ -228,15 +228,15 @@ namespace MuffinDev.EditorUtils
 		public static void DisplayPrompt(string _Title, string _Message, Rect _Position, OnConfirmDelegate _OnConfirmCallback, OnCancelDelegate _OnCancelCallback = null)
         {
 			// Close the eventually existing window
-			if (m_OpenedWindow != null)
+			if (s_OpenedWindow != null)
 			{
-				m_OpenedWindow.Cancel();
+				s_OpenedWindow.Cancel();
 			}
 
-			m_OpenedWindow = GetWindow<Prompt>(true, _Title, true);
+			s_OpenedWindow = GetWindow<Prompt>(true, _Title, true);
 
 			// Set size and position if needed.
-			Rect rect = m_OpenedWindow.position;
+			Rect rect = s_OpenedWindow.position;
 			if(_Position.position != Vector2.zero)
             {
 				rect.position = _Position.position;
@@ -245,14 +245,14 @@ namespace MuffinDev.EditorUtils
             {
 				rect.size = _Position.size;
             }
-			m_OpenedWindow.position = rect;
+			s_OpenedWindow.position = rect;
 
 			// Initialize prompt window
-			m_OpenedWindow.m_Message = _Message;
-			m_OpenedWindow.m_OnConfirmCallback = _OnConfirmCallback;
-			m_OpenedWindow.m_OnCancelCallback = _OnCancelCallback;
+			s_OpenedWindow.m_Message = _Message;
+			s_OpenedWindow.m_OnConfirmCallback = _OnConfirmCallback;
+			s_OpenedWindow.m_OnCancelCallback = _OnCancelCallback;
 
-			m_OpenedWindow.Show();
+			s_OpenedWindow.Show();
 		}
 
 		#endregion

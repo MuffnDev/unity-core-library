@@ -27,11 +27,11 @@ namespace MuffinDev.Integrations
         {
             [SerializeField]
             [Tooltip("Displayed name in the inspector.")]
-            public string m_ControlName = string.Empty;
+            private string m_ControlName = string.Empty;
 
             [SerializeField]
             [Tooltip("Input key for applying this control.")]
-            public KeyCode m_Key = KeyCode.Space;
+            private KeyCode m_Key = KeyCode.Space;
 
             /// <summary>
             /// Apply this control.

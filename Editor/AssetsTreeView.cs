@@ -83,7 +83,7 @@ namespace MuffinDev.EditorUtils
         /// <summary>
         /// Checks if the selected Tree item can be used in multi-selection context.
         /// </summary>
-        protected override bool CanMultiSelect(TreeViewItem item)
+        protected override bool CanMultiSelect(TreeViewItem _Item)
         {
             return m_EnableMultiSelection;
         }

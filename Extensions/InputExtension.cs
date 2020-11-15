@@ -9,7 +9,7 @@ namespace MuffinDev
 	public static class InputExtension
 	{
 
-		public static Vector2 relativeMousePosition
+		public static Vector2 RelativeMousePosition
         {
             get
             {
