@@ -1,8 +1,12 @@
-# Muffin Dev for Unity - `RectExtension`
+# Muffin Dev for Unity - `ScriptableObjectExtension`
 
-Extension methods for `ScriptableObject`.
+Extension methods for `ScriptableObject` objects.
 
-## Methods
+## Public API
+
+### Methods
+
+#### `GetScriptPath()`
 
 ```cs
 public static string GetScriptPath<TScriptableObject>();

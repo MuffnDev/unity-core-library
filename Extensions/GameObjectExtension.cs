@@ -41,7 +41,6 @@ namespace MuffinDev
             return null;
         }
 
-
         /// <summary>
         /// Gets the component of the given type from the root GameObject of the hierarchy.
         /// </summary>
@@ -70,12 +69,11 @@ namespace MuffinDev
             return null;
         }
 
-
         /// <summary>
         /// Gets the component of the named type from the root GameObject of the hierarchy.
         /// </summary>
         /// <returns>Returns the found component, otherwise null.</returns>
-        public static Component GetComponentFromRoot(this GameObject _Obj, string _ComponentName)
+        public static Component GetComponentFromRoot(this GameObject _Obj, string _ComponentTypeName)
         {
             Queue<GameObject> gameObjects = new Queue<GameObject>();
             gameObjects.Enqueue(_Obj);
@@ -83,7 +81,7 @@ namespace MuffinDev
             GameObject currentGameObject = null;
             while ((currentGameObject = gameObjects.Dequeue()) != null)
             {
-                Component comp = currentGameObject.GetComponent(_ComponentName);
+                Component comp = currentGameObject.GetComponent(_ComponentTypeName);
                 if (comp != null)
                 {
                     return comp;

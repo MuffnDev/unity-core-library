@@ -4,7 +4,7 @@ namespace MuffinDev
 {
 
     ///<summary>
-    /// Extensions for System.Type.
+    /// Extensions for System.Type objects.
     ///</summary>
     public static class TypeExtension
     {

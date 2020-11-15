@@ -2,7 +2,11 @@
 
 Extension methods for `int` values.
 
-## Methods
+## Public API
+
+### Methosd
+
+#### `AddLeading0()`
 
 ```cs
 public static string AddLeading0(this int _Number, int _Pow)
@@ -26,7 +30,7 @@ private void Test()
 }
 ```
 
----
+#### `CompareTo()`
 
 ```cs
 public static int CompareTo(this int _Number, int _Other, bool _Desc)

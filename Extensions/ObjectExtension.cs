@@ -3,10 +3,10 @@
 namespace MuffinDev
 {
 
-	///<summary>
-	/// Extensions for Unity's Object class instances.
-	///</summary>
-	public static class ObjectExtension
+    ///<summary>
+    /// Extensions for UnityEngine.Object objects.
+    ///</summary>
+    public static class ObjectExtension
 	{
 
         /// <summary>

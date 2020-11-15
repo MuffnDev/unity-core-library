@@ -4,7 +4,7 @@ namespace MuffinDev
 {
 
     ///<summary>
-    /// Extensions for Transform objects.
+    /// Extensions for Transform component.
     ///</summary>
     public static class TransformExtension
 	{
@@ -19,7 +19,7 @@ namespace MuffinDev
                 if (child == _Transform)
                     continue;
 
-                Object.Destroy(child);
+                Object.Destroy(child.gameObject);
             }
         }
 

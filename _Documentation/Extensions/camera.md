@@ -2,7 +2,11 @@
 
 Extension methods for `Camera` instances.
 
-## Methods
+## Public API
+
+### Methods
+
+#### `GetExtentsOrthographic()`
 
 ```cs
 public static Vector2 GetExtentsOrthographic(this Camera _Camera)
@@ -12,7 +16,7 @@ Calculates the camera render extents, using orthographic mode. The extents are:
 
 `Vector2(orthographic_size * aspect_ratio, orthographic_size)`
 
----
+#### `GetBoundsOrthographic()`
 
 ```cs
 public static Vector2 GetBoundsOrthographic(this Camera _Camera)

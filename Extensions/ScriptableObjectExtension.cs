@@ -8,7 +8,7 @@ namespace MuffinDev
 {
 
 	///<summary>
-	/// Extensions for ScriptableObjects.
+	/// Extensions for ScriptableObject objects.
 	///</summary>
 	public static class ScriptableObjectExtension
 	{
