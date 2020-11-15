@@ -62,6 +62,20 @@ namespace MuffinDev
             return string.Join(_Separator, _List);
         }
 
+        /// <summary>
+        /// Adds the given item to the list only if it's not already in.
+        /// </summary>
+        /// <param name="_Item">The item to add.</param>
+        /// <returns>Returns true if the item has been added, or false if the item is already in the list.</returns>
+        public static bool AddOnce<T>(this IList<T> _List, T _Item)
+        {
+            if (_List.Contains(_Item))
+                return false;
+
+            _List.Add(_Item);
+            return true;
+        }
+
     }
 
 }
