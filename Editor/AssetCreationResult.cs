@@ -12,7 +12,7 @@ namespace MuffinDev.EditorUtils
 
         #region Properties
 
-        public static readonly AssetCreationResult failedAssetCreation = new AssetCreationResult(false);
+        public static readonly AssetCreationResult FAILED_ASSET_CREATION = new AssetCreationResult(false);
 
         private readonly Object m_CreatedAsset = null;
         private readonly bool m_HasBeenSuccessfullyCreated = false;

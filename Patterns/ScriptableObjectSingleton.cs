@@ -13,7 +13,7 @@ namespace MuffinDev
 
         #region Properties
 
-        private static T m_Instance = null;
+        private static T s_Instance = null;
 
         #endregion
 
@@ -82,27 +82,27 @@ namespace MuffinDev
         {
             get
             {
-                if(m_Instance == null)
+                if(s_Instance == null)
                 {
                     T[] objs = FindAllInstances();
 
                     if(objs.Length == 1)
                     {
-                        m_Instance = objs[0];
+                        s_Instance = objs[0];
                     }
                     else if(objs.Length > 1)
                     {
                         Debug.LogError("There's more than one asset of type \"" + typeof(T).Name + "\" loaded in this project. We expect it to have a Singleton behaviour. Please remove other assets of that type from this project.");
-                        m_Instance = objs[0];
+                        s_Instance = objs[0];
                     }
                     else
                     {
                         Debug.LogError("No asset of type \"" + typeof(T).Name + "\" has been found in loaded resources. Please create a new one and add it to the \"Preloaded Assets\" array in Edit > Project Settings > Player > Other Settings.");
-                        m_Instance = CreateInstance<T>();
+                        s_Instance = CreateInstance<T>();
                     }
                 }
 
-                return m_Instance;
+                return s_Instance;
             }
         }
 

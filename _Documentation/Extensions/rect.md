@@ -2,7 +2,11 @@
 
 Extension methods for `Rect` instances.
 
-## Methods
+## Public API
+
+### Methods
+
+#### `HoldInSpace()`
 
 ```cs
 public static Rect HoldInSpace(this Rect _Rect, Rect _Space)
@@ -10,7 +14,7 @@ public static Rect HoldInSpace(this Rect _Rect, Rect _Space)
 
 Keep the Rect inside the given "space" Rect.
 
----
+#### `HoldInScreenSpace()`
 
 ```cs
 public static Rect HoldInScreenSpace(this Rect _Rect)

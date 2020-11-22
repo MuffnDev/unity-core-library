@@ -34,9 +34,9 @@ namespace MuffinDev
         /// Gets the component of the named type from the root GameObject of the hierarchy.
         /// </summary>
         /// <returns>Returns the found component, otherwise null.</returns>
-        public static Component GetComponentFromRoot(this Component _MonoBehaviour, string _ComponentName)
+        public static Component GetComponentFromRoot(this Component _MonoBehaviour, string _ComponentTypeName)
         {
-            return _MonoBehaviour.gameObject.GetComponentFromRoot(_ComponentName);
+            return _MonoBehaviour.gameObject.GetComponentFromRoot(_ComponentTypeName);
         }
 
     }

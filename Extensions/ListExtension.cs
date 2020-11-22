@@ -14,6 +14,30 @@ namespace MuffinDev
 	{
 
         /// <summary>
+        /// Adds the given item to the list only if it's not already in.
+        /// </summary>
+        /// <param name="_Item">The item to add.</param>
+        /// <returns>Returns true if the item has been added, or false if the item is already in the list.</returns>
+        public static bool AddOnce<T>(this IList<T> _List, T _Item)
+        {
+            if (_List.Contains(_Item))
+                return false;
+
+            _List.Add(_Item);
+            return true;
+        }
+
+        /// <summary>
+        /// A shortcut for using string.Join() method on lists.
+        /// </summary>
+        /// <param name="_Separator">The character that separates each elements in the output text.</param>
+        /// <returns>Returns the output text, using string.Join() method.</returns>
+        public static string Join<T>(this IList<T> _List, string _Separator)
+        {
+            return string.Join(_Separator, _List);
+        }
+
+        /// <summary>
         /// Shuffles the list in-place, using UnityEngine.Random().
         /// Original version at https://stackoverflow.com/questions/273313/randomize-a-listt
         /// </summary>
@@ -50,16 +74,6 @@ namespace MuffinDev
                 _List[k] = _List[n];
                 _List[n] = value;
             }
-        }
-
-        /// <summary>
-        /// A shortcut for using string.Join() method on lists.
-        /// </summary>
-        /// <param name="_Separator">The character that separates each elements in the output text.</param>
-        /// <returns>Returns the output text, using string.Join() method.</returns>
-        public static string Join<T>(this IList<T> _List, string _Separator)
-        {
-            return string.Join(_Separator, _List);
         }
 
     }

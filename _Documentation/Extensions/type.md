@@ -1,8 +1,12 @@
-# Muffin Dev for Unity - `IntExtension`
+# Muffin Dev for Unity - `TypeExtension`
 
-Extension methods for `Type`.
+Extension methods for `Type` objects.
 
-## Methods
+## Public API
+
+### Methods
+
+#### `GetFullNameWithAssembly()`
 
 ```cs
 public static string GetFullNameWithAssembly(this Type _Type)

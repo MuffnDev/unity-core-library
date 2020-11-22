@@ -6,29 +6,29 @@ namespace MuffinDev
     /// <summary>
     /// Represents an element that contains two values.
     /// </summary>
-	public class Pair<T, U>
+	public class Pair<T1, T2>
 	{
         [SerializeField]
-        private T m_First;
+        private T1 m_First;
 
         [SerializeField]
-        private U m_Second;
+        private T2 m_Second;
 
         public Pair() { }
 
-        public Pair(T _First, U _Second)
+        public Pair(T1 _First, T2 _Second)
         {
             m_First = _First;
             m_Second = _Second;
         }
 
-        public T First
+        public T1 First
         {
             get { return m_First; }
             set { m_First = value; }
         }
 
-        public U Second
+        public T2 Second
         {
             get { return m_Second; }
             set { m_Second = value; }

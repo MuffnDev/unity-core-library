@@ -44,12 +44,24 @@ namespace MuffinDev
                 _Property.vector3Value = GetValue(min, _Property.vector3Value);
                 break;
 
+                case SerializedPropertyType.Vector4:
+                _Property.vector4Value = GetValue(min, _Property.vector4Value);
+                break;
+
+                case SerializedPropertyType.Vector2Int:
+                _Property.vector2IntValue = GetValue(min, _Property.vector2IntValue);
+                break;
+
+                case SerializedPropertyType.Vector3Int:
+                _Property.vector3IntValue = GetValue(min, _Property.vector3IntValue);
+                break;
+
                 default:
                 isValid = false;
                 break;
             }
 
-            if(isValid)
+            if (isValid)
             {
                 EditorGUI.PropertyField(_Position, _Property);
             }
@@ -59,10 +71,10 @@ namespace MuffinDev
             }
         }
 
-#endregion
+        #endregion
 
 
-#region Accessors
+        #region Accessors
 
         private int GetValue(float _Min, int _Value)
         {
@@ -78,7 +90,6 @@ namespace MuffinDev
         {
             _Value.x = GetClampedValue(_Min, _Value.x);
             _Value.y = GetClampedValue(_Min, _Value.y);
-
             return _Value;
         }
 
@@ -87,18 +98,46 @@ namespace MuffinDev
             _Value.x = GetClampedValue(_Min, _Value.x);
             _Value.y = GetClampedValue(_Min, _Value.y);
             _Value.z = GetClampedValue(_Min, _Value.z);
+            return _Value;
+        }
 
+        private Vector4 GetValue(float _Min, Vector4 _Value)
+        {
+            _Value.x = GetClampedValue(_Min, _Value.x);
+            _Value.y = GetClampedValue(_Min, _Value.y);
+            _Value.z = GetClampedValue(_Min, _Value.z);
+            _Value.w = GetClampedValue(_Min, _Value.w);
+            return _Value;
+        }
+
+        private Vector2Int GetValue(float _Min, Vector2Int _Value)
+        {
+            _Value.x = GetClampedValue(_Min, _Value.x);
+            _Value.y = GetClampedValue(_Min, _Value.y);
+            return _Value;
+        }
+
+        private Vector3Int GetValue(float _Min, Vector3Int _Value)
+        {
+            _Value.x = GetClampedValue(_Min, _Value.x);
+            _Value.y = GetClampedValue(_Min, _Value.y);
+            _Value.z = GetClampedValue(_Min, _Value.z);
             return _Value;
         }
 
         private float GetClampedValue(float _Min, float _Value)
         {
             _Value = (_Value < _Min) ? _Min : _Value;
-
             return _Value;
         }
 
-#endregion
+        private int GetClampedValue(float _Min, int _Value)
+        {
+            _Value = (_Value < _Min) ? Mathf.FloorToInt(_Min) : _Value;
+            return _Value;
+        }
+
+        #endregion
 
     }
 
