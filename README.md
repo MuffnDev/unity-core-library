@@ -6,4 +6,4 @@ This module contains the main Muffin Dev library features. It also contains basi
 
 ## Documentation
 
-=> [See module documentation](./_Documentation/README.md)
+=> [See module documentation](./Documentation~/README.md)
