@@ -1,4 +1,4 @@
-﻿//#define ENABLE_DEMO
+﻿// #define ENABLE_DEMO
 
 using UnityEngine;
 using UnityEditor;
@@ -26,7 +26,7 @@ namespace MuffinDev.EditorUtils.Demos
             Component[] components = Target.GetComponents<Component>();
             for(int i = 0; i < components.Length; i++)
             {
-                EditorGUILayout.LabelField(string.Format("[{0}] {1}", i, components[i].GetType().Name));
+                EditorGUILayout.LabelField($"[{i.ToString()}] {components[i].GetType().Name}");
             }
             EditorGUI.indentLevel--;
         }
