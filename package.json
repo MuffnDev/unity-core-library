@@ -1,0 +1,17 @@
+{
+	"name": "com.muffindev.corelibrary",
+	"version": "1.2.4",
+	"displayName": "Core Library",
+	"description": "Contains base tools and helpers to improve game development in Unity. Note that this is used as a dependency for most of other *Muffin Dev for Unity* libraries.",
+	"unity": "2018.4",
+	"keywords": [
+		"editor",
+		"extension",
+		"devtools"
+    ],
+	"author": {
+		"name": "Muffin Dev",
+		"email": "contact@muffindev.com",
+		"url": "https://gitlab.com/muffin-dev/unity"
+	}
+}
