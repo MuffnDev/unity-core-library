@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-namespace MuffinDev.EditorUtils.Demos
+namespace MuffinDev.Core.EditorUtils.Demos
 {
 
 	///<summary>

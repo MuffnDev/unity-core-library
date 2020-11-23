@@ -6,7 +6,25 @@ This module contains the main Muffin Dev library features. It also contains basi
 
 ## Documentation
 
-=> [See module documentation](./Documentation~/README.md)
+[=> See module documentation](./Documentation~/README.md)
+
+## Original version
+
+This package is a "standalone" version of [the original *Muffin Dev for Unity* library](https://gitlab.com/muffin-dev/unity). [See the original repository](https://gitlab.com/muffin-dev/unity) to discover some other features of the *Muffin Dev* libraries!
+
+## License
+
+This library uses the [Creative Commons Attribution-ShareAlike 4.0 International license (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/legalcode).
+
+This means that you can use, share and modify the assets, code and other files as you want (even for commercial projects, but only under the following terms:
+
+- Give an "appropriate credit" (name the authors), and write a link to this package
+- If the source package is modified, you must distribute your contibutions under the same license ([CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/legalcode))
+
+### Links
+
+- [More "readable" informations about the CC BY-SA 4.0 license](https://creativecommons.org/licenses/by-sa/4.0)
+- [Legal CC BY-SA 4.0 license text](https://creativecommons.org/licenses/by-sa/4.0/legalcode)
 
 ## Support the project!
 

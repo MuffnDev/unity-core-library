@@ -8,7 +8,7 @@ Inherits from [`ObservableSerialized<T, U>`](./observable-serialized.md).
 
 ```cs
 using UnityEngine;
-using MuffinDev;
+using MuffinDev.Core;
 public class ObservableStringExample : MonoBehaviour
 {
     public ObservableString observableString = new ObservableString("Example text");

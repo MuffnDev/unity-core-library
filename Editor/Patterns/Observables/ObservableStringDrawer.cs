@@ -1,6 +1,6 @@
 ﻿using UnityEditor;
 
-namespace MuffinDev
+namespace MuffinDev.Core
 {
 
     [CustomPropertyDrawer(typeof(ObservableString))]

@@ -31,7 +31,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 
-using MuffinDev.Editor;
+using MuffinDev.EditorUtils;
 
 public class ProjectFinder : EditorWindow
 {
@@ -119,7 +119,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 
-using MuffinDev.Editor;
+using MuffinDev.EditorUtils;
 
 public class ProjectFinder : EditorWindow
 {

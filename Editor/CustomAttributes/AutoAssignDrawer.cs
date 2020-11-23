@@ -3,9 +3,9 @@
 using UnityEngine;
 using UnityEditor;
 
-using MuffinDev.EditorUtils;
+using MuffinDev.Core.EditorUtils;
 
-namespace MuffinDev
+namespace MuffinDev.Core
 {
 
     /// <summary>
