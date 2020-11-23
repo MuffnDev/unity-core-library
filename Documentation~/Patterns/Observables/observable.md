@@ -19,7 +19,7 @@ We make an observable grid, but the observed value is the 2D array of `PuzzleCel
 Note that we must create an event to notify all observers that a change occured.
 
 ```cs
-using MuffinDev;
+using MuffinDev.Core;
 
 public class PuzzleCell { }
 

@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MuffinDev.Integrations
+namespace MuffinDev.Core.Integrations
 {
 
     /// <summary>

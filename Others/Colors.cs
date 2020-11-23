@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-namespace MuffinDev
+namespace MuffinDev.Core
 {
 
     /// <summary>

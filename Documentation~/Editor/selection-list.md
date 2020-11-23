@@ -11,7 +11,7 @@ As an example, here is the implementation of the `SelectionListDemoEditor` scrip
 ```cs
 using UnityEngine;
 using UnityEditor;
-using MuffinDev.EditorUtils;
+using MuffinDev.Core.EditorUtils;
 
 public class SelectionListDemoEditor : EditorWindow
 {

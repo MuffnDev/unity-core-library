@@ -8,7 +8,7 @@ Inherits from [`ObservableSerialized<T, U>`](./observable-serialized.md).
 
 ```cs
 using UnityEngine;
-using MuffinDev;
+using MuffinDev.Core;
 public class ObservableVector2Example : MonoBehaviour
 {
     public ObservableVector2 observableVector2 = new ObservableVector2(Vector2.right);
