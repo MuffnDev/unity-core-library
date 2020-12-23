@@ -8,7 +8,7 @@ Implements singleton pattern for assets used in the Editor (tool settings for ex
 
 ```cs
 using System.Collections.Generic;
-using MuffinDev;
+using MuffinDev.Core;
 
 public class MyEditorAsset : EditorScriptableObjectSingleton<MyEditorAsset>
 {

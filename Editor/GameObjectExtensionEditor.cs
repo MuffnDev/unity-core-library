@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 using Object = UnityEngine.Object;
 
-namespace MuffinDev.EditorUtils
+namespace MuffinDev.Core.EditorOnly
 {
 
     /// <summary>

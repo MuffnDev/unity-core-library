@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MuffinDev
+namespace MuffinDev.Core
 {
 
 	///<summary>

@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using MuffinDev.EditorUtils;
+using MuffinDev.Core.EditorOnly;
 
 namespace MuffinDev.Core.Demos.EditableAsset
 {

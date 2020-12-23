@@ -5,7 +5,7 @@ using System;
 using System.Reflection;
 using System.IO;
 
-namespace MuffinDev.EditorUtils
+namespace MuffinDev.Core.EditorOnly
 {
 
 	// Aliases

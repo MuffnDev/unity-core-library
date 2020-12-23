@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 
 using Random = UnityEngine.Random;
 
-namespace MuffinDev
+namespace MuffinDev.Core
 {
 
     ///<summary>

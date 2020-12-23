@@ -1,6 +1,6 @@
 ﻿using UnityEngine.Events;
 
-namespace MuffinDev
+namespace MuffinDev.Core
 {
 
     [System.Serializable]

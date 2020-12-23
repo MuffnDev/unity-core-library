@@ -44,7 +44,7 @@ Create the `Monster` asset editor GUI in order to use it in a custom editor clas
 
 ```cs
 using UnityEngine;
-using MuffinDev.EditorUtils;
+using MuffinDev.Core.EditorOnly;
 public class MonsterEditorGUI : EditableAssetEditorGUI<Monster>
 {
     // Override base constructor.
@@ -124,7 +124,7 @@ You can also use the editor GUI to create a custom inspector, and so display the
 
 ```cs
 using UnityEditor;
-using MuffinDev.EditorUtils;
+using MuffinDev.Core.EditorOnly;
 [CustomEditor(typeof(Monster))]
 public class MonsterEditor : TEditor<Monster>
 {

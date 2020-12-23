@@ -3,7 +3,7 @@ using System.Reflection;
 
 using UnityEngine;
 
-namespace MuffinDev
+namespace MuffinDev.Core
 {
 
     ///<summary>
