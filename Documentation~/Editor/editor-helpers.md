@@ -148,6 +148,21 @@ Creates an asset of the given type.
 * `bool _FocusAsset = true`: Defines if the asset should be selected and highlighted in the Project view after its creation
 * `out Object _CreatedAsset`: The created asset
 
+#### `FindAllAssetsOfType()`
+
+```cs
+public static T[] FindAllAssetsOfType<T>()
+    where T : Object;
+public static Object[] FindAllAssetsOfType(Type _Type);
+```
+
+Finds all assets of the given type in the project.
+
+- `<T>`: The type of the asset you want to find.
+- `Type _Type`: The type of the asset you want to find.
+
+Returns the cast assets you want to find.
+
 ### Path helpers
 
 #### `GetAssetAbsolutePath()`

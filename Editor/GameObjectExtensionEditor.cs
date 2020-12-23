@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 using Object = UnityEngine.Object;
 
-namespace MuffinDev.Core.EditorUtils
+namespace MuffinDev.Core.EditorOnly
 {
 
     /// <summary>
@@ -62,7 +62,7 @@ namespace MuffinDev.Core.EditorUtils
         {
             m_DefaultGameObjectEditor.DrawHeader();
         }
-        
+
         /// <summary>
         /// Called when the GameObject is dragged to the scene view.
         /// NOTE: This override is necessary in order to load the object correctly when it's dragged into the scene.
@@ -87,16 +87,12 @@ namespace MuffinDev.Core.EditorUtils
         /// </summary>
         public override Texture2D RenderStaticPreview(string _AssetPath, Object[] _SubAssets, int _Width, int _Height)
         {
-            if (!ReflectionUtility.CallMethod<bool>("HasStaticPreview", m_DefaultGameObjectEditor) || !ShaderUtil.hardwareSupportsRectRenderTexture)
+            if (m_DefaultGameObjectEditor == null)
                 return null;
-            object previewData = ReflectionUtility.CallMethod<object>("GetPreviewData", m_DefaultGameObjectEditor);
-            PreviewRenderUtility renderUtility = (PreviewRenderUtility)ReflectionUtility.GetNestedType("PreviewData", m_DefaultGameObjectEditor)
-                .GetField("renderUtility").GetValue(previewData);
-            renderUtility.BeginStaticPreview(new Rect(0.0f, 0.0f, (float) _Width, (float) _Height));
-            ReflectionUtility.CallMethod("DoRenderPreview", m_DefaultGameObjectEditor);
-            return renderUtility.EndStaticPreview();
+
+            return ReflectionUtility.CallMethod<Texture2D>("RenderStaticPreview", m_DefaultGameObjectEditor, new object[] { _AssetPath, _SubAssets, _Width, _Height });
         }
-        
+
         /// <summary>
         /// Draws the preview of the GameObject.
         /// NOTE: This override is necessary in order to load the asset preview correctly when displayed in the
@@ -105,55 +101,10 @@ namespace MuffinDev.Core.EditorUtils
         /// </summary>
         public override void OnPreviewGUI(Rect _Rect, GUIStyle _Background)
         {
-            if (!ShaderUtil.hardwareSupportsRectRenderTexture)
-            {
-                if (Event.current.type != UnityEngine.EventType.Repaint)
-                    return;
-                EditorGUI.DropShadowLabel(new Rect(_Rect.x, _Rect.y, _Rect.width, 40f), "Preview requires\nrender texture support");
-            }
-            else
-            {
-                Vector2 vector2 = (Vector2)Type.GetType("PreviewGUI, UnityEditor")
-                    .GetMethod("Drag2D", ReflectionUtility.STATIC)
-                    .Invoke(null, new object[] { ReflectionUtility.GetFieldValue("m_PreviewDir", m_DefaultGameObjectEditor), _Rect });
-                
-                if (vector2 != ReflectionUtility.GetFieldValue<Vector2>("m_PreviewDir", m_DefaultGameObjectEditor))
-                {
-                    ReflectionUtility.CallMethod("ClearPreviewCache", m_DefaultGameObjectEditor);
-                    ReflectionUtility.SetFieldValue("m_PreviewDir", vector2, m_DefaultGameObjectEditor);
-                }
+            if (m_DefaultGameObjectEditor == null)
+                return;
 
-                if (Event.current.type != UnityEngine.EventType.Repaint)
-                    return;
-
-                if (ReflectionUtility.GetFieldValue<Rect>("m_PreviewRect", m_DefaultGameObjectEditor) != _Rect)
-                {
-                    ReflectionUtility.CallMethod("ClearPreviewCache", m_DefaultGameObjectEditor);
-                    ReflectionUtility.SetFieldValue("m_PreviewRect", _Rect, m_DefaultGameObjectEditor);
-                }
-                
-                object previewData = ReflectionUtility.CallMethod<object>("GetPreviewData", m_DefaultGameObjectEditor);
-                PreviewRenderUtility renderUtility = (PreviewRenderUtility) ReflectionUtility.GetNestedType("PreviewData", m_DefaultGameObjectEditor).GetField("renderUtility").GetValue(previewData);
-
-                Dictionary<int, Texture> previewCache = ReflectionUtility.GetFieldValue<Dictionary<int, Texture>>("m_PreviewCache", m_DefaultGameObjectEditor);
-                int referenceTargetIndex = ReflectionUtility.GetPropertyValue<int>("referenceTargetIndex", m_DefaultGameObjectEditor);
-                if (previewCache.TryGetValue(referenceTargetIndex, out Texture texture))
-                {
-                    typeof(PreviewRenderUtility).GetMethod("DrawPreview", ReflectionUtility.STATIC)
-                        .Invoke(null, new object[] { _Rect, texture });
-                }
-                else
-                {
-                    renderUtility.BeginPreview(_Rect, _Background);
-                    ReflectionUtility.CallMethod("DoRenderPreview", m_DefaultGameObjectEditor);
-                    renderUtility.EndAndDrawPreview(_Rect);
-                    RenderTexture dest = (RenderTexture) (renderUtility.GetType().GetProperty("renderTexture", ReflectionUtility.INSTANCE).GetValue(renderUtility));
-                    RenderTexture active = RenderTexture.active;
-                    Graphics.Blit((RenderTexture) (renderUtility.GetType().GetProperty("renderTexture", ReflectionUtility.INSTANCE).GetValue(renderUtility)), dest);
-                    RenderTexture.active = active;
-                    previewCache.Add(referenceTargetIndex, dest);
-                }
-            }
+            ReflectionUtility.CallMethod("OnPreviewGUI", m_DefaultGameObjectEditor, new object[] { _Rect, _Background });
         }
 
         #endregion

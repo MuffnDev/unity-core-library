@@ -3,7 +3,7 @@
 using UnityEngine;
 using UnityEditor;
 
-using MuffinDev.Core.EditorUtils;
+using MuffinDev.Core.EditorOnly;
 
 namespace MuffinDev.Core
 {

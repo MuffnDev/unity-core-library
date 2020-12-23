@@ -47,7 +47,7 @@ Creates an AnimCurveAttribute instance with time and value clamped between 0 and
 public AnimCurveAttribute(EColor _CurveColor)
 ```
 
-Creates an AnimCurveAttribute instance with time and value clamped between 0 and 1. Sets the curve color using the given `EColor` value.
+Creates an AnimCurveAttribute instance with the given color and no bounds.
 
 ---
 
