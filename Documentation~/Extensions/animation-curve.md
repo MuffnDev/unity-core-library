@@ -103,3 +103,23 @@ public static float GetMaxValue(this AnimationCurve _Curve)
 Gets the maximum value of this curve.
 
 Returns the found maximum value, or default keyframe's if there's no keyframe on the given curve.
+
+#### `Loop()`
+
+```cs
+public static AnimationCurve Loop(this AnimationCurve _Curve)
+```
+
+Makes the curve repeat (loop) before its first frame, and after its last frame.
+
+Returns the updated input curve.
+
+#### `PingPong()`
+
+```cs
+public static AnimationCurve PingPong(this AnimationCurve _Curve)
+```
+
+Makes the curve ping-pong before its first frame, and after its last frame.
+
+Returns the updated input curve.

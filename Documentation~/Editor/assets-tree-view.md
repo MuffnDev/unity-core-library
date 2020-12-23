@@ -8,9 +8,7 @@ Shortcut to make a tree view of you project's assets.
 
 ## Demo
 
-You can see a demo render in the menu `Muffin Dev/Demos/Assets Tree View`.
-
-The script relative to it is in `MuffinDev/Core/Editor/Demos/AssetsTreeViewDemoEditor`.
+You can see a demo render in the menu `Tools/Muffin Dev/Demos/Assets Tree View`.
 
 ![Assets Tree View demo](./Images/assets-tree-view-example.png)
 

@@ -167,6 +167,28 @@ namespace MuffinDev
             return _Curve.GetMaxKeyframe().value;
         }
 
+        /// <summary>
+        /// Makes the curve repeat (loop) before its first frame, and after its last frame.
+        /// </summary>
+        /// <returns>Returns the updated input curve.</returns>
+        public static AnimationCurve Loop(this AnimationCurve _Curve)
+        {
+            _Curve.preWrapMode = WrapMode.Loop;
+            _Curve.postWrapMode = WrapMode.Loop;
+            return _Curve;
+        }
+
+        /// <summary>
+        /// Makes the curve ping-pong before its first frame, and after its last frame.
+        /// </summary>
+        /// <returns>Returns the updated input curve.</returns>
+        public static AnimationCurve PingPong(this AnimationCurve _Curve)
+        {
+            _Curve.preWrapMode = WrapMode.PingPong;
+            _Curve.postWrapMode = WrapMode.PingPong;
+            return _Curve;
+        }
+
         #endregion
 
     }
