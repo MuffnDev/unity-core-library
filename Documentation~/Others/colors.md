@@ -10,7 +10,7 @@ The following example shows how to get a `Color` instance using both flags and b
 
 ```cs
 using UnityEngine;
-using MuffinDev;
+using MuffinDev.Core;
 public class ColorsTester : MonoBehaviour
 {
     private void Start()

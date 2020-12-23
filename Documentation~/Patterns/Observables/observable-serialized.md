@@ -43,7 +43,7 @@ public class UserProfileEvent : UnityEvent<UserProfile> { }
 And then, make the observable:
 
 ```cs
-using MuffinDev;
+using MuffinDev.Core;
 [System.Serializable]
 public class ObservableUserProfile : ObservableSerialized<UserProfile, UserProfileEvent> { }
 ```
@@ -84,7 +84,7 @@ Note that this is an editor class, and **must be placed in an *Editor/* folder**
 
 ```cs
 using UnityEngine;
-using MuffinDev;
+using MuffinDev.Core;
 [CustomPropertyDrawer(typeof(ObservableUserProfile))]
 public class ObservableUserProfileDrawer : ObservableDrawer<UserProfile>
 {

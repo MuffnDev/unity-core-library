@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-namespace MuffinDev
+namespace MuffinDev.Core
 {
 
     /// <summary>
     /// Locks the target property's value to the given minimum number in MinAttribute.
     /// </summary>
-    [CustomPropertyDrawer(typeof(MuffinDev.MinAttribute))]
+    [CustomPropertyDrawer(typeof(MinAttribute))]
     [CustomPropertyDrawer(typeof(MinimumAttribute))]
     public class MinDrawer : PropertyDrawer
     {

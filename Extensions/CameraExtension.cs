@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-namespace MuffinDev
+namespace MuffinDev.Core
 {
 
     ///<summary>

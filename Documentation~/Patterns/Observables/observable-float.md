@@ -8,7 +8,7 @@ Inherits from [`ObservableSerialized<T, U>`](./observable-serialized.md).
 
 ```cs
 using UnityEngine;
-using MuffinDev;
+using MuffinDev.Core;
 public class ObservableFloatExample : MonoBehaviour
 {
     public ObservableFloat observableFloat = new ObservableFloat(12f);

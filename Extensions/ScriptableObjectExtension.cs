@@ -4,7 +4,7 @@ using UnityEngine;
 
 using Object = UnityEngine.Object;
 
-namespace MuffinDev
+namespace MuffinDev.Core
 {
 
 	///<summary>

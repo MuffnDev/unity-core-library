@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace MuffinDev
+namespace MuffinDev.Core
 {
 
     ///<summary>

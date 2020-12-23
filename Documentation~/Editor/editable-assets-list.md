@@ -37,7 +37,7 @@ Now, create a `MonsterEditorWindow` script inside an `/Editor` directory, that w
 ```cs
 using UnityEngine;
 using UnityEditor;
-using MuffinDev.EditorUtils;
+using MuffinDev.Core.EditorOnly;
 public class MonsterEditorWindow : EditorWindow
 {
     private EditableAssetsList<Monster> listGUI;

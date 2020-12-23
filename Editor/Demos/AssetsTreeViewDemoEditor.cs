@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 
-namespace MuffinDev.EditorUtils.Demos
+namespace MuffinDev.Core.EditorOnly.Demos
 {
 
     /// <summary>
