@@ -17,7 +17,7 @@ The following example script is a short version of the `GameObjectExtensionDemoE
 using UnityEngine;
 using UnityEditor;
 
-using MuffinDev.Core.EditorUtils;
+using MuffinDev.Core.EditorOnly;
 
 [CustomEditor(typeof(GameObject))]
 public class GameObjectExtensionExample : GameObjectExtensionEditor

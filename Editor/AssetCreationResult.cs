@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace MuffinDev.Core.EditorUtils
+namespace MuffinDev.Core.EditorOnly
 {
 
     /// <summary>

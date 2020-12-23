@@ -12,7 +12,7 @@ As an example, here is the implementation of the `PromptDemoEditor` script that 
 using UnityEngine;
 using UnityEditor;
 
-using MuffinDev.Core.EditorUtils;
+using MuffinDev.Core.EditorOnly;
 
 public class PromptDemoEditor : EditorWindow
 {

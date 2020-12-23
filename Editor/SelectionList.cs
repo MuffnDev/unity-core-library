@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Linq;
 
-namespace MuffinDev.Core.EditorUtils
+namespace MuffinDev.Core.EditorOnly
 {
 
 	///<summary>

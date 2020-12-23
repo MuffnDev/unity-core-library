@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 
-namespace MuffinDev.Core.EditorUtils
+namespace MuffinDev.Core.EditorOnly
 {
 
 	public class AssetsTreeView : TreeView
