@@ -37,3 +37,14 @@
 ### Changed
 - Add online documentation shortcut
 - Add the [*Buy Me A Coffee*](https://www.buymeacoffee.com/muffindev) link in docs
+
+## [1.3.0] - 2020-12-23
+### Added
+- `Editable Asset` utilities
+- `Moddable Component` utility
+### Changed
+- Various improvements
+
+## [2.0.0] - 2020-12-23
+### Changed
+- Major namespaces refactoring
