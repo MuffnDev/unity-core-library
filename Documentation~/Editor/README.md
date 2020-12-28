@@ -7,6 +7,7 @@ Bundle of Editor tools and shortcuts.
 - [`AssetCreationResult`](./asset-creation-result.md): Represents the result of the creation of an asset
 - [`AssetsTreeView`](./assets-tree-view.md): Shortcut to make a tree view of you project's assets
 - [`EditableAssetEditorGUI`](./editable-asset-editor-gui.md): Utility to draw GUI for *editable assets*. If no asset is opened (or selected), it draws a list of all the assets of the given type that exists in the project, allowing user to create or open one
+- [`EditorIcons`](./editor-icons.md): Utility class to get and draw editor icons
 - [`EditableAssetsList`](./editable-assets-list): GUI utility to display a list of assets that can be edited using a custom editor
 - [`EditorHelpers`](./editor-helpers.md): Bundle of utility methods for Editor operations
 - [`GameObjectExtensionEditor`](./game-object-extension-editor.md): Shortcut for making `GameObject` custom inspector views
