@@ -290,6 +290,23 @@ Draws an `Object` field with a *Create new* button on the right.
 - `string _PanelTitle = null`: The title of the SavePanel utility.
 - `bool _AllowSceneObjects = true`: If true, allow user to pass scene object in the object field.
 
+#### `BackButton()`
+
+```cs
+public static bool BackButton(string _Label = null, string _Tooltip = null, float _Width = 64f, GUIStyle _ButtonStyle = null);
+public static bool BackButton(Rect _Rect, string _Label = null, string _Tooltip = null, GUIStyle _ButtonStyle = null, float _Width = 64f);
+```
+
+Draws a "Back" button.
+
+- `string _Label = null`: The content of the button.
+- `string _Tooltip = null`: The tooltip of the button.
+- `float _Width = 64f`: The optional width of the button.
+- `GUIStyle _ButtonStyle = null`: The GUIStyle of the button.
+- `Rect _Rect`: The Rect container of the button.
+
+Returns `true` if the button has been clicked this frame, otherwise `false`.
+
 #### `DrawDefaultInspector()`
 
 ```cs

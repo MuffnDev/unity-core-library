@@ -33,7 +33,9 @@ namespace MuffinDev.Core.EditorOnly
         public const float EDITOR_WINDOW_PADDING = 2f;
         public const float INSPECTOR_FOLDOUT_LEFT_OFFSET = 14f;
 
-        private const string PPROPERTY_ARRAY_MEMBER_PATH = "Array.data";
+        public const string DEFAULT_BACK_BUTTON_LABEL = "Back";
+        public const float DEFAULT_BACK_BUTTON_WIDTH = 64f;
+
         private const string PROPERTY_ARRAY_MEMBER_PATH = "Array.data";
         private const float BOOLEAN_SWITCH_TOOLBAR_WIDTH = 134f;
 
@@ -829,6 +831,39 @@ namespace MuffinDev.Core.EditorOnly
                 })
             });
         }
+
+        /// <summary>
+        /// Draws a "Back" button.
+        /// </summary>
+        /// <param name="_Label">The content of the button.</param>
+        /// <param name="_Tooltip">The tooltip of the button.</param>
+        /// <param name="_Width">The optional width of the button.</param>
+        /// <param name="_ButtonStyle">The GUIStyle of the button.</param>
+        /// <returns>Returns true if the button has been clicked this frame, otherwise false.</returns>
+        public static bool BackButton(string _Label = null, string _Tooltip = null, float _Width = DEFAULT_BACK_BUTTON_WIDTH, GUIStyle _ButtonStyle = null)
+        {
+            Rect rect = EditorGUILayout.GetControlRect(false, GUILayout.Width(_Width));
+            return BackButton(rect, _Label, _Tooltip, _ButtonStyle, _Width);
+        }
+
+        /// <summary>
+        /// Draws a "Back" button.
+        /// </summary>
+        /// <param name="_Rect">The Rect container of the button.</param>
+        /// <param name="_Label">The content of the button.</param>
+        /// <param name="_Tooltip">The tooltip of the button.</param>
+        /// <param name="_ButtonStyle">The GUIStyle of the button.</param>
+        /// <param name="_Width">The optional width of the button.</param>
+        /// <returns>Returns true if the button has been clicked this frame, otherwise false.</returns>
+        public static bool BackButton(Rect _Rect, string _Label = null, string _Tooltip = null, GUIStyle _ButtonStyle = null, float _Width = DEFAULT_BACK_BUTTON_WIDTH)
+        {
+            if (string.IsNullOrEmpty(_Label)) _Label = DEFAULT_BACK_BUTTON_LABEL;
+            if (_ButtonStyle == null) _ButtonStyle = GUI.skin.button;
+            _Rect.width = Mathf.Max(_Width, DEFAULT_BACK_BUTTON_WIDTH);
+
+            GUIContent backBtnContent = EditorGUIUtility.IconContent("tab_prev", _Tooltip);
+            backBtnContent.text = _Label;
+            return GUI.Button(_Rect, backBtnContent, _ButtonStyle);
         }
 
         /// <summary>
