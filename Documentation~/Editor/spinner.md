@@ -96,3 +96,69 @@ Place a `Dummy` component on an object in your scene, and see the result in the 
 Unity released the [Editor Coroutines](https://docs.unity3d.com/Packages/com.unity.editorcoroutines@0.0) package in April 2020, so you can use them to update the `Spinner` when required. You can download it from the `Package Manager`, in *Unity 2018.4+*.
 
 [=> See the official documentation](https://docs.unity3d.com/Packages/com.unity.editorcoroutines@0.0)
+
+## Public API
+
+### Constructors
+
+```cs
+public Spinner();
+public Spinner(float _SpinInterval);
+```
+
+Creates a `Spinner` instance.
+
+- `float _SpinInterval`: The interval of each spinner update.
+
+### Methods
+
+#### `Update()`
+
+```cs
+public void Update();
+```
+
+Updates this `Spinner`.
+
+#### `Resume()`
+
+```cs
+public void Resume();
+```
+
+Resumes this `Spinner`, so it can be updated.
+
+#### `Pause()`
+
+```cs
+public void Pause();
+```
+
+Pauses this `Spinner`, avoiding it to be updated.
+
+#### `DrawGUI()`
+
+```cs
+public void DrawGUI(params GUILayoutOption[] _GUILayoutOptions)
+```
+
+Draws this `Spinner` in your GUI, using Layout methods.
+
+---
+
+```cs
+public void DrawGUI(Rect _Rect);
+public void DrawGUI(Rect _Rect, GUIStyle _Style);
+```
+
+Draws this `Spinner` in yout GUI.
+
+### Accessors
+
+#### `Paused`
+
+```cs
+public bool Paused { get; set; }
+```
+
+Pauses/resumes this `Spinner`.

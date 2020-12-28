@@ -1,12 +1,23 @@
 ﻿using UnityEngine;
 using MuffinDev.Core.Demos;
-public class User : MonoBehaviour
-{
-    public ObservableUserProfile userProfile = new ObservableUserProfile();
 
-    private void Start()
+namespace MuffinDev.Core.Demos
+{
+
+    [AddComponentMenu("Muffin Dev/Demos/User")]
+    public class User : MonoBehaviour
     {
-        // Trigger user profile changes at initialization, and so initialize all observers
-        userProfile.Notify();
+
+        [SerializeField]
+        private ObservableUserProfile m_UserProfile = new ObservableUserProfile();
+
+        private void Start()
+        {
+            // Trigger user profile changes at initialization, and so initialize all observers
+            m_UserProfile.Notify();
+        }
+
     }
+
 }
+

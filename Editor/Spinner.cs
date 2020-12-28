@@ -29,11 +29,18 @@ namespace MuffinDev.Core.EditorOnly
 
         #region Initialization
 
+        /// <summary>
+        /// Creates a Spinner instance.
+        /// </summary>
         public Spinner()
         {
             m_LastTimestamp = EditorApplication.timeSinceStartup;
         }
 
+        /// <summary>
+        /// Creates a Spinner instance.
+        /// </summary>
+        /// <param name="_SpinInterval">The interval of each spinner update.</param>
         public Spinner(float _SpinInterval)
         {
             m_LastTimestamp = EditorApplication.timeSinceStartup;
@@ -45,6 +52,9 @@ namespace MuffinDev.Core.EditorOnly
 
         #region Public API
 
+        /// <summary>
+        /// Updates this spinner.
+        /// </summary>
         public void Update()
         {
             if (m_Paused)
@@ -61,38 +71,63 @@ namespace MuffinDev.Core.EditorOnly
             m_LastTimestamp += steps * m_SpinInterval;
         }
 
-        public void Play()
+        /// <summary>
+        /// Resumes this Spinner, so it can be updated.
+        /// </summary>
+        public void Resume()
         {
-            m_Paused = false;
-            m_LastTimestamp = EditorApplication.timeSinceStartup;
+            Paused = false;
         }
 
+        /// <summary>
+        /// Pauses this Spinner, avoiding it to be updated.
+        /// </summary>
         public void Pause()
         {
-            m_Paused = true;
+            Paused = true;
         }
 
+        /// <summary>
+        /// Draws this Spinner in your GUI, using Layout methods.
+        /// </summary>
         public void DrawGUI(params GUILayoutOption[] _GUILayoutOptions)
         {
             Rect rect = EditorGUILayout.GetControlRect(_GUILayoutOptions);
             DrawGUI(rect);
         }
 
+        /// <summary>
+        /// Draws this Spinner in yout GUI.
+        /// </summary>
         public void DrawGUI(Rect _Rect)
         {
             DrawGUI(_Rect, GUI.skin.label);
         }
 
+        /// <summary>
+        /// Draws this Spinner in yout GUI.
+        /// </summary>
         public void DrawGUI(Rect _Rect, GUIStyle _Style)
         {
             GUIContent content = new GUIContent { image = EditorIcons.LoadingSpinnerIcons[m_SpinnerIconIndex] };
             GUI.Label(_Rect, content, _Style);
         }
 
+        /// <summary>
+        /// Pauses/resumes this Spinner.
+        /// </summary>
         public bool Paused
         {
             get { return m_Paused; }
-            set { m_Paused = value; }
+            set
+            {
+                if (m_Paused == value)
+                    return;
+
+                m_Paused = value;
+                if(!m_Paused)
+                    m_LastTimestamp = EditorApplication.timeSinceStartup;
+            }
         }
 
         #endregion
