@@ -15,4 +15,5 @@ Bundle of Editor tools and shortcuts.
 - [`Recompiler`](./recompiler.md): Allows you to force Unity to recompile code
 - [`ReflectionUtility`](./reflection-utility.md): Contains some utility methods for C# reflection
 - [`SelectionList`](./selection-list.md): Contains some utility methods for C# reflection
+- [`Spinner`](./spinner.md): Utility class to update and draw a loading spinner icon
 - [`TEditor`](./teditor.md): Shortcut for making custom editors containing a "typed" target object
