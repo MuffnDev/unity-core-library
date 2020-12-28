@@ -220,12 +220,35 @@ namespace MuffinDev.Core.EditorOnly
         /// List of all built'in icons: https://unitylist.com/p/5c3/Unity-editor-icons
         /// </summary>
         /// <param name="_IconName">The name of the icon (from built-in resources).</param>
-        /// <param name="_Text">The optional text of the given content.</param>
-        /// <param name="_Tooltip">The optional hovering tooltip of your content.</param>
+        /// <param name="_Tooltip">The optional hovering tooltip of the content.</param>
         /// <returns>Returns the created GUIContent instance.</returns>
-        public static GUIContent IconContent(string _IconName, string _Text = null, string _Tooltip = null)
+        public static GUIContent IconContent(string _IconName, string _Tooltip)
         {
-            return new GUIContent(_Text, FindIcon(_IconName), "|" + _Tooltip);
+            return IconContent(FindIcon(_IconName), null, _Tooltip);
+        }
+
+        /// <summary>
+        /// Creates a GUIContent instance that contains the named icon.
+        /// List of all built'in icons: https://unitylist.com/p/5c3/Unity-editor-icons
+        /// </summary>
+        /// <param name="_IconName">The name of the icon (from built-in resources).</param>
+        /// <param name="_Text">The optional text of the content.</param>
+        /// <param name="_Tooltip">The optional hovering tooltip of the content.</param>
+        /// <returns>Returns the created GUIContent instance.</returns>
+        public static GUIContent IconContent(string _IconName, string _Text, string _Tooltip)
+        {
+            return IconContent(FindIcon(_IconName), _Text, _Tooltip);
+        }
+
+        /// <summary>
+        /// Creates a GUIContent instance that contains the given icon.
+        /// </summary>
+        /// <param name="_IconType">The type of the icon.</param>
+        /// <param name="_Tooltip">The optional hovering tooltip of the content.</param>
+        /// <returns>Returns the created GUIContent instance.</returns>
+        public static GUIContent IconContent(EEditorIcon _IconType, string _Tooltip)
+        {
+            return IconContent(FindIcon(_IconType), null, _Tooltip);
         }
 
         /// <summary>
@@ -233,11 +256,34 @@ namespace MuffinDev.Core.EditorOnly
         /// </summary>
         /// <param name="_IconType">The type of the icon.</param>
         /// <param name="_Text">The optional text of the given content.</param>
-        /// <param name="_Tooltip">The optional hovering tooltip of your content.</param>
+        /// <param name="_Tooltip">The optional hovering tooltip of the content.</param>
         /// <returns>Returns the created GUIContent instance.</returns>
-        public static GUIContent IconContent(EEditorIcon _IconType, string _Text = null, string _Tooltip = null)
+        public static GUIContent IconContent(EEditorIcon _IconType, string _Text, string _Tooltip)
         {
-            return new GUIContent(_Text, FindIcon(_IconType), _Tooltip);
+            return IconContent(FindIcon(_IconType), _Text, _Tooltip);
+        }
+
+        /// <summary>
+        /// Creates a GUIContent instance that contains the given icon.
+        /// </summary>
+        /// <param name="_Icon">The icon to use for this content.</param>
+        /// <param name="_Tooltip">The optional hovering tooltip of the content.</param>
+        /// <returns>Returns the created GUIContent instance.</returns>
+        public static GUIContent IconContent(Texture _Icon, string _Tooltip)
+        {
+            return IconContent(_Icon, null, _Tooltip);
+        }
+
+        /// <summary>
+        /// Creates a GUIContent instance that contains the given icon.
+        /// </summary>
+        /// <param name="_Icon">The icon to use for this content.</param>
+        /// <param name="_Text">The optional text of the content.</param>
+        /// <param name="_Tooltip">The optional hovering tooltip of the content.</param>
+        /// <returns>Returns the created GUIContent instance.</returns>
+        public static GUIContent IconContent(Texture _Icon, string _Text, string _Tooltip)
+        {
+            return new GUIContent(_Text, _Icon, _Tooltip);
         }
 
         /// <summary>

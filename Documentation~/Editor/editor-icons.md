@@ -116,8 +116,12 @@ Gets an editor icon by name (from built-in resources and /Editor Default Resourc
 #### `IconContent()`
 
 ```cs
-public static GUIContent IconContent(string _IconName, string _Text = null, string _Tooltip = null);
-public static GUIContent IconContent(EEditorIcon _IconType, string _Text = null, string _Tooltip = null);
+public static GUIContent IconContent(string _IconName, string _Tooltip);
+public static GUIContent IconContent(string _IconName, string _Text, string _Tooltip);
+public static GUIContent IconContent(EEditorIcon _IconType, string _Tooltip);
+public static GUIContent IconContent(EEditorIcon _IconType, string _Text, string _Tooltip);
+public static GUIContent IconContent(Texture _Icon, string _Tooltip);
+public static GUIContent IconContent(Texture _Icon, string _Text, string _Tooltip);
 ```
 
 Creates a GUIContent instance that contains the given icon.
@@ -126,6 +130,7 @@ Creates a GUIContent instance that contains the given icon.
 - `string _Text = null`: The optional text of the given content.
 - `string _Tooltip = null`: The optional hovering tooltip of your content.
 - `EEditorIcon _IconType`: The type of the icon you want to get (see the `EEditorIcon` enum above).
+- `Texture _Icon`: The icon to use for this content.
 
 ### Accessors
 
