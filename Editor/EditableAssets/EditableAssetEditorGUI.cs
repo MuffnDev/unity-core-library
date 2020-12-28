@@ -37,9 +37,14 @@ namespace MuffinDev.Core.EditorOnly
         /// <summary>
         /// Creates an editor GUI for custom editable assets.
         /// </summary>
+        public EditableAssetEditorGUI() { }
+
+        /// <summary>
+        /// Creates an editor GUI for custom editable assets.
+        /// </summary>
         /// <param name="_Asset">The asset which you want to display the editor.</param>
         /// <param name="_RepaintCallback">Optional callback to trigger when the content is repainted.</param>
-        public EditableAssetEditorGUI(TAssetType _Asset = null, Action _RepaintCallback = null)
+        public EditableAssetEditorGUI(TAssetType _Asset, Action _RepaintCallback = null)
         {
             Asset = _Asset;
             m_RepaintCallback = _RepaintCallback;
@@ -90,10 +95,25 @@ namespace MuffinDev.Core.EditorOnly
             EditorHelpers.DrawDefaultInspector(Asset);
         }
 
+        /// <summary>
+        /// Called when the opened asset changes.
+        /// </summary>
+        protected virtual void OnChangeAsset() { }
+
         #endregion
 
 
+
         #region Accessors
+
+        /// <summary>
+        /// Gets/sets the action to trigger when repaint operation is required.
+        /// </summary>
+        public Action RepaintCallback
+        {
+            get { return m_RepaintCallback; }
+            set { m_RepaintCallback = value; }
+        }
 
         /// <summary>
         /// Gets/Sets the opened asset.
@@ -108,6 +128,7 @@ namespace MuffinDev.Core.EditorOnly
 
                 m_OpenedAsset = value;
                 m_SerializedOpenedAsset = null;
+                OnChangeAsset();
             }
         }
 
