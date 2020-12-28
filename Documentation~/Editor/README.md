@@ -8,6 +8,9 @@ Bundle of Editor tools and shortcuts.
 - [`AssetsTreeView`](./assets-tree-view.md): Shortcut to make a tree view of you project's assets
 - [`EditableAssetEditorGUI`](./editable-asset-editor-gui.md): Utility to draw GUI for *editable assets*. If no asset is opened (or selected), it draws a list of all the assets of the given type that exists in the project, allowing user to create or open one
 - [`EditorIcons`](./editor-icons.md): Utility class to get and draw editor icons
+- [`EditableAssetEditor`](./editable-assets-editor.md): Shortcut for making editable assets custom inspector editor
+- [`EditableAssetEditorGUI`](./editable-assets-editor-gui.md): Utility to draw GUI for editable assets
+- [`EditableAssetEditorWindow`](./editable-assets-editor-window.md): Shortcut for making editable assets editor windows, which updates the GUI depending on the selection
 - [`EditableAssetsList`](./editable-assets-list): GUI utility to display a list of assets that can be edited using a custom editor
 - [`EditorHelpers`](./editor-helpers.md): Bundle of utility methods for Editor operations
 - [`ExtendedObjectFieldButton`](./extended-object-field-button.md): Represents an additional button for an Extended Object Field element (mostly used by `EditorHelpers.ExtendedObjectField()`)
