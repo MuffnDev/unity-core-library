@@ -12,11 +12,11 @@ The demo of this utility is grouped with the demo of [`EditableAssetsList`](./ed
 
 Since you're not currently selecting one of these assets, you can open the editor window from `Tools > Muffin Dev > Demos > Character Asset Editor`.
 
-![Assets Tree View demo](./Images/editable-asset-window.png)
+![Preview of `Editable Asset Window`](./Images/editable-asset-window.png)
 
 The list of all `Character Asset` in your project will appear. You can create new one from `Assets > Create > Muffin Dev > Demos > Character Asset`, or using the *Create New Asset...* button on the editor window. Opening one of these assets by selecting them or clicking on the *Open Asset* button will display the asset editor in the same window.
 
-![Assets Tree View demo](./Images/editable-asset-example.png)
+![Usage example of an editable asset editor](./Images/editable-asset-example.png)
 
 Note that this editor is the same in the window and in the *Inspector*.
 
@@ -66,6 +66,8 @@ public class MonsterEditorGUI : EditableAssetEditorGUI<Monster>
     }
 }
 ```
+
+Note that you can also use the [`EditableAssetEditor`](./editable-asset-editor.md) class as a shortcut.
 
 ### Use the editor GUI inside an `EditorWindow`
 
@@ -117,6 +119,8 @@ public class MonsterEditorWindow : EditorWindow
 ```
 
 Open this window from `Demos > Monster Editor`, and so you can open or create `Monster` assets.
+
+Note that you can also use the [`EditableAssetEditorWindow`](./editable-asset-editor-window.md) class as a shortcut, which already handles the GUI and the selection change callbacks.
 
 ### Use the editor GUI inside a custom editor
 
