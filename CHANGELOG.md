@@ -48,3 +48,14 @@
 ## [2.0.0] - 2020-12-23
 ### Changed
 - Major namespaces refactoring
+
+## [2.1.0] - 2020-12-28
+### Added
+- `EditorIcons` utility
+- `Spinner` utility
+- `EditableAsset` utilities
+- `EditorHelpers.ExtendedObjectField()`
+- `EditorHelpers.BackButton()`
+# Changed
+- `ReflectionUtility` improvements (also renamed `GetAllTypesImplementingGenericType()` to `GetAllTypesAssignableFrom()`)
+- Update docs
