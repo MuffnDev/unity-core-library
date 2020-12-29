@@ -128,6 +128,16 @@ public void Refresh()
 
 Refreshes the displayed assets list.
 
+#### `AddFilter()`
+
+```cs
+public void AddFilter(Func<T, bool> _FilterMethod)
+```
+
+Adds a filter method to filter the assets list when refreshed.
+
+- `Func<T, bool> _FilterMethod`: The filter method used to check if an asset can be included in the assets list.
+
 ### Accessors
 
 #### `AutoOpenCreatedAsset`
@@ -169,3 +179,45 @@ public T[] Assets { get; }
 ```
 
 Gets the list of all assets of the target type in this project.
+
+#### `Title`
+
+```cs
+public string Title { get; set; }
+```
+
+Gets/sets the title of the assets list.
+
+#### `OpenAssetButtonLabel`
+
+```cs
+public string OpenAssetButtonLabel { get; set; }
+```
+
+Gets/sets the label of the "Open Asset" button.
+
+#### `CreateAssetButtonLabel`
+
+```cs
+public string CreateAssetButtonLabel { get; set; }
+```
+
+Gets/sets the label of the "Create Asset..." button.
+
+#### `CreateAssetButtonLabel`
+
+```cs
+public string InfoMessage { get; set; }
+```
+
+Gets/sets the content of the info message displayed above the list.
+
+#### `InfoMessageVerbosity`
+
+```cs
+public MessageType InfoMessageVerbosity { get; set; }
+```
+
+Gets/sets the icon of the message displayed above the list.
+
+[=> See `MessageType` documentation](https://docs.unity3d.com/ScriptReference/MessageType.html)

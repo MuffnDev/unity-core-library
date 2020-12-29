@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+
+using UnityEngine;
 using UnityEditor;
 
 namespace MuffinDev.Core.EditorOnly
@@ -16,6 +19,9 @@ namespace MuffinDev.Core.EditorOnly
 
         private const float BUTTONS_WIDTH = 140f;
         private const float ASSET_NAME_MAX_WIDTH = 260f;
+
+        private const string DEFAULT_OPEN_ASSET_BUTTON_LABEL = "Open Asset";
+        private const string DEFAULT_CREATE_ASSET_BUTTON_LABEL = "Create New Asset...";
 
         /// <summary>
         /// Invoked when an asset is opened.
@@ -38,12 +44,29 @@ namespace MuffinDev.Core.EditorOnly
         [Tooltip("If enabled, a new created asset will automatically be opened. Used only if Allow Create is set to true")]
         private bool m_AutoOpenCreatedAsset = true;
 
+        [SerializeField]
+        private string m_Title = null;
+
+        [SerializeField]
+        private string m_OpenAssetButtonLabel = null;
+
+        [SerializeField]
+        private string m_CreateAssetButtonLabel = null;
+
+        [SerializeField]
+        private string m_InfoMessage = "Please select the asset you want to edit.";
+
+        [SerializeField]
+        private MessageType m_InfoVerbosity = MessageType.Info;
+
         // Cache
 
         private T[] m_Assets = null;
 
         private string m_TypeName = null;
         private string m_DisplayableTypeName = null;
+
+        private List<Func<T, bool>> m_Filters = new List<Func<T, bool>>();
 
         #endregion
 
@@ -88,13 +111,14 @@ namespace MuffinDev.Core.EditorOnly
         /// </summary>
         public void DrawLayout()
         {
-            EditorGUILayout.HelpBox($"Please select the {DisplayableTypeName} asset you want to edit.", MessageType.Warning);
+            if (!string.IsNullOrEmpty(InfoMessage))
+                EditorGUILayout.HelpBox(InfoMessage, InfoMessageVerbosity);
 
             // Draw title and "Refresh" button
             EditorGUILayout.Space();
             using (new GUILayout.HorizontalScope())
             {
-                EditorGUILayout.LabelField($"{DisplayableTypeName} assets list", EditorStyles.largeLabel);
+                EditorGUILayout.LabelField(Title, EditorStyles.largeLabel);
                 if (GUILayout.Button(EditorGUIUtility.IconContent("Refresh"), GUILayout.Width(EditorGUIUtility.singleLineHeight * 2)))
                     Refresh();
             }
@@ -118,7 +142,7 @@ namespace MuffinDev.Core.EditorOnly
                     // Draw the "Open Asset" button, the name and the project path of the current asset
                     using (new GUILayout.HorizontalScope())
                     {
-                        if (GUILayout.Button("Open Asset", GUILayout.Width(BUTTONS_WIDTH)))
+                        if (GUILayout.Button(OpenAssetButtonLabel, GUILayout.Width(BUTTONS_WIDTH)))
                             assetToOpen = asset;
 
                         EditorGUILayout.LabelField(asset.name, EditorStyles.boldLabel, GUILayout.MaxWidth(ASSET_NAME_MAX_WIDTH));
@@ -127,7 +151,7 @@ namespace MuffinDev.Core.EditorOnly
                 }
 
                 // If "Allow Create" option is enabled, draw "Create New Asset" button
-                if (m_AllowCreate && GUILayout.Button("Create New Asset...", GUILayout.Width(BUTTONS_WIDTH)))
+                if (m_AllowCreate && GUILayout.Button(CreateAssetButtonLabel, GUILayout.Width(BUTTONS_WIDTH)))
                 {
                     AssetCreationResult result = EditorHelpers.CreateAssetPanel<T>($"Create new {DisplayableTypeName} asset", $"New{TypeName}", EditorHelpers.ASSETS_FOLDER, EditorHelpers.DEFAULT_ASSET_EXTENSION, false);
                     if (result && m_AutoOpenCreatedAsset)
@@ -147,16 +171,42 @@ namespace MuffinDev.Core.EditorOnly
                     EditorHelpers.FocusAsset(assetToOpen);
                 }
 
-                OnOpenAsset.Invoke(assetToOpen);
+                if(OnOpenAsset != null)
+                    OnOpenAsset.Invoke(assetToOpen);
             }
         }
 
         /// <summary>
-        /// Refreshes the displayed assets list.
+        /// Refreshes the displayed assets list, and apply the registered filters.
         /// </summary>
         public void Refresh()
         {
             m_Assets = EditorHelpers.FindAllAssetsOfType<T>();
+
+            List<T> filteredAssets = new List<T>();
+            foreach(Func<T, bool> filter in m_Filters)
+            {
+                filteredAssets.Clear();
+                foreach (T asset in m_Assets)
+                {
+                    if (filter(asset))
+                        filteredAssets.Add(asset);
+                }
+                m_Assets = filteredAssets.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Adds a filter method to filter the assets list when refreshed.
+        /// </summary>
+        /// <param name="_FilterMethod">The filter method used to check if an asset can be included in the assets list.</param>
+        public void AddFilter(Func<T, bool> _FilterMethod)
+        {
+            if (_FilterMethod != null)
+            {
+                m_Filters.Add(_FilterMethod);
+                Refresh();
+            }
         }
 
         #endregion
@@ -210,6 +260,51 @@ namespace MuffinDev.Core.EditorOnly
                     Refresh();
                 return m_Assets;
             }
+        }
+
+        /// <summary>
+        /// Gets/sets the title of the assets list.
+        /// </summary>
+        public string Title
+        {
+            get { return string.IsNullOrEmpty(m_Title) ? $"{DisplayableTypeName} assets list" : m_Title; }
+            set { m_Title = value; }
+        }
+
+        /// <summary>
+        /// Gets/sets the label of the "Open Asset" button.
+        /// </summary>
+        public string OpenAssetButtonLabel
+        {
+            get { return string.IsNullOrEmpty(m_OpenAssetButtonLabel) ? DEFAULT_OPEN_ASSET_BUTTON_LABEL : m_OpenAssetButtonLabel; }
+            set { m_OpenAssetButtonLabel = value; }
+        }
+
+        /// <summary>
+        /// Gets/sets the label of the "Create Asset..." button.
+        /// </summary>
+        public string CreateAssetButtonLabel
+        {
+            get { return string.IsNullOrEmpty(m_CreateAssetButtonLabel) ? DEFAULT_CREATE_ASSET_BUTTON_LABEL : m_CreateAssetButtonLabel; }
+            set { m_CreateAssetButtonLabel = value; }
+        }
+
+        /// <summary>
+        /// Gets/sets the content of the info message displayed above the list.
+        /// </summary>
+        public string InfoMessage
+        {
+            get { return m_InfoMessage; }
+            set { m_InfoMessage = value; }
+        }
+
+        /// <summary>
+        /// Gets/sets the icon of the message displayed above the list.
+        /// </summary>
+        public MessageType InfoMessageVerbosity
+        {
+            get { return m_InfoVerbosity; }
+            set { m_InfoVerbosity = value; }
         }
 
         /// <summary>
