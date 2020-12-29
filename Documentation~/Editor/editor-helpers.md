@@ -290,6 +290,23 @@ Draws an `Object` field with a *Create new* button on the right.
 - `string _PanelTitle = null`: The title of the SavePanel utility.
 - `bool _AllowSceneObjects = true`: If true, allow user to pass scene object in the object field.
 
+#### `BackButton()`
+
+```cs
+public static bool BackButton(string _Label = null, string _Tooltip = null, float _Width = 64f, GUIStyle _ButtonStyle = null);
+public static bool BackButton(Rect _Rect, string _Label = null, string _Tooltip = null, GUIStyle _ButtonStyle = null, float _Width = 64f);
+```
+
+Draws a "Back" button.
+
+- `string _Label = null`: The content of the button.
+- `string _Tooltip = null`: The tooltip of the button.
+- `float _Width = 64f`: The optional width of the button.
+- `GUIStyle _ButtonStyle = null`: The GUIStyle of the button.
+- `Rect _Rect`: The Rect container of the button.
+
+Returns `true` if the button has been clicked this frame, otherwise `false`.
+
 #### `DrawDefaultInspector()`
 
 ```cs
@@ -305,6 +322,83 @@ Draws the default inspector of the given object.
 - `float _CustomLabelWidth = -1f`: If more than 0 given, set the Editor's label width for all the object properties.
 - `SerializedObject _Object`: The `SerializedObject` of which you want to draw the custom inspector.
 - `SerializedProperty _Property`: The `SerializedProperty` of which you want to draw the custom inspector.
+
+#### `ExtendedObjectField()`
+
+```cs
+public static T ExtendedObjectField<T>(T _Object, bool _AllowSceneObjects, ExtendedObjectFieldButton[] _Buttons)
+    where T : Object;
+public static T ExtendedObjectField<T>(string _Label, T _Object, bool _AllowSceneObjects, ExtendedObjectFieldButton[] _Buttons)
+    where T : Object;
+public static T ExtendedObjectField<T>(Rect _Rect, T _Object, bool _AllowSceneObjects, ExtendedObjectFieldButton[] _Buttons)
+    where T : Object;
+public static T ExtendedObjectField<T>(Rect _Rect, string _Label, T _Object, bool _AllowSceneObjects, ExtendedObjectFieldButton[] _Buttons)
+    where T : Object;
+public static Object ExtendedObjectField(Object _Object, Type _ObjectType, bool _AllowSceneObjects, ExtendedObjectFieldButton[] _Buttons);
+public static Object ExtendedObjectField(string _Label, Object _Object, Type _ObjectType, bool _AllowSceneObjects, ExtendedObjectFieldButton[] _Buttons);
+public static Object ExtendedObjectField(Rect _Rect, Object _Object, Type _ObjectType, bool _AllowSceneObjects, ExtendedObjectFieldButton[] _Buttons);
+public static Object ExtendedObjectField(Rect _Rect, string _Label, Object _Object, Type _ObjectType, bool _AllowSceneObjects, ExtendedObjectFieldButton[] _Buttons);
+public static void ExtendedObjectField(SerializedProperty _Property, Type _ObjectType, bool _AllowSceneObjects, ExtendedObjectFieldButton[] _Buttons);
+public static void ExtendedObjectField(SerializedProperty _Property, string _Label, Type _ObjectType, bool _AllowSceneObjects, ExtendedObjectFieldButton[] _Buttons);
+public static void ExtendedObjectField(Rect _Rect, SerializedProperty _Property, Type _ObjectType, bool _AllowSceneObjects, ExtendedObjectFieldButton[] _Buttons);
+public static void ExtendedObjectField(Rect _Rect, SerializedProperty _Property, string _Label, Type _ObjectType, bool _AllowSceneObjects, ExtendedObjectFieldButton[] _Buttons);
+```
+
+![Preview of `ExtendedObjectField()` usage](./Images/extended-object-field.png)
+
+Draws an Object Field with additional controls.
+
+See demo usage in `Tools > Muffin Dev > Demos > Extended Object Field`.
+
+- `<T>`: The type of object that can be selected.
+- `T _Object`: The currently selected object.
+- `bool _AllowSceneObjects`: If `true`, allow user to select scene objects. Otherwise, only assets can be selected.
+- `ExtendedObjectFieldButton[] _Buttons`: The list of all controls you want to add to this field.
+- `string _Label`: The label of the field to draw.
+- `Rect _Rect`: The position and size of the field to draw.
+- `Object _Object`: The currently selected object.
+- `Type _ObjectType`: The type of object that can be selected.
+- `SerializedProperty _Property`: The serialized property to use and assign that contains the selected object data.
+
+[=> See `ExtendedObjectFieldButton` documentation](./extended-object-field-button.md)
+
+##### Usage example
+
+This script will draw a *Focus* button next to any property field that contains a `GameObject`:
+
+```cs
+using UnityEngine;
+using MuffinDev.Core.EditorOnly;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+public class ExtendedObjectFieldExample : MonoBehaviour
+{
+    public GameObject prefab;
+}
+
+#if UNITY_EDITOR
+[CustomPropertyDrawer(typeof(GameObject))]
+public class ExtendedObjectFieldExamplePropertyDrawer : PropertyDrawer
+{
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        EditorHelpers.ExtendedObjectField(position, property, typeof(GameObject), false, new ExtendedObjectFieldButton[]
+        {
+            new ExtendedObjectFieldButton(EEditorIcon.Focus, () =>
+            {
+                Object prefab = property.objectReferenceValue;
+                if(prefab != null)
+                    EditorHelpers.FocusAsset(prefab, false, true);
+            }, property.objectReferenceValue != null)
+        });
+    }
+}
+#endif
+```
+
+Place the `ExtendedObjectFieldExample` component on an object in your scene to see the result.
 
 ### Editor styles helpers
 

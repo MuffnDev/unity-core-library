@@ -17,7 +17,7 @@ Defines bindings flags for getting an item through reflection that is member of 
 #### `STATIC`
 
 ```cs
-public const BindingFlags INSTANCE = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+public const BindingFlags STATIC = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
 ```
 
 Defines bindings flags for getting an item through reflection that is static, member of a class.
@@ -39,15 +39,36 @@ public const string UNITY_EDITOR_CSHARP_ASSEMBLY_NAME = "Assembly-CSharp-Editor"
 #### `GetAllTypesImplementingGenericType()`
 
 ```cs
-public static IEnumerable<Type> GetAllTypesImplementingGenericType(Type _GenericType, Assembly _Assembly)
+public static IEnumerable<Type> GetAllTypesAssignableFrom(Type _ParentType, Assembly _Assembly);
+public static IEnumerable<Type> GetAllTypesAssignableFrom(Type _ParentType, IEnumerable<Assembly> _Assemblies);
+public static IEnumerable<Type> GetAllTypesAssignableFrom(Type _ParentType);
 ```
 
-Gets all the types that implement the given generic type in the given assembly.
+Gets all the types that implement the given type in the given assemblies, or in the project assemblies. It also works for generic types.
 
 ***NOTE**: This method is inspired by this Stack Overflow answer: [https://stackoverflow.com/a/8645519/6699339](https://stackoverflow.com/a/8645519/6699339)*
 
-- `Type _GenericType`: The type of the generic class you want to find inheritors. Uses the *open generic* syntax. As an example, if your class name is `MyGenericClass<T>`, use `typeof(MyGenericClass<>)`, without any value inside the less-than/greater-than characters.
-- `Assembly _Assembly`: The assembly where you want to find the given generic type implementations.
+- `Type _ParentType`: The type of the class you want to find inheritors. You can pass a generic type in this paramater, by using the "open generic" syntax. As an example, if the parent class is `MyGenericClass<T>`, use `typeof(MyGenericClass<>)`, without any value inside the less-than/greater-than characters.
+- `Assembly _Assembly`: The assembly where you want to find the given type implementations.
+- `IEnumerable<Assembly> _Assemblies`: The assemblies where you want to find the given type implementations.
+
+Returns an enumerable that contains all the found types.
+
+---
+
+```cs
+public static IEnumerable<Type> GetAllTypesAssignableFrom<T>(Assembly _Assembly);
+public static IEnumerable<Type> GetAllTypesAssignableFrom<T>(IEnumerable<Assembly> _Assemblies);
+public static IEnumerable<Type> GetAllTypesAssignableFrom<T>();
+```
+
+Gets all the types that implement the given type in the given assemblies, or in the project assemblies.
+
+***NOTE**: This method is inspired by this Stack Overflow answer: [https://stackoverflow.com/a/8645519/6699339](https://stackoverflow.com/a/8645519/6699339)*
+
+- `<T>`: The type of the class you want to find inheritors.
+- `Assembly _Assembly`: The assembly where you want to find the given type implementations.
+- `IEnumerable<Assembly> _Assemblies`: The assemblies where you want to find the given type implementations.
 
 Returns an enumerable that contains all the found types.
 

@@ -31,20 +31,90 @@ namespace MuffinDev.Core.EditorOnly
         };
 
         /// <summary>
-        /// Gets all the types that implement the given generic type in the given assembly.
+        /// Gets all the types that implement the given type in the given assembly.
         /// NOTE: This method is inspired by this Stack Overflow answer: https://stackoverflow.com/a/8645519/6699339
         /// </summary>
-        /// <param name="_GenericType">The type of the generic class you want to find inheritors. Uses the "open generic" syntax. As an
-        /// example, if your class is MyGenericClass<T>, use typeof(MyGenericClass<>), without any value inside the less-than/greater-than
-        /// characters.</param>
-        /// <param name="_Assembly">The assembly where you want to find the given generic type implementations.</param>
+        /// <param name="_ParentType">The type of the class you want to find inheritors. You can pass a generic type in this paramater, by
+        /// using the "open generic" syntax. As an example, if the parent class is MyGenericClass<T>, use typeof(MyGenericClass<>), without
+        /// any value inside the less-than/greater-than characters.</param>
+        /// <param name="_Assembly">The assembly where you want to find the given type implementations.</param>
         /// <returns>Returns an enumerable that contains all the found types.</returns>
-        public static IEnumerable<Type> GetAllTypesImplementingGenericType(Type _GenericType, Assembly _Assembly)
+        public static IEnumerable<Type> GetAllTypesAssignableFrom(Type _ParentType, Assembly _Assembly)
         {
-            return from type in _Assembly.GetTypes()
-                   let baseType = type.BaseType
-                   where baseType != null && baseType.IsGenericType && !type.IsGenericType && _GenericType.IsAssignableFrom(baseType.GetGenericTypeDefinition())
-                   select type;
+            return
+                from type in _Assembly.GetTypes()
+                let baseType = type.BaseType
+                where baseType != null &&
+                (
+                    (baseType.IsGenericType && !type.IsGenericType && _ParentType.IsAssignableFrom(baseType.GetGenericTypeDefinition())) ||
+                    (!baseType.IsGenericType && !type.IsGenericType && _ParentType.IsAssignableFrom(baseType))
+                )
+                select type;
+        }
+
+        /// <summary>
+        /// Gets all the types that implement the given type in the given assembly.
+        /// NOTE: This method is inspired by this Stack Overflow answer: https://stackoverflow.com/a/8645519/6699339
+        /// </summary>
+        /// <typeparam name="T">The type of the class you want to find inheritors.</typeparam>
+        /// <param name="_Assembly">The assembly where you want to find the given type implementations.</param>
+        /// <returns>Returns an enumerable that contains all the found types.</returns>
+        public static IEnumerable<Type> GetAllTypesAssignableFrom<T>(Assembly _Assembly)
+        {
+            return GetAllTypesAssignableFrom(typeof(T), _Assembly);
+        }
+
+        /// <summary>
+        /// Gets all the types that implement the given type in the given assemblies.
+        /// NOTE: This method is inspired by this Stack Overflow answer: https://stackoverflow.com/a/8645519/6699339
+        /// </summary>
+        /// <param name="_ParentType">The type of the class you want to find inheritors. You can pass a generic type in this paramater, by
+        /// using the "open generic" syntax. As an example, if the parent class is MyGenericClass<T>, use typeof(MyGenericClass<>), without
+        /// any value inside the less-than/greater-than characters.</param>
+        /// <param name="_Assemblies">The assemblies where you want to find the given type implementations.</param>
+        /// <returns>Returns an enumerable that contains all the found types.</returns>
+        public static IEnumerable<Type> GetAllTypesAssignableFrom(Type _ParentType, IEnumerable<Assembly> _Assemblies)
+        {
+            List<Type> types = new List<Type>();
+            foreach (Assembly assembly in _Assemblies)
+                types.AddRange(GetAllTypesAssignableFrom(_ParentType, assembly));
+            return types;
+        }
+
+        /// <summary>
+        /// Gets all the types that implement the given type in the given assemblies.
+        /// NOTE: This method is inspired by this Stack Overflow answer: https://stackoverflow.com/a/8645519/6699339
+        /// </summary>
+        /// <typeparam name="T">The type of the class you want to find inheritors.</typeparam>
+        /// <param name="_Assemblies">The assemblies where you want to find the given type implementations.</param>
+        /// <returns>Returns an enumerable that contains all the found types.</returns>
+        public static IEnumerable<Type> GetAllTypesAssignableFrom<T>(IEnumerable<Assembly> _Assemblies)
+        {
+            return GetAllTypesAssignableFrom(typeof(T), _Assemblies);
+        }
+
+        /// <summary>
+        /// Gets all the types that implement the given type in the project assemblies (using GetProjectAssemblies()).
+        /// NOTE: This method is inspired by this Stack Overflow answer: https://stackoverflow.com/a/8645519/6699339
+        /// </summary>
+        /// <param name="_ParentType">The type of the class you want to find inheritors. You can pass a generic type in this paramater, by
+        /// using the "open generic" syntax. As an example, if the parent class is MyGenericClass<T>, use typeof(MyGenericClass<>), without
+        /// any value inside the less-than/greater-than characters.</param>
+        /// <returns>Returns an enumerable that contains all the found types.</returns>
+        public static IEnumerable<Type> GetAllTypesAssignableFrom(Type _ParentType)
+        {
+            return GetAllTypesAssignableFrom(_ParentType, GetProjectAssemblies());
+        }
+
+        /// <summary>
+        /// Gets all the types that implement the given type in the project assemblies (using GetProjectAssemblies()).
+        /// NOTE: This method is inspired by this Stack Overflow answer: https://stackoverflow.com/a/8645519/6699339
+        /// </summary>
+        /// <typeparam name="T">The type of the class you want to find inheritors.</typeparam>
+        /// <returns>Returns an enumerable that contains all the found types.</returns>
+        public static IEnumerable<Type> GetAllTypesAssignableFrom<T>()
+        {
+            return GetAllTypesAssignableFrom(typeof(T));
         }
 
         /// <summary>
