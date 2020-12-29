@@ -12,7 +12,7 @@ You can import this package in your Unity project by importing it from the *Pack
 
 In Unity, go to `Window > Package Manager`. Click on the *Add* button in the top-left corner of the window, and select ***Add package from git URL...***.
 
-![*Add package from git URL...* menu](./Documentation~/Images/import-git-url.jpg)
+![*Add package from git URL...* menu](./Documentation~/Images/import-git-url.png)
 
 Enter the URL to this repository in the taxt field (https://gitlab.com/muffin-dev/unity/standalone/core-library.git), click *Add*, and wait for the package to be installed.
 
