@@ -1,6 +1,6 @@
 # Muffin Dev for Unity - `ExtendedObjectFieldButton`
 
-Represents an additional button for an Extended Object Field element. Mostly used by `EditorHelpers.ExtendedObjectField()`.
+Represents an additional button for an Extended Object Field element. Mostly used by `MuffinDevGUI.ExtendedObjectField()`.
 
 [=> See the `ExtendedObjectField()` method in `EditorHelpers` documentation](./editor-helpers.md)
 

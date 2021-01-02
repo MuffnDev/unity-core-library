@@ -7,7 +7,7 @@ namespace MuffinDev.Core.EditorOnly
     
     /// <summary>
     /// Represents an additional button for an Extended Object Field element.
-    /// Mostly used by EditorHelpers.ExtendedObjectField().
+    /// Mostly used by MuffinDevGUI.ExtendedObjectField().
     /// </summary>
     public class ExtendedObjectFieldButton
     {

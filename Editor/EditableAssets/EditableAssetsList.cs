@@ -134,7 +134,7 @@ namespace MuffinDev.Core.EditorOnly
                     EditorGUILayout.LabelField("Name", GUILayout.MaxWidth(ASSET_NAME_MAX_WIDTH));
                     EditorGUILayout.LabelField("Path");
                 }
-                EditorHelpers.HorizontalLineLayout();
+                MuffinDevGUI.HorizontalLine();
 
                 // For each asset of the target type in the project...
                 foreach (T asset in Assets)

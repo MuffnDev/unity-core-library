@@ -59,7 +59,7 @@ public class MonsterEditorWindow : EditorWindow
         // Draw the default inspector for the opened asset
         else
         {
-            EditorHelpers.DrawDefaultInspector(openAsset);
+            MuffinDevGUI.DrawDefaultInspector(openAsset);
 
             // Add a button to cancel selection, and go back to the assets list
             EditorGUILayout.Space();

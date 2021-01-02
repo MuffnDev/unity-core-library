@@ -5,7 +5,7 @@ namespace MuffinDev.Core.EditorOnly
 
     /// <summary>
     /// Represents the result of the creation of an asset.
-    /// Used by EditorHelpers.CreateAsset() and EditorHelpers.CreateAssetPanel().
+    /// Used by MuffinDevGUI.CreateAsset() and MuffinDevGUI.CreateAssetPanel().
     /// </summary>
 	public class AssetCreationResult
 	{

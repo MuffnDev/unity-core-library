@@ -25,7 +25,7 @@ namespace MuffinDev.Core.EditorOnly.Demos
 
         private void OnGUI()
         {
-			EditorGUILayout.HelpBox("The following field has been drawn with EditorHelpers.ExtendedObjectField().\nUse the added controls to, from left to right:\n\t- Show/hide informations about the selected asset\n\t- Lock/unlock the selected asset\n\t- Focus the asset in the project view\n\t- Create a new asset if applicable", MessageType.Info);
+			EditorGUILayout.HelpBox("The following field has been drawn with MuffinDevGUI.ExtendedObjectField().\nUse the added controls to, from left to right:\n\t- Show/hide informations about the selected asset\n\t- Lock/unlock the selected asset\n\t- Focus the asset in the project view\n\t- Create a new asset if applicable", MessageType.Info);
 			EditorGUILayout.Space();
 
 			bool locked = m_Object != null && m_Locked;
@@ -34,7 +34,7 @@ namespace MuffinDev.Core.EditorOnly.Demos
 			bool canCreate = m_Object != null ? m_Object is ScriptableObject : false;
 
 			GUI.enabled = !locked;
-			m_Object = EditorHelpers.ExtendedObjectField("Selected Asset", m_Object, typeof(Object), true, new ExtendedObjectFieldButton[]
+			m_Object = MuffinDevGUI.ExtendedObjectField("Selected Asset", m_Object, typeof(Object), true, new ExtendedObjectFieldButton[]
 			{
 				// Add "Fold/Unfold" button
 				new ExtendedObjectFieldButton(m_Folded ? EEditorIcon.Unfold : EEditorIcon.Fold, ExtendedObjectFieldButton.EPosition.BeforeLabel, m_Folded ? "Hide informations" : "Show informations", () =>
