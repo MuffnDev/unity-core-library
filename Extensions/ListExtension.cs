@@ -28,6 +28,14 @@ namespace MuffinDev.Core
         }
 
         /// <summary>
+        /// Checks if the given index is in this list's range.
+        /// </summary>
+        public static bool IsInRange<T>(this IList<T> _List, int _Index)
+        {
+            return _Index > 0 && _Index < _List.Count;
+        }
+
+        /// <summary>
         /// A shortcut for using string.Join() method on lists.
         /// </summary>
         /// <param name="_Separator">The character that separates each elements in the output text.</param>

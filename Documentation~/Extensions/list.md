@@ -16,6 +16,14 @@ Adds the given item to the list only if it's not already in.
 
 Returns `true` if the item has been added, or `false` if the item is already in the list.
 
+### `IsInRange()`
+
+```cs
+public static bool IsInRange<T>(this IList<T> _List, int _Index)
+```
+
+Checks if the given index is in this list's range.
+
 ### `Join()`
 
 ```cs
