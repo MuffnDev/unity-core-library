@@ -6,13 +6,8 @@ This module contains the main Muffin Dev library features. It also contains basi
 
 ## Summary
 
-- [CustomAttributes](./CustomAttributes/README.md): Bundle of custom Unity attributes
-- [Editor](./Editor/README.md): Bundle of Editor tools and shortcuts
-- [Events](./Events/README.md): A collection of "pre-typed" UnityEvents
-- [Extensions](./Extensions/README.md): Contains extensions for native types or UnityEngine library classes
-- [Generics](./Generics/README.md): Utility template classes
-- [Others](./Others/README.md): Unclassified utility classes
-- [Patterns](./Patterns/README.md): Unity-friendly design pattern implementations
+- [Runtime](./Runtime/README.md)
+- [Editor](./Editor/README.md): Editor only features
 
 ## Support the project!
 

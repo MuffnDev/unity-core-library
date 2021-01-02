@@ -1,4 +1,4 @@
-# Muffin Dev for Unity - Core - Others
+# Muffin Dev for Unity - Core - Utilities
 
 Unclassified utility classes.
 
