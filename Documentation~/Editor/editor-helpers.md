@@ -323,6 +323,28 @@ Draws the default inspector of the given object.
 - `SerializedObject _Object`: The `SerializedObject` of which you want to draw the custom inspector.
 - `SerializedProperty _Property`: The `SerializedProperty` of which you want to draw the custom inspector.
 
+#### `PaginationBar()`
+
+```cs
+public static Pagination PaginationBar(int _NbElements, int _Page, int _NbElementsPerPage = Pagination.DEFAULT_NB_ELEMENTS_PER_PAGE);
+public static Pagination PaginationBar<T>(IList<T> _List, int _Page, int _NbElementsPerPage = Pagination.DEFAULT_NB_ELEMENTS_PER_PAGE);
+public static Pagination PaginationBar<T>(Rect _Rect, IList<T> _List, int _Page, int _NbElementsPerPage = Pagination.DEFAULT_NB_ELEMENTS_PER_PAGE);
+public static Pagination PaginationBar(Rect _Rect, int _NbElements, int _Page, int _NbElementsPerPage = Pagination.DEFAULT_NB_ELEMENTS_PER_PAGE);
+```
+
+Draws a pagination bar, with "Previous" and "Next" buttons, and an int field to set the page number.
+
+![`PaginationBar` preview](./Images/pagination-bar.png)
+
+- `<T>`: The type of the elements in the list.
+- `int _NbElements`: The total number of elements in your paginated list.
+- `int _Page`: The current page.
+- `int _NbElementsPerPage = Pagination.DEFAULT_NB_ELEMENTS_PER_PAGE`: The number of elements to display per page.
+- `IList<T> _List`: The list that is paginated.
+- `Rect _Rect`: The position and size of the element to draw.
+
+Returns the pagination data.
+
 #### `ExtendedObjectField()`
 
 ```cs

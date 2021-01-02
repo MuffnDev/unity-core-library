@@ -1,9 +1,10 @@
-﻿using UnityEngine;
-using UnityEditor;
-
-using System;
-using System.Reflection;
+﻿using System;
 using System.IO;
+using System.Reflection;
+using System.Collections.Generic;
+
+using UnityEngine;
+using UnityEditor;
 
 namespace MuffinDev.Core.EditorOnly
 {
@@ -24,9 +25,9 @@ namespace MuffinDev.Core.EditorOnly
         public const string DEFAULT_ASSET_EXTENSION = "asset";
 
         // Default Muffin Dev' editor tools horizontal margin.
-        public static readonly float HORIZONTAL_MARGIN = EditorGUIUtility.standardVerticalSpacing;
+        public static readonly float HORIZONTAL_MARGIN = 2f;
         // Default Muffin Dev' editor tools vertical margin.
-        public static readonly float VERTICAL_MARGIN = EditorGUIUtility.standardVerticalSpacing;
+        public static readonly float VERTICAL_MARGIN = 2f;
         // Default Muffin Dev' editor tools property line height.
         public static readonly float LINE_HEIGHT = EditorGUIUtility.singleLineHeight;
         // Default Muffin Dev' editor windows padding.
@@ -48,6 +49,9 @@ namespace MuffinDev.Core.EditorOnly
         private const float MIN_EXTENDED_OBJECT_FIELD_WIDTH = 54f;
         private const int MINI_BUTTON_PADDING = 1;
 
+        private const float PAGINATION_BUTTONS_WIDTH = 80f;
+        private const float PAGINATION_LABEL_WIDTH = 32f;
+        private const float PAGINATION_FIELD_WIDTH = 54f;
         #endregion
 
 
@@ -922,6 +926,92 @@ namespace MuffinDev.Core.EditorOnly
             EditorGUIUtility.labelWidth = lastLabelWidth;
         }
 
+        /// <summary>
+        /// Draws a pagination bar, with "Previous" and "Next" buttons, and an int field to set the page number.
+        /// </summary>
+        /// <param name="_NbElements">The total number of elements in your paginated list.</param>
+        /// <param name="_Page">The current page.</param>
+        /// <param name="_NbElementsPerPage">The number of elements to display per page.</param>
+        /// <returns>Returns the pagination data.</returns>
+        public static Pagination PaginationBar(int _NbElements, int _Page, int _NbElementsPerPage = Pagination.DEFAULT_NB_ELEMENTS_PER_PAGE)
+        {
+            Rect rect = EditorGUILayout.GetControlRect();
+            return PaginationBar(rect, _NbElements, _Page, _NbElementsPerPage);
+        }
+
+        /// <summary>
+        /// Draws a pagination bar, with "Previous" and "Next" buttons, and an int field to set the page number.
+        /// </summary>
+        /// <param name="_List">The list that is paginated.</param>
+        /// <param name="_Page">The current page.</param>
+        /// <param name="_NbElementsPerPage">The number of elements to display per page.</param>
+        /// <returns>Returns the pagination data.</returns>
+        public static Pagination PaginationBar<T>(IList<T> _List, int _Page, int _NbElementsPerPage = Pagination.DEFAULT_NB_ELEMENTS_PER_PAGE)
+        {
+            Rect rect = EditorGUILayout.GetControlRect();
+            return PaginationBar(rect, _List.Count, _Page, _NbElementsPerPage);
+        }
+
+        /// <summary>
+        /// Draws a pagination bar, with "Previous" and "Next" buttons, and an int field to set the page number.
+        /// </summary>
+        /// <param name="_Rect">The position and size of the element to draw.</param>
+        /// <param name="_List">The list that is paginated.</param>
+        /// <param name="_Page">The current page.</param>
+        /// <param name="_NbElementsPerPage">The number of elements to display per page.</param>
+        /// <returns>Returns the pagination data.</returns>
+        public static Pagination PaginationBar<T>(Rect _Rect, IList<T> _List, int _Page, int _NbElementsPerPage = Pagination.DEFAULT_NB_ELEMENTS_PER_PAGE)
+        {
+            return PaginationBar(_Rect, _List.Count, _Page, _NbElementsPerPage);
+        }
+
+        /// <summary>
+        /// Draws a pagination bar, with "Previous" and "Next" buttons, and an int field to set the page number.
+        /// </summary>
+        /// <param name="_Rect">The position and size of the element to draw.</param>
+        /// <param name="_NbElements">The total number of elements in your paginated list.</param>
+        /// <param name="_Page">The current page.</param>
+        /// <param name="_NbElementsPerPage">The number of elements to display per page.</param>
+        /// <returns>Returns the pagination data.</returns>
+        public static Pagination PaginationBar(Rect _Rect, int _NbElements, int _Page, int _NbElementsPerPage = Pagination.DEFAULT_NB_ELEMENTS_PER_PAGE)
+        {
+            Pagination pagination = new Pagination(_NbElements, _Page, _NbElementsPerPage);
+            Rect rect = new Rect(_Rect);
+            
+            // Draw "Previous" button
+            rect.width = PAGINATION_BUTTONS_WIDTH;
+            GUI.enabled = pagination.Page > 0;
+            if (GUI.Button(rect, "< Previous"))
+                pagination.Page--;
+            GUI.enabled = true;
+
+            // Compute the spaces, in order to center the page fields
+            float middleSpace = _Rect.width - PAGINATION_BUTTONS_WIDTH * 2 - HORIZONTAL_MARGIN * 5;
+            float space = Mathf.Max(0, (middleSpace - PAGINATION_LABEL_WIDTH - PAGINATION_FIELD_WIDTH * 2) / 2);
+
+            // Draw "Page" label and int field
+            rect.x += rect.width + HORIZONTAL_MARGIN + space;
+            rect.width = PAGINATION_LABEL_WIDTH + HORIZONTAL_MARGIN + PAGINATION_FIELD_WIDTH;
+            float labelWidth = EditorGUIUtility.labelWidth;
+            EditorGUIUtility.labelWidth = PAGINATION_LABEL_WIDTH;
+            pagination.Page = EditorGUI.IntField(rect, "Page", pagination.Page);
+            EditorGUIUtility.labelWidth = labelWidth;
+
+            // Draw the total number of pages label
+            rect.x += rect.width + HORIZONTAL_MARGIN;
+            rect.width = PAGINATION_FIELD_WIDTH;
+            EditorGUI.LabelField(rect, $"/{pagination.NbPages - 1}");
+
+            // Draw the "Next" button
+            rect.x += rect.width + space + HORIZONTAL_MARGIN;
+            rect.width = PAGINATION_BUTTONS_WIDTH;
+            GUI.enabled = pagination.Page < pagination.NbPages - 1;
+            if (GUI.Button(rect, "Next >"))
+                pagination.Page++;
+            GUI.enabled = true;
+
+            return pagination;
+        }
         /// <summary>
         /// Draws an Object Field with additional controls.
         /// </summary>

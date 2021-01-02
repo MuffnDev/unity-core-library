@@ -26,8 +26,21 @@ A shortcut for using string.Join() method on lists.
 
 - `string _Separator)`: The character that separates each elements in the output text.
 
-### `Shuffle()`
+```cs
+public static T[] Paginate<T>(this IList<T> _List, int _Page, int _NbElementsPerPage = Pagination.DEFAULT_NB_ELEMENTS_PER_PAGE);
+public static T[] Paginate<T>(this IList<T> _List, out Pagination _Pagination, int _Page, int _NbElementsPerPage = Pagination.DEFAULT_NB_ELEMENTS_PER_PAGE);
+```
 
+Creates a sub-list of the given list that contains only the elements that should be displayed using the given pagination settings.
+
+- `this IList<T> _List`: The list that is paginated.
+- `int _Page`: The current page.
+- `int _NbElementsPerPage = Pagination.DEFAULT_NB_ELEMENTS_PER_PAGE`: The number of elements displayed per page.
+- `out Pagination _Pagination`: The Pagination infos of the operation.
+
+Returns the sub-list of the elements to display.
+
+### `Shuffle()`
 
 ```cs
 public static void Shuffle<T>(this IList<T> list)

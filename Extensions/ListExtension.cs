@@ -38,6 +38,33 @@ namespace MuffinDev.Core
         }
 
         /// <summary>
+        /// Creates a sub-list of the given list that contains only the elements that should be displayed using the given pagination
+        /// settings.
+        /// </summary>
+        /// <param name="_List">The list that is paginated.</param>
+        /// <param name="_Page">The current page.</param>
+        /// <param name="_NbElementsPerPage">The number of elements displayed per page.</param>
+        /// <returns>Returns the sub-list of the elements to display.</returns>
+        public static T[] Paginate<T>(this IList<T> _List, int _Page, int _NbElementsPerPage = Pagination.DEFAULT_NB_ELEMENTS_PER_PAGE)
+        {
+            return Pagination.Paginate(_List, _Page, _NbElementsPerPage);
+        }
+
+        /// <summary>
+        /// Creates a sub-list of the given list that contains only the elements that should be displayed using the given pagination
+        /// settings.
+        /// </summary>
+        /// <param name="_List">The list that is paginated.</param>
+        /// <param name="_Pagination">The Pagination infos of the operation.</param>
+        /// <param name="_Page">The current page.</param>
+        /// <param name="_NbElementsPerPage">The number of elements displayed per page.</param>
+        /// <returns>Returns the sub-list of the elements to display.</returns>
+        public static T[] Paginate<T>(this IList<T> _List, out Pagination _Pagination, int _Page, int _NbElementsPerPage = Pagination.DEFAULT_NB_ELEMENTS_PER_PAGE)
+        {
+            return Pagination.Paginate(_List, out _Pagination, _Page, _NbElementsPerPage);
+        }
+
+        /// <summary>
         /// Shuffles the list in-place, using UnityEngine.Random().
         /// Original version at https://stackoverflow.com/questions/273313/randomize-a-listt
         /// </summary>

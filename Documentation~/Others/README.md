@@ -9,3 +9,4 @@ Unclassified utility classes.
 - [`Enums`](./enums.md): Collection of utility enumerations
 - [`Log`](./log.md): Container for log entry
 - [`OperationState`](./operation-state.md): Represents the state of an operation
+- [`Pagination`](./pagination.md): Utility class for pagination system
