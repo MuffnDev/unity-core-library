@@ -49,9 +49,12 @@ namespace MuffinDev.Core.EditorOnly
         private const float MIN_EXTENDED_OBJECT_FIELD_WIDTH = 54f;
         private const int MINI_BUTTON_PADDING = 1;
 
+        private const float BROWSE_BUTTON_WIDTH = 100f;
+
         private const float PAGINATION_BUTTONS_WIDTH = 80f;
         private const float PAGINATION_LABEL_WIDTH = 32f;
         private const float PAGINATION_FIELD_WIDTH = 54f;
+
         #endregion
 
 
@@ -498,7 +501,7 @@ namespace MuffinDev.Core.EditorOnly
         /// </summary>
         public static bool IsPathRelativeToCurrentProjectFolder(string _AbsolutePath)
         {
-            return _AbsolutePath.StartsWith(Application.dataPath);
+            return !string.IsNullOrEmpty(_AbsolutePath) && _AbsolutePath.StartsWith(Application.dataPath);
         }
 
         /// <summary>
@@ -1012,6 +1015,235 @@ namespace MuffinDev.Core.EditorOnly
 
             return pagination;
         }
+
+        /// <summary>
+        /// Draws a text field with a "Browse..." button which allow the user to select a directory.
+        /// </summary>
+        /// <param name="_Property">The string property to set.</param>
+        /// <param name="_Editable">If true, the text field of the path can be edited manually. Otherwise, the path can only be set using
+        /// the "Browse..." button.</param>
+        /// <param name="_InProject">If true, forces the path to target a directory inside the current project.</param>
+        public static void FolderPathField(SerializedProperty _Property, bool _Editable = false, bool _InProject = true)
+        {
+            Rect rect = EditorGUILayout.GetControlRect();
+            _Property.stringValue = DrawPathField(rect, _Property.displayName, _Property.stringValue, _Editable, _InProject, false);
+            _Property.serializedObject.ApplyModifiedProperties();
+        }
+
+        /// <summary>
+        /// Draws a text field with a "Browse..." button which allow the user to select a directory.
+        /// </summary>
+        /// <param name="_Path">The current path value.</param>
+        /// <param name="_Editable">If true, the text field of the path can be edited manually. Otherwise, the path can only be set using
+        /// the "Browse..." button.</param>
+        /// <param name="_InProject">If true, forces the path to target a directory inside the current project.</param>
+        /// <returns>Returns the selected path.</returns>
+        public static string FolderPathField(string _Path, bool _Editable = false, bool _InProject = true)
+        {
+            Rect rect = EditorGUILayout.GetControlRect();
+            return DrawPathField(rect, null, _Path, _Editable, _InProject, false);
+        }
+
+        /// <summary>
+        /// Draws a text field with a "Browse..." button which allow the user to select a directory.
+        /// </summary>
+        /// <param name="_Label">The label of the field.</param>
+        /// <param name="_Path">The current path value.</param>
+        /// <param name="_Editable">If true, the text field of the path can be edited manually. Otherwise, the path can only be set using
+        /// the "Browse..." button.</param>
+        /// <param name="_InProject">If true, forces the path to target a directory inside the current project.</param>
+        /// <returns>Returns the selected path.</returns>
+        public static string FolderPathField(string _Label, string _Path, bool _Editable = false, bool _InProject = true)
+        {
+            Rect rect = EditorGUILayout.GetControlRect();
+            return DrawPathField(rect, _Label, _Path, _Editable, _InProject, false);
+        }
+
+        /// <summary>
+        /// Draws a text field with a "Browse..." button which allow the user to select a directory.
+        /// </summary>
+        /// <param name="_Rect">The position and size of the field to draw.</param>
+        /// <param name="_Property">The string property to set.</param>
+        /// <param name="_Editable">If true, the text field of the path can be edited manually. Otherwise, the path can only be set using
+        /// the "Browse..." button.</param>
+        /// <param name="_InProject">If true, forces the path to target a directory inside the current project.</param>
+        public static void FolderPathField(Rect _Rect, SerializedProperty _Property, bool _Editable = false, bool _InProject = true)
+        {
+            _Property.stringValue = DrawPathField(_Rect, _Property.displayName, _Property.stringValue, _Editable, _InProject, true);
+            _Property.serializedObject.ApplyModifiedProperties();
+        }
+
+        /// <summary>
+        /// Draws a text field with a "Browse..." button which allow the user to select a directory.
+        /// </summary>
+        /// <param name="_Rect">The position and size of the field to draw.</param>
+        /// <param name="_Path">The current path value.</param>
+        /// <param name="_Editable">If true, the text field of the path can be edited manually. Otherwise, the path can only be set using
+        /// the "Browse..." button.</param>
+        /// <param name="_InProject">If true, forces the path to target a directory inside the current project.</param>
+        public static string FolderPathField(Rect _Rect, string _Path, bool _Editable = false, bool _InProject = true)
+        {
+            return DrawPathField(_Rect, null, _Path, _Editable, _InProject, false);
+        }
+
+        /// <summary>
+        /// Draws a text field with a "Browse..." button which allow the user to select a directory.
+        /// </summary>
+        /// <param name="_Rect">The position and size of the field to draw.</param>
+        /// <param name="_Label">The label of the field.</param>
+        /// <param name="_Path">The current path value.</param>
+        /// <param name="_Editable">If true, the text field of the path can be edited manually. Otherwise, the path can only be set using
+        /// the "Browse..." button.</param>
+        /// <param name="_InProject">If true, forces the path to target a directory inside the current project.</param>
+        public static string FolderPathField(Rect _Rect, string _Label, string _Path, bool _Editable = false, bool _InProject = true)
+        {
+            return DrawPathField(_Rect, _Label, _Path, _Editable, _InProject, false);
+        }
+
+        /// <summary>
+        /// Draws a text field with a "Browse..." button which allow the user to select a file.
+        /// </summary>
+        /// <param name="_Property">The string property to set.</param>
+        /// <param name="_Editable">If true, the text field of the path can be edited manually. Otherwise, the path can only be set using
+        /// the "Browse..." button.</param>
+        /// <param name="_InProject">If true, forces the path to target a file inside the current project.</param>
+        public static void FilePathField(SerializedProperty _Property, bool _Editable = false, bool _InProject = true)
+        {
+            Rect rect = EditorGUILayout.GetControlRect();
+            _Property.stringValue = DrawPathField(rect, _Property.displayName, _Property.stringValue, _Editable, _InProject, true);
+            _Property.serializedObject.ApplyModifiedProperties();
+        }
+
+        /// <summary>
+        /// Draws a text field with a "Browse..." button which allow the user to select a file.
+        /// </summary>
+        /// <param name="_Path">The current path value.</param>
+        /// <param name="_Editable">If true, the text field of the path can be edited manually. Otherwise, the path can only be set using
+        /// the "Browse..." button.</param>
+        /// <param name="_InProject">If true, forces the path to target a file inside the current project.</param>
+        /// <returns>Returns the selected path.</returns>
+        public static string FilePathField(string _Path, bool _Editable = false, bool _InProject = true)
+        {
+            Rect rect = EditorGUILayout.GetControlRect();
+            return DrawPathField(rect, null, _Path, _Editable, _InProject, true);
+        }
+
+        /// <summary>
+        /// Draws a text field with a "Browse..." button which allow the user to select a file.
+        /// </summary>
+        /// <param name="_Label">The label of the field.</param>
+        /// <param name="_Path">The current path value.</param>
+        /// <param name="_Editable">If true, the text field of the path can be edited manually. Otherwise, the path can only be set using
+        /// the "Browse..." button.</param>
+        /// <param name="_InProject">If true, forces the path to target a file inside the current project.</param>
+        /// <returns>Returns the selected path.</returns>
+        public static string FilePathField(string _Label, string _Path, bool _Editable = false, bool _InProject = true)
+        {
+            Rect rect = EditorGUILayout.GetControlRect();
+            return DrawPathField(rect, _Label, _Path, _Editable, _InProject, true);
+        }
+
+        /// <summary>
+        /// Draws a text field with a "Browse..." button which allow the user to select a file.
+        /// </summary>
+        /// <param name="_Rect">The position and size of the field to draw.</param>
+        /// <param name="_Property">The string property to set.</param>
+        /// <param name="_Editable">If true, the text field of the path can be edited manually. Otherwise, the path can only be set using
+        /// the "Browse..." button.</param>
+        /// <param name="_InProject">If true, forces the path to target a file inside the current project.</param>
+        public static void FilePathField(Rect _Rect, SerializedProperty _Property, bool _Editable = false, bool _InProject = true)
+        {
+            _Property.stringValue = DrawPathField(_Rect, _Property.displayName, _Property.stringValue, _Editable, _InProject, true);
+            _Property.serializedObject.ApplyModifiedProperties();
+        }
+
+        /// <summary>
+        /// Draws a text field with a "Browse..." button which allow the user to select a file.
+        /// </summary>
+        /// <param name="_Rect">The position and size of the field to draw.</param>
+        /// <param name="_Path">The current path value.</param>
+        /// <param name="_Editable">If true, the text field of the path can be edited manually. Otherwise, the path can only be set using
+        /// the "Browse..." button.</param>
+        /// <param name="_InProject">If true, forces the path to target a file inside the current project.</param>
+        public static string FilePathField(Rect _Rect, string _Path, bool _Editable = false, bool _InProject = true)
+        {
+            return DrawPathField(_Rect, null, _Path, _Editable, _InProject, true);
+        }
+
+        /// <summary>
+        /// Draws a text field with a "Browse..." button which allow the user to select a file.
+        /// </summary>
+        /// <param name="_Rect">The position and size of the field to draw.</param>
+        /// <param name="_Label">The label of the field.</param>
+        /// <param name="_Path">The current path value.</param>
+        /// <param name="_Editable">If true, the text field of the path can be edited manually. Otherwise, the path can only be set using
+        /// the "Browse..." button.</param>
+        /// <param name="_InProject">If true, forces the path to target a file inside the current project.</param>
+        public static string FilePathField(Rect _Rect, string _Label, string _Path, bool _Editable = false, bool _InProject = true)
+        {
+            return DrawPathField(_Rect, _Label, _Path, _Editable, _InProject, true);
+        }
+
+        /// <summary>
+        /// Draws a text field with a "Browse..." button which allow the user to select a file.
+        /// </summary>
+        /// <param name="_Rect">The position and size of the field to draw.</param>
+        /// <param name="_Label">The label of the field.</param>
+        /// <param name="_Path">The current path value.</param>
+        /// <param name="_Editable">If true, the text field of the path can be edited manually. Otherwise, the path can only be set using
+        /// the "Browse..." button.</param>
+        /// <param name="_InProject">If true, forces the path to target a file inside the current project.</param>
+        /// <param name="_File">If true, the "Browse..." button opens a file selector panel, otherwise it opens a folder selector
+        /// panel.</param>
+        /// <returns>Returns the selected path.</returns>
+        private static string DrawPathField(Rect _Rect, string _Label, string _Path, bool _Editable, bool _InProject, bool _File)
+        {
+            Rect rect = new Rect(_Rect);
+
+            // Draws the label if needed
+            if(!string.IsNullOrEmpty(_Label))
+            {
+                rect.width = EditorGUIUtility.labelWidth;
+                EditorGUI.LabelField(rect, _Label);
+                rect.x += rect.width + HORIZONTAL_MARGIN;
+                rect.width = _Rect.width - rect.width - BROWSE_BUTTON_WIDTH - HORIZONTAL_MARGIN;
+            }
+            else
+            {
+                rect.width = _Rect.width - BROWSE_BUTTON_WIDTH;
+            }
+
+            // Draw the path text field
+            GUI.enabled = _Editable;
+            string newPath = EditorGUI.TextField(rect, _Path);
+            GUI.enabled = true;
+
+            // Draw the "Browse..." button
+            rect.x += rect.width + HORIZONTAL_MARGIN;
+            rect.width = BROWSE_BUTTON_WIDTH;
+            if (GUI.Button(rect, EditorIcons.IconContent(EEditorIcon.Search, "Browse...", "Open your explorer to set the path"), GUI.skin.button.Padding(1, 1)))
+            {
+                string dir = _InProject ? "Assets" : null;
+                if (_File)
+                    newPath = EditorUtility.OpenFilePanel("Select File Path", dir, null);
+                else
+                    newPath = EditorUtility.OpenFolderPanel("Select File Path", dir, null);
+            }
+
+            // If the new path is null or empty, consider the selected path didn't change
+            if (string.IsNullOrEmpty(newPath))
+                return _Path;
+
+            // If the path must target the project but it actually doesn't, display a dialog
+            if(!_Editable && _InProject && !string.IsNullOrEmpty(_Path) && !IsPathRelativeToCurrentProjectFolder(_Path))
+            {
+                EditorUtility.DisplayDialog("Invalid Path", $"The path must target a {(_File ? "file" : "directory")} in this project", "Ok");
+                return newPath == _Path ? string.Empty : _Path;
+            }
+
+            return newPath;
+        }
+
         /// <summary>
         /// Draws an Object Field with additional controls.
         /// </summary>

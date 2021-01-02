@@ -345,6 +345,52 @@ Draws a pagination bar, with "Previous" and "Next" buttons, and an int field to 
 
 Returns the pagination data.
 
+#### `FolderPathField()`
+
+```cs
+public static void FolderPathField(SerializedProperty _Property, bool _Editable = false, bool _InProject = true);
+public static string FolderPathField(string _Path, bool _Editable = false, bool _InProject = true);
+public static string FolderPathField(string _Label, string _Path, bool _Editable = false, bool _InProject = true);
+public static void FolderPathField(Rect _Rect, SerializedProperty _Property, bool _Editable = false, bool _InProject = true);
+public static string FolderPathField(Rect _Rect, string _Path, bool _Editable = false, bool _InProject = true);
+public static string FolderPathField(Rect _Rect, string _Label, string _Path, bool _Editable = false, bool _InProject = true);
+```
+
+Draws a text field with a *Browse...* button which allow the user to select a directory.
+
+![Preview of `FolderPathField()` and `FilePathField()`](./Images/path-fields.png)
+
+- `SerializedProperty _Property`: The string property to set.
+- `bool _Editable = false`: If `true`, the text field of the path can be edited manually. Otherwise, the path can only be set using the *Browse...* button.
+- `bool _InProject = true`: If `true`, forces the path to target a directory inside the current project.
+- `string _Path`: The current path value.
+- `Rect _Rect`: The position and size of the field to draw.
+
+Returns the selected path.
+
+#### `FilePathField()`
+
+```cs
+public static void FilePathField(SerializedProperty _Property, bool _Editable = false, bool _InProject = true);
+public static string FilePathField(string _Path, bool _Editable = false, bool _InProject = true);
+public static string FilePathField(string _Label, string _Path, bool _Editable = false, bool _InProject = true);
+public static void FilePathField(Rect _Rect, SerializedProperty _Property, bool _Editable = false, bool _InProject = true);
+public static string FilePathField(Rect _Rect, string _Path, bool _Editable = false, bool _InProject = true);
+public static string FilePathField(Rect _Rect, string _Label, string _Path, bool _Editable = false, bool _InProject = true);
+```
+
+Draws a text field with a *Browse...* button which allow the user to select a file.
+
+![Preview of `FolderPathField()` and `FilePathField()`](./Images/path-fields.png)
+
+- `SerializedProperty _Property`: The string property to set.
+- `bool _Editable = false`: If `true`, the text field of the path can be edited manually. Otherwise, the path can only be set using the *Browse...* button.
+- `bool _InProject = true`: If `true`, forces the path to target a file inside the current project.
+- `string _Path`: The current path value.
+- `Rect _Rect`: The position and size of the field to draw.
+
+Returns the selected path.
+
 #### `ExtendedObjectField()`
 
 ```cs
