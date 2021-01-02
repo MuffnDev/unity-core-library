@@ -69,7 +69,7 @@ namespace MuffinDev.Core.EditorOnly
 				GUI.enabled = AssetGUI.Asset != null;
 				GUIContent backBtnContent = EditorGUIUtility.IconContent("tab_prev", "Back to assets list");
 				backBtnContent.text = "Back";
-				if (GUILayout.Button(backBtnContent, EditorStyles.toolbarButton, GUILayout.Width(EditorHelpers.DEFAULT_BACK_BUTTON_WIDTH)))
+				if (GUILayout.Button(backBtnContent, EditorStyles.toolbarButton, GUILayout.Width(MuffinDevGUI.DEFAULT_BACK_BUTTON_WIDTH)))
 					AssetGUI.Asset = null;
 				GUI.enabled = true;
 			}
