@@ -67,11 +67,11 @@ namespace MuffinDev.Core.Demos
 
         [Header("AutoAssign attribute")]
 
-        [AutoAssign]
+        [ComponentRef]
         [Tooltip("The Transform instance is set automatically using GetComponent(). You won't be able to set this value to none.")]
         public Transform thisTransform = null;
 
-        [AutoAssign(EAutoAssignMethod.FindObjectOfType)]
+        [ComponentRef(true, true)]
         [Tooltip("The Light object is set automatically using GameObject.FindObjectOfType(). You won't be able to set this value to none, unless you remove all lights in the scene.")]
         public Light sceneLight = null;
 

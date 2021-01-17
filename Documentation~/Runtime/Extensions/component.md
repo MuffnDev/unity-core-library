@@ -79,7 +79,7 @@ Copy the values of the original component into the given target one. Note that i
 public static void InitComponentRefs(this Component _Component);
 ```
 
-Initializes reference to components or `GameObject`s on fields that use the [`[ComponentRef]`](../CustomAttributes/component-ref.md) attribute.
+Initializes reference to components or `GameObject`s on fields that use the [`[ComponentRef]`](../CustomAttributes/component-ref.md) attribute. Note that if the properties are already initialized, their value is never replaced.
 
 The following example shows you how to use this method in order to initialize all components and `GameObject`s reference at once when a component is initialized:
 
