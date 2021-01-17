@@ -3,6 +3,8 @@ using System.Reflection;
 
 using UnityEngine;
 
+using Object = UnityEngine.Object;
+
 namespace MuffinDev.Core
 {
 
@@ -13,31 +15,57 @@ namespace MuffinDev.Core
 	{
 
         /// <summary>
-        /// Gets the component of the given type from the root GameObject of the hierarchy.
+        /// Gets a component in the hierarchy, by iterating through "hierarchy levels" instead of plain recusivity as
+        /// GetComponentsInChildren() would do.
         /// </summary>
-        /// <returns>Returns the found component, otherwise null.</returns>
-		public static T GetComponentFromRoot<T>(this Component _Component)
+        /// <typeparam name="T">The type of the component you want to get.</typeparam>
+        /// <param name="_IncludeSelf">If enabled, try get component on the source object.</param>
+        /// <param name="_IncludeInactive">If enabled, try get component on disabled objects.</param>
+        /// <returns>Returns the first component of the given type found in the hierarchy.</returns>
+        public static T GetComponentInHierarchy<T>(this Component _Obj, bool _IncludeSelf = true, bool _IncludeInactive = false)
             where T : Component
         {
-            return _Component.gameObject.GetComponentFromRoot<T>();
+            return GameObjectExtension.GetComponentInHierarchy<T>(_Obj.gameObject, _IncludeSelf, _IncludeInactive);
         }
 
         /// <summary>
-        /// Gets the component of the given type from the root GameObject of the hierarchy.
+        /// Gets a component in the hierarchy, by iterating through "hierarchy levels" instead of plain recusivity as
+        /// GetComponentsInChildren() would do.
         /// </summary>
-        /// <returns>Returns the found component, otherwise null.</returns>
-        public static Component GetComponentFromRoot(this Component _Component, Type _ComponentType)
+        /// <param name="_ComponentType">The type of the component you want to get.</param>
+        /// <param name="_IncludeSelf">If enabled, try get component on the source object.</param>
+        /// <param name="_IncludeInactive">If enabled, try get component on disabled objects.</param>
+        /// <returns>Returns the first component of the given type found in the hierarchy.</returns>
+        public static Component GetComponentInHierarchy(this Component _Obj, Type _ComponentType, bool _IncludeSelf = true, bool _IncludeInactive = false)
         {
-            return _Component.gameObject.GetComponentFromRoot(_ComponentType);
+            return GameObjectExtension.GetComponentInHierarchy(_Obj.gameObject, _ComponentType, _IncludeSelf, _IncludeInactive);
         }
 
         /// <summary>
-        /// Gets the component of the named type from the root GameObject of the hierarchy.
+        /// Gets all components in the hierarchy, by iterating through "hierarchy levels" instead of plain recusivity as
+        /// GetComponentsInChildren() would do.
         /// </summary>
-        /// <returns>Returns the found component, otherwise null.</returns>
-        public static Component GetComponentFromRoot(this Component _Component, string _ComponentTypeName)
+        /// <typeparam name="T">The type of the components you want to get.</typeparam>
+        /// <param name="_IncludeSelf">If enabled, includes the given source object in the resulting list.</param>
+        /// <param name="_IncludeInactive">If enabled, includes the inactive objects in the resulting list.</param>
+        /// <returns>Returns all the components of the given type found in the hierarchy.</returns>
+        public static T[] GetComponentsInHierarchy<T>(this Component _Obj, bool _IncludeSelf = true, bool _IncludeInactive = false)
+            where T : Component
         {
-            return _Component.gameObject.GetComponentFromRoot(_ComponentTypeName);
+            return GameObjectExtension.GetComponentsInHierarchy<T>(_Obj.gameObject, _IncludeSelf, _IncludeInactive);
+        }
+
+        /// <summary>
+        /// Gets all components in the hierarchy, by iterating through "hierarchy levels" instead of plain recusivity as
+        /// GetComponentsInChildren() would do.
+        /// </summary>
+        /// <param name="_ComponentType">The type of the components you want to get.</param>
+        /// <param name="_IncludeSelf">If enabled, includes the given source object in the resulting list.</param>
+        /// <param name="_IncludeInactive">If enabled, includes the inactive objects in the resulting list.</param>
+        /// <returns>Returns all the components of the given type found in the hierarchy.</returns>
+        public static Component[] GetComponentsInHierarchy(this Component _Obj, Type _ComponentType, bool _IncludeSelf = true, bool _IncludeInactive = false)
+        {
+            return GameObjectExtension.GetComponentsInHierarchy(_Obj.gameObject, _ComponentType, _IncludeSelf, _IncludeInactive);
         }
 
         /// <summary>
@@ -142,6 +170,7 @@ namespace MuffinDev.Core
 #endif
         }
 
+#if !UNITY_EDITOR
         /// <summary>
         /// Checks if the named property should be copied when using CopyTo() method, depending on the given targets and settings.
         /// </summary>
@@ -165,6 +194,124 @@ namespace MuffinDev.Core
 
             // If the property is not in the list of targets, returns true if targets are ignored, otherwise false
             return _IgnoreTargetProperties;
+        }
+#endif
+
+        /// <summary>
+		/// Initializes reference to components or GameObject on fields that use the [ComponentRef] attribute.
+		/// </summary>
+		public static void InitComponentRefs(this Component _Component)
+        {
+            foreach (FieldInfo fieldInfo in _Component.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
+            {
+                // If the current field doesn't use the ComponentRef attribute, skip this field
+                if (!Attribute.IsDefined(fieldInfo, typeof(ComponentRefAttribute)))
+                    continue;
+
+                // If the current field's value is already set, skip this field
+                if (fieldInfo.GetValue(_Component) != null)
+                    continue;
+
+                ComponentRefAttribute attribute = Attribute.GetCustomAttribute(fieldInfo, typeof(ComponentRefAttribute)) as ComponentRefAttribute;
+                // Find a component or GameObject reference depending on the [ComponentRef] attribute settings
+                Object reference = FindComponentRef(_Component, fieldInfo.FieldType, attribute.Scope, attribute.RefObjectName);
+
+                // Replace the field value if applicable
+                if(reference != null)
+                    fieldInfo.SetValue(_Component, reference);
+            }
+        }
+
+        /// <summary>
+        /// Find a component reference depending on the given settings.
+        /// </summary>
+        /// <param name="_Component">The component from which you want to get a reference.</param>
+        /// <param name="_PropertyType">The type of the component you want to get. THis can also be GameObject.</param>
+        /// <param name="_Scope">The scope of the research to use for getting the reference.</param>
+        /// <param name="_RefObjectName">The name of the object on which you want to get the reference.</param>
+        /// <returns>Returns the found reference, or null if it failed.</returns>
+        public static Object FindComponentRef(Component _Component, Type _PropertyType, EComponentRefScope _Scope = EComponentRefScope.Local, string _RefObjectName = null)
+        {
+            bool isGameObjectRef = _PropertyType == typeof(GameObject);
+            if (!_PropertyType.IsSubclassOf(typeof(Component)) && !isGameObjectRef)
+                return null;
+
+            // Get local references (using GetComponent())
+            if (_Scope.HasFlag(EComponentRefScope.Local))
+            {
+                if (isGameObjectRef)
+                {
+                    if (string.IsNullOrEmpty(_RefObjectName) || _Component.gameObject.name == _RefObjectName)
+                        return _Component.gameObject;
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(_RefObjectName) || _Component.gameObject.name == _RefObjectName)
+                        return _Component.GetComponent(_PropertyType);
+                }
+            }
+
+            // Get children references (using GetComponentsInHierarchy())
+            if (_Scope.HasFlag(EComponentRefScope.Children))
+            {
+                // If we search for a GameObject
+                if (isGameObjectRef)
+                {
+                    // If no target name has been mentionned, find the first GameObject in the hierarchy
+                    if (string.IsNullOrEmpty(_RefObjectName))
+                    {
+                        foreach(Transform child in _Component.transform)
+                        {
+                            if (child != _Component.transform)
+                                return child.gameObject;
+                        }
+                    }
+                    // Else, finds the GameObject in the hierarchy that has the given name
+                    else
+                    {
+                        return _Component.gameObject.Find(_RefObjectName, false, true);
+                    }
+                }
+                // Else, if we search for a component
+                else
+                {
+                    // If no object name has been mentionned, find the first component in the hierarchy with the given type
+                    if (string.IsNullOrEmpty(_RefObjectName))
+                        return _Component.GetComponentInHierarchy(_PropertyType, false, true);
+
+                    // Else, try to get the component from the object of the given name in the hierarchy
+                    GameObject target = _Component.gameObject.Find(_RefObjectName, false, true);
+                    if (target != null && target.TryGetComponent(_PropertyType, out Component comp))
+                        return comp;
+                }
+            }
+
+            // Get World references (using FindObjectOfType())
+            if (_Scope.HasFlag(EComponentRefScope.World))
+            {
+                if (isGameObjectRef)
+                {
+                    return string.IsNullOrEmpty(_RefObjectName)
+                        ? Object.FindObjectOfType<GameObject>()
+                        : GameObject.Find(_RefObjectName);
+                }
+                else
+                {
+                    Object target = Object.FindObjectOfType(_PropertyType);
+
+                    if (string.IsNullOrEmpty(_RefObjectName) || target.name == _RefObjectName)
+                        return target;
+
+                    Object[] objs = Object.FindObjectsOfType(_PropertyType);
+                    foreach(Object obj in objs)
+                    {
+                        if (obj.name == _RefObjectName)
+                            return obj;
+                    }
+                }
+            }
+
+            return null;
         }
 
     }
