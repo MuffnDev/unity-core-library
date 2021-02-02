@@ -57,7 +57,7 @@ namespace MuffinDev.Core.EditorOnly
 
                 if (VALUE_EDITORS.TryGetValue(dataType, out IBlackboardValueEditor editor))
                 {
-                    editor.OnGUI(rect, item, new GUIContent(item.displayName));
+                    editor.OnGUI(rect, item, new GUIContent(item.FindPropertyRelative("m_Key").stringValue));
                 }
                 else
                 {

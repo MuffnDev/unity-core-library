@@ -15,6 +15,7 @@ namespace MuffinDev.Core.EditorOnly
 	{
 
 		protected const string SERIALIZED_DATA_PROP = "m_SerializedData";
+		protected const string KEY_PROP = "m_Key";
 
 		/// <summary>
 		/// Draws the GUI of the value (using IMGUI).
@@ -44,13 +45,21 @@ namespace MuffinDev.Core.EditorOnly
 		}
 
 		/// <summary>
+		/// Gets the Serialized Property that represent the serialized data field.
+		/// </summary>
+		/// <param name="_Item">The serialized property that represent an entry of a blackboard.</param>
+		public SerializedProperty GetSerializedDataProperty(SerializedProperty _Item)
+        {
+			return _Item.FindPropertyRelative(SERIALIZED_DATA_PROP);
+		}
+
+		/// <summary>
 		/// Gets the value of the given entry.
 		/// </summary>
 		/// <param name="_Item">The serialized property that represent an entry of a blackboard.</param>
 		public T GetValue(SerializedProperty _Item)
         {
-			SerializedProperty serializedDataProperty = _Item.FindPropertyRelative(SERIALIZED_DATA_PROP);
-			return SerializationUtility.DeserializeFromString<T>(serializedDataProperty.stringValue);
+			return SerializationUtility.DeserializeFromString<T>(GetSerializedDataProperty(_Item).stringValue);
 		}
 
 		/// <summary>
@@ -59,8 +68,35 @@ namespace MuffinDev.Core.EditorOnly
 		/// <param name="_Item">The serialized property that represent an entry of a blackboard.</param>
 		public void SetValue(SerializedProperty _Item, T _Value)
 		{
-			SerializedProperty serializedDataProperty = _Item.FindPropertyRelative(SERIALIZED_DATA_PROP);
-			serializedDataProperty.stringValue = SerializationUtility.SerializeToString(_Value);
+			GetSerializedDataProperty(_Item).stringValue = SerializationUtility.SerializeToString(_Value);
+		}
+
+		/// <summary>
+		/// Gets the Serialized Property that represent the key field.
+		/// </summary>
+		/// <param name="_Item">The serialized property that represent an entry of a blackboard.</param>
+		public SerializedProperty GetKeyProperty(SerializedProperty _Item)
+        {
+			return _Item.FindPropertyRelative(KEY_PROP);
+		}
+
+		/// <summary>
+		/// Gets the key of the given entry.
+		/// </summary>
+		/// <param name="_Item">The serialized property that represent an entry of a blackboard.</param>
+		public string GetKey(SerializedProperty _Item)
+        {
+			return GetKeyProperty(_Item).stringValue;
+		}
+
+		/// <summary>
+		/// Sets the key of the given entry.
+		/// </summary>
+		/// <param name="_Item">The serialized property that represent an entry of a blackboard.</param>
+		/// <param name="_Key">The new key value you want to set.</param>
+		public void SetKey(SerializedProperty _Item, string _Key)
+		{
+			GetKeyProperty(_Item).stringValue = _Key;
 		}
 
 		/// <summary>

@@ -15,8 +15,13 @@ namespace MuffinDev.Core.EditorOnly
 
 		public override void OnGUI(Rect _Position, SerializedProperty _Item, GUIContent _Label)
         {
+			MuffinDevGUI.ComputeLabelledFieldRects(_Position, out Rect labelRect, out Rect fieldRect);
+
+			// Key field
+			SetKey(_Item, EditorGUI.TextField(labelRect, GetKey(_Item)));
+			// Value field
 			int currentValue = GetValue(_Item);
-			int newValue = EditorGUI.IntField(_Position, _Label, currentValue);
+			int newValue = EditorGUI.IntField(fieldRect, currentValue);
 			if (currentValue != newValue)
 				SetValue(_Item, newValue);
         }
