@@ -10,3 +10,4 @@ Unclassified utility classes.
 - [`Log`](./log.md): Container for log entry
 - [`OperationState`](./operation-state.md): Represents the state of an operation
 - [`Pagination`](./pagination.md): Utility class for pagination system
+- [`SerializationUtility`](./serialization-utility.md): Utilities for serialization
