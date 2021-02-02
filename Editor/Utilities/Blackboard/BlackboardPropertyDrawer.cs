@@ -19,6 +19,8 @@ namespace MuffinDev.Core.EditorOnly
         private const string SERIALIZED_DATA_LIST_PROP = "m_SerializedEntries";
 
         private const string DATA_TYPE_NAME_PROP = "m_DataTypeName";
+        public const string SERIALIZED_DATA_PROP = "m_SerializedData";
+        public const string KEY_PROP = "m_Key";
 
         static BlackboardPropertyDrawer()
         {
@@ -50,7 +52,7 @@ namespace MuffinDev.Core.EditorOnly
                 Type dataType = Type.GetType(item.FindPropertyRelative(DATA_TYPE_NAME_PROP).stringValue);
                 if (dataType == null)
                 {
-                    EditorGUI.HelpBox(rect, "Null type", MessageType.Warning);
+                    EditorGUI.HelpBox(rect, "Invalid Type", MessageType.Warning);
                     rect.y += MuffinDevGUI.LINE_HEIGHT + MuffinDevGUI.VERTICAL_MARGIN;
                     continue;
                 }
@@ -61,7 +63,10 @@ namespace MuffinDev.Core.EditorOnly
                 }
                 else
                 {
-                    EditorGUI.HelpBox(rect, "No custom editor found for type " + dataType.FullName, MessageType.Info);
+                    SerializedProperty keyProperty = item.FindPropertyRelative(KEY_PROP);
+                    MuffinDevGUI.ComputeLabelledFieldRects(rect, out Rect labelRect, out Rect fieldRect);
+                    keyProperty.stringValue = EditorGUI.TextField(labelRect, keyProperty.stringValue);
+                    EditorGUI.LabelField(fieldRect, $"No editor for type {dataType.Name}", new GUIStyle(EditorStyles.helpBox).WordWrap(false));
                 }
                 rect.y += MuffinDevGUI.LINE_HEIGHT + MuffinDevGUI.VERTICAL_MARGIN;
             }
@@ -84,7 +89,7 @@ namespace MuffinDev.Core.EditorOnly
         public override float GetPropertyHeight(SerializedProperty _Property, GUIContent _Label)
         {
             SerializedProperty serializedDataList = _Property.FindPropertyRelative(SERIALIZED_DATA_LIST_PROP);
-            return (serializedDataList.arraySize + 1) * MuffinDevGUI.LINE_HEIGHT + (serializedDataList.arraySize + 1) * MuffinDevGUI.VERTICAL_MARGIN;
+            return (serializedDataList.arraySize + 1) * MuffinDevGUI.LINE_HEIGHT + (serializedDataList.arraySize + 1) * MuffinDevGUI.VERTICAL_MARGIN + 1000;
         }
 
     }

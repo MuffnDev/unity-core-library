@@ -14,9 +14,6 @@ namespace MuffinDev.Core.EditorOnly
 	public abstract class BlackboardValueEditor<T> : IBlackboardValueEditor
 	{
 
-		protected const string SERIALIZED_DATA_PROP = "m_SerializedData";
-		protected const string KEY_PROP = "m_Key";
-
 		/// <summary>
 		/// Draws the GUI of the value (using IMGUI).
 		/// </summary>
@@ -50,7 +47,7 @@ namespace MuffinDev.Core.EditorOnly
 		/// <param name="_Item">The serialized property that represent an entry of a blackboard.</param>
 		public SerializedProperty GetSerializedDataProperty(SerializedProperty _Item)
         {
-			return _Item.FindPropertyRelative(SERIALIZED_DATA_PROP);
+			return _Item.FindPropertyRelative(BlackboardPropertyDrawer.SERIALIZED_DATA_PROP);
 		}
 
 		/// <summary>
@@ -77,7 +74,7 @@ namespace MuffinDev.Core.EditorOnly
 		/// <param name="_Item">The serialized property that represent an entry of a blackboard.</param>
 		public SerializedProperty GetKeyProperty(SerializedProperty _Item)
         {
-			return _Item.FindPropertyRelative(KEY_PROP);
+			return _Item.FindPropertyRelative(BlackboardPropertyDrawer.KEY_PROP);
 		}
 
 		/// <summary>
