@@ -65,7 +65,7 @@ namespace MuffinDev.Core.Demos
         [Tooltip("This value can't be edited")]
         public string readonlyValue = string.Empty;
 
-        [Header("AutoAssign attribute")]
+        [Header("ComponentRef attribute")]
 
         [ComponentRef]
         [Tooltip("The Transform instance is set automatically using GetComponent(). You won't be able to set this value to none.")]
