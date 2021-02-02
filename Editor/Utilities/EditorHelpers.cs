@@ -149,6 +149,9 @@ namespace MuffinDev.Core.EditorOnly
         public static Type GetPropertyType(SerializedProperty _Property)
         {
             Type parentType = _Property.serializedObject.targetObject.GetType();
+            if (parentType == null)
+                return null;
+
             FieldInfo propertyField = parentType.GetField(_Property.propertyPath, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             return propertyField != null ? propertyField.FieldType : null;
         }

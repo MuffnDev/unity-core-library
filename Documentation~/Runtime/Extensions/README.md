@@ -20,7 +20,6 @@ Contains extensions for native types or UnityEngine library classes.
 - [`GUIStyle` extensions](./gui-style.md)
 - [`Input` extensions](./input.md)
 - [`List` extensions](./list.md)
-- [`MonoBehaviour` extensions](./mono-behaviour.md)
 - [`Object` extensions](./object.md)
 - [`Rect` extensions](./rect.md)
 - [`ScriptableObject` extensions](./scriptable-object.md)

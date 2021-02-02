@@ -7,6 +7,7 @@ namespace MuffinDev.Core
     /// Defines the component searching method.
     /// Used by AutoAssignAttribute.
     /// </summary>
+    [System.Obsolete("Since the [AutoAssign] attribute is deprecated, you should use [ComponentRef] attribute instead, which provides the EComponentRefScope enumeration.")]
     public enum EAutoAssignMethod
     {
         /// <summary>
@@ -38,6 +39,7 @@ namespace MuffinDev.Core
     /// <summary>
     /// Automaticcaly get a component to fill this property field.
     /// </summary>
+    [System.Obsolete("You should use [ComponentRef] attribute instead, which is more flexible and can be used in combination with Component.InitComponentRefs() to automatize the Components and GameObject references initialization.")]
     public class AutoAssignAttribute : PropertyAttribute
     {
 

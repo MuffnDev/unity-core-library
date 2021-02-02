@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 
 using UnityEngine;
@@ -10,91 +11,157 @@ namespace MuffinDev.Core
     /// Extensions for GameObject objects.
     ///</summary>
     public static class GameObjectExtension
-	{
-        
+    {
+
         /// <summary>
-        /// Gets the component of the given type from the root GameObject of the hierarchy.
+        /// Gets a component in the hierarchy, by iterating through "hierarchy levels" instead of plain recusivity as
+        /// GetComponentsInChildren() would do.
         /// </summary>
-        /// <returns>Returns the found component, otherwise null.</returns>
-        public static T GetComponentFromRoot<T>(this GameObject _Obj)
+        /// <typeparam name="T">The type of the component you want to get.</typeparam>
+        /// <param name="_IncludeSelf">If enabled, try get component on the source object.</param>
+        /// <param name="_IncludeInactive">If enabled, try get component on disabled objects.</param>
+        /// <returns>Returns the first component of the given type found in the hierarchy.</returns>
+        public static T GetComponentInHierarchy<T>(this GameObject _Obj, bool _IncludeSelf = true, bool _IncludeInactive = false)
             where T : Component
         {
-            Queue<GameObject> gameObjects = new Queue<GameObject>();
-            gameObjects.Enqueue(_Obj);
+            return GetComponentInHierarchy(_Obj, typeof(T), _IncludeSelf, _IncludeInactive) as T;
+        }
 
-            GameObject currentGameObject = null;
-            while((currentGameObject = gameObjects.Dequeue()) != null)
+        /// <summary>
+        /// Gets a component in the hierarchy, by iterating through "hierarchy levels" instead of plain recusivity as
+        /// GetComponentsInChildren() would do.
+        /// </summary>
+        /// <param name="_ComponentType">The type of the component you want to get.</param>
+        /// <param name="_IncludeSelf">If enabled, try get component on the source object.</param>
+        /// <param name="_IncludeInactive">If enabled, try get component on disabled objects.</param>
+        /// <returns>Returns the first component of the given type found in the hierarchy.</returns>
+        public static Component GetComponentInHierarchy(this GameObject _Obj, Type _ComponentType, bool _IncludeSelf = true, bool _IncludeInactive = false)
+        {
+            Queue<Transform> hierarchy = new Queue<Transform>();
+
+            Component comp = GetComponentInHierarchy(_ComponentType, _Obj.transform, hierarchy, _IncludeSelf, _IncludeInactive);
+            while (comp == null && hierarchy.Count > 0)
             {
-                T comp = currentGameObject.GetComponent<T>();
-                if(comp != null)
-                {
-                    return comp;
-                }
+                comp = GetComponentInHierarchy(_ComponentType, hierarchy.Dequeue(), hierarchy, false, _IncludeInactive);
+            }
 
-                int childCount = currentGameObject.transform.childCount;
-                for(int i = 0; i < childCount; i++)
-                {
-                    gameObjects.Enqueue(currentGameObject.transform.GetChild(i).gameObject);
-                }
+            return comp;
+        }
+
+        /// <summary>
+        /// Gets a component in the hierarchy, by iterating through "hierarchy levels" instead of plain recusivity as
+        /// GetComponentsInChildren() would do.
+        /// </summary>
+        /// <param name="_ComponentType">The type of the component you want to find.</param>
+        /// <param name="_Source">The source object from which you want to get the components.</param>
+        /// <param name="_Hierarchy">The eventual children in which to get components at next iteration.</param>
+        /// <param name="_IncludeSelf">If enabled, try get component on the source object.</param>
+        /// <param name="_IncludeInactive">If enabled, try get component on disabled objects.</param>
+        /// <returns>Returns the first component of the given type found in the hierarchy.</returns>
+        private static Component GetComponentInHierarchy(Type _ComponentType, Transform _Source, Queue<Transform> _Hierarchy, bool _IncludeSelf, bool _IncludeInactive)
+        {
+            foreach (Transform child in _Source)
+            {
+                // Skip if the current child is this object, but user doesn't want to include it
+                if (child == _Source && !_IncludeSelf)
+                    continue;
+
+                // Skip if the current child is inactive and the inactive objects are discarded
+                if (!_IncludeInactive && !child.gameObject.activeInHierarchy)
+                    continue;
+
+                // Add all components of the expected type to the output list
+                if (child.TryGetComponent(_ComponentType, out Component comp))
+                    return comp;
+
+                // Register the child for the next iteration
+                if (child.childCount > 0 && child != _Source)
+                    _Hierarchy.Enqueue(child);
             }
 
             return null;
         }
 
         /// <summary>
-        /// Gets the component of the given type from the root GameObject of the hierarchy.
+        /// Gets all components in the hierarchy, by iterating through "hierarchy levels" instead of plain recusivity as
+        /// GetComponentsInChildren() would do.
         /// </summary>
-        /// <returns>Returns the found component, otherwise null.</returns>
-        public static Component GetComponentFromRoot(this GameObject _Obj, Type _ComponentType)
+        /// <typeparam name="T">The type of the components you want to get.</typeparam>
+        /// <param name="_IncludeSelf">If enabled, includes the given source object in the resulting list.</param>
+        /// <param name="_IncludeInactive">If enabled, includes the inactive objects in the resulting list.</param>
+        /// <returns>Returns all the components of the given type found in the hierarchy.</returns>
+        public static T[] GetComponentsInHierarchy<T>(this GameObject _Obj, bool _IncludeSelf = true, bool _IncludeInactive = false)
+            where T : Component
         {
-            Queue<GameObject> gameObjects = new Queue<GameObject>();
-            gameObjects.Enqueue(_Obj);
+            return GetComponentsInHierarchy(_Obj, typeof(T), _IncludeSelf, _IncludeInactive)
+                .Cast<T>()
+                .ToArray();
+        }
+        
+        /// <summary>
+        /// Gets all components in the hierarchy, by iterating through "hierarchy levels" instead of plain recusivity as
+        /// GetComponentsInChildren() would do.
+        /// </summary>
+        /// <param name="_ComponentType">The type of the components you want to get.</param>
+        /// <param name="_IncludeSelf">If enabled, includes the given source object in the resulting list.</param>
+        /// <param name="_IncludeInactive">If enabled, includes the inactive objects in the resulting list.</param>
+        /// <returns>Returns all the components of the given type found in the hierarchy.</returns>
+        public static Component[] GetComponentsInHierarchy(this GameObject _Obj, Type _ComponentType, bool _IncludeSelf = true, bool _IncludeInactive = false)
+        {
+            List<Component> output = new List<Component>();
+            Queue<Transform> hierarchy = new Queue<Transform>();
 
-            GameObject currentGameObject = null;
-            while ((currentGameObject = gameObjects.Dequeue()) != null)
+            GetComponentsInHierarchy(_ComponentType, _Obj.transform, output, hierarchy, _IncludeSelf, _IncludeInactive);
+            while (hierarchy.Count > 0)
             {
-                Component comp = currentGameObject.GetComponent(_ComponentType);
-                if (comp != null)
-                {
-                    return comp;
-                }
-
-                int childCount = currentGameObject.transform.childCount;
-                for (int i = 0; i < childCount; i++)
-                {
-                    gameObjects.Enqueue(currentGameObject.transform.GetChild(i).gameObject);
-                }
+                GetComponentsInHierarchy(_ComponentType, hierarchy.Dequeue(), output, hierarchy, false, _IncludeInactive);
             }
 
-            return null;
+            return output.ToArray();
         }
 
         /// <summary>
-        /// Gets the component of the named type from the root GameObject of the hierarchy.
+        /// Gets all components on the given source object (if Include Self parameter is enabled) and in its hierarchy.
         /// </summary>
-        /// <returns>Returns the found component, otherwise null.</returns>
-        public static Component GetComponentFromRoot(this GameObject _Obj, string _ComponentTypeName)
+        /// <param name="_ComponentType">The type of the components you want to find.</param>
+        /// <param name="_Source">The source object from which you want to get the components.</param>
+        /// <param name="_Output">The list of found components.</param>
+        /// <param name="_Hierarchy">The eventual children in which to get components at next iteration.</param>
+        /// <param name="_IncludeSelf">If enabled, includes the given source object in the resulting list.</param>
+        /// <param name="_IncludeInactive">If enabled, includes the inactive objects in the resulting list.</param>
+        private static void GetComponentsInHierarchy(Type _ComponentType, Transform _Source, List<Component> _Output, Queue<Transform> _Hierarchy, bool _IncludeSelf, bool _IncludeInactive)
         {
-            Queue<GameObject> gameObjects = new Queue<GameObject>();
-            gameObjects.Enqueue(_Obj);
-
-            GameObject currentGameObject = null;
-            while ((currentGameObject = gameObjects.Dequeue()) != null)
+            foreach (Transform child in _Source)
             {
-                Component comp = currentGameObject.GetComponent(_ComponentTypeName);
-                if (comp != null)
-                {
-                    return comp;
-                }
+                // Skip if the current child is this object, but user doesn't want to include it
+                if (child == _Source && !_IncludeSelf)
+                    continue;
 
-                int childCount = currentGameObject.transform.childCount;
-                for (int i = 0; i < childCount; i++)
-                {
-                    gameObjects.Enqueue(currentGameObject.transform.GetChild(i).gameObject);
-                }
+                // Skip if the current child is inactive and the inactive objects are discarded
+                if (!_IncludeInactive && !child.gameObject.activeInHierarchy)
+                    continue;
+
+                // Add all components of the expected type to the output list
+                _Output.AddRange(child.GetComponents(_ComponentType));
+                // Register the child for the next iteration
+                if (child.childCount > 0 && child != _Source)
+                    _Hierarchy.Enqueue(child);
             }
+        }
 
-            return null;
+        /// <summary>
+        /// Find an object by name, recursively in the source's hierarchy.
+        /// </summary>
+        /// <param name="_Obj">The object from which you want to find the named object.</param>
+        /// <param name="_Name">The name of the object you want to find.</param>
+        /// <param name="_IncludeSelf">If enabled, the input object is included in the research.</param>
+        /// <param name="_IncludeInactive">If enabled, this method will also search if the name of disabled objects match.</param>
+        /// <returns>Returns the found object, or null if the source doesn't contain any object with the given name in its
+        /// hierarchy.</returns>
+        public static GameObject Find(this GameObject _Obj, string _Name, bool _IncludeSelf = true, bool _IncludeInactive = false)
+        {
+            Transform target = TransformExtension.Find(_Obj.transform, _Name, _IncludeSelf, _IncludeInactive);
+            return target != null ? target.gameObject : null;
         }
 
     }
