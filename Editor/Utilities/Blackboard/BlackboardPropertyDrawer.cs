@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEditor;
@@ -13,9 +14,22 @@ namespace MuffinDev.Core.EditorOnly
     public class BlackboardPropertyDrawer : PropertyDrawer
 	{
 
+        private static readonly Dictionary<Type, IBlackboardValueEditor> VALUE_EDITORS = null;
+
         private const string SERIALIZED_DATA_LIST_PROP = "m_SerializedEntries";
 
         private const string DATA_TYPE_NAME_PROP = "m_DataTypeName";
+
+        static BlackboardPropertyDrawer()
+        {
+            IEnumerable<Type> valueEditorsTypes = ReflectionUtility.GetAllTypesAssignableFrom<IBlackboardValueEditor>();
+            VALUE_EDITORS = new Dictionary<Type, IBlackboardValueEditor>();
+            foreach (Type t in valueEditorsTypes)
+            {
+                IBlackboardValueEditor valueEditor = Activator.CreateInstance(t) as IBlackboardValueEditor;
+                VALUE_EDITORS.Add(valueEditor.ValueType, valueEditor);
+            }
+        }
 
         public override void OnGUI(Rect _Position, SerializedProperty _Property, GUIContent _Label)
         {
@@ -41,7 +55,14 @@ namespace MuffinDev.Core.EditorOnly
                     continue;
                 }
 
-                EditorGUI.LabelField(rect, "Draw editor for property type " + dataType.FullName);
+                if (VALUE_EDITORS.TryGetValue(dataType, out IBlackboardValueEditor editor))
+                {
+                    editor.OnGUI(rect, item, new GUIContent(item.displayName));
+                }
+                else
+                {
+                    EditorGUI.HelpBox(rect, "No custom editor found for type " + dataType.FullName, MessageType.Info);
+                }
                 rect.y += MuffinDevGUI.LINE_HEIGHT + MuffinDevGUI.VERTICAL_MARGIN;
             }
         }
