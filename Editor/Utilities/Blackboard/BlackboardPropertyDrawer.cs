@@ -65,12 +65,26 @@ namespace MuffinDev.Core.EditorOnly
                 }
                 rect.y += MuffinDevGUI.LINE_HEIGHT + MuffinDevGUI.VERTICAL_MARGIN;
             }
+
+            if (GUI.Button(rect, "Add entry"))
+            {
+                GenericMenu menu = new GenericMenu();
+                menu.AddDisabledItem(new GUIContent("New Entry Type"));
+                foreach (KeyValuePair<Type, IBlackboardValueEditor> valueEditor in VALUE_EDITORS)
+                {
+                    menu.AddItem(new GUIContent(ObjectNames.NicifyVariableName(valueEditor.Key.Name)), false, () =>
+                    {
+                        Debug.LogWarning("@todo: Create new entry of type: " + valueEditor.Key.FullName);
+                    });
+                }
+                menu.ShowAsContext();
+            }
         }
 
         public override float GetPropertyHeight(SerializedProperty _Property, GUIContent _Label)
         {
             SerializedProperty serializedDataList = _Property.FindPropertyRelative(SERIALIZED_DATA_LIST_PROP);
-            return serializedDataList.arraySize * MuffinDevGUI.LINE_HEIGHT + serializedDataList.arraySize * MuffinDevGUI.VERTICAL_MARGIN;
+            return (serializedDataList.arraySize + 1) * MuffinDevGUI.LINE_HEIGHT + (serializedDataList.arraySize + 1) * MuffinDevGUI.VERTICAL_MARGIN;
         }
 
     }

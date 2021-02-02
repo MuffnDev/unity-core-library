@@ -13,6 +13,9 @@ namespace MuffinDev.Core.Demos
         [SerializeField]
         private BlackboardAssetDemo m_BlackboardAsset = null;
 
+        [SerializeField]
+        private Blackboard m_RawBlackboard = new Blackboard();
+
         private void Start()
         {
             if(m_BlackboardAsset == null)
