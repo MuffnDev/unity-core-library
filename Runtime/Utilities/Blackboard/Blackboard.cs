@@ -51,57 +51,7 @@ namespace MuffinDev.Core
 
 			public void OnAfterDeserialize()
             {
-				if (string.IsNullOrEmpty(m_DataTypeName))
-					return;
-
-				Type type = Type.GetType(m_DataTypeName);
-				if (type == null)
-				{
-					Debug.LogWarning("Impossible to deserialize data of type " + m_DataTypeName);
-					return;
-				}
-
-				if (type.IsReallyPrimitive())
-				{
-					if (type == typeof(bool))
-						m_Data = bool.Parse(m_SerializedData);
-					else if (type == typeof(int))
-						m_Data = int.Parse(m_SerializedData);
-					else if (type == typeof(float))
-						m_Data = float.Parse(m_SerializedData);
-					else if (type == typeof(string))
-						m_Data = m_SerializedData;
-					else if (type == typeof(char))
-						m_Data = char.Parse(m_SerializedData);
-					else if (type == typeof(double))
-						m_Data = double.Parse(m_SerializedData);
-					else if (type == typeof(byte))
-						m_Data = byte.Parse(m_SerializedData);
-					else if (type == typeof(sbyte))
-						m_Data = sbyte.Parse(m_SerializedData);
-					else if (type == typeof(decimal))
-						m_Data = decimal.Parse(m_SerializedData);
-					else if (type == typeof(uint))
-						m_Data = uint.Parse(m_SerializedData);
-					else if (type == typeof(long))
-						m_Data = long.Parse(m_SerializedData);
-					else if (type == typeof(ulong))
-						m_Data = ulong.Parse(m_SerializedData);
-					else if (type == typeof(short))
-						m_Data = short.Parse(m_SerializedData);
-					else if (type == typeof(ushort))
-						m_Data = ushort.Parse(m_SerializedData);
-					else
-					{
-						Debug.LogWarning("Impossible to deserialize data of type " + m_DataTypeName);
-						return;
-					}
-				}
-				else
-				{
-					m_Data = Activator.CreateInstance(type);
-					JsonUtility.FromJsonOverwrite(m_SerializedData, m_Data);
-				}
+				m_Data = SerializationUtility.DeserializeFromString(m_DataTypeName, m_SerializedData);
 			}
 
 			public void OnBeforeSerialize()
@@ -115,19 +65,7 @@ namespace MuffinDev.Core
 
 				Type dataType = m_Data.GetType();
 				m_DataTypeName = dataType.AssemblyQualifiedName;
-				if (dataType.IsReallyPrimitive())
-                {
-					m_SerializedData = m_Data.ToString();
-                }
-				else
-                {
-#if UNITY_EDITOR
-					m_SerializedData = JsonUtility.ToJson(m_Data, true);
-#else
-					m_SerializedData = JsonUtility.ToJson(m_Data);
-#endif
-				}
-
+				m_SerializedData = SerializationUtility.SerializeToString(m_Data);
 			}
 
 			#endregion
@@ -142,14 +80,8 @@ namespace MuffinDev.Core
 
 			public object Data
 			{
-				get
-				{
-					return m_Data;
-				}
-				set
-				{
-					m_Data = value;
-				}
+				get { return m_Data; }
+				set { m_Data = value; }
 			}
 
 			#endregion

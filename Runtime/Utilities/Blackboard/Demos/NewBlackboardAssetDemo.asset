@@ -15,14 +15,20 @@ MonoBehaviour:
   m_Blackboard:
     m_SerializedEntries:
     - m_Key: String
-      m_SerializedData: 
-      m_DataType: 
+      m_SerializedData: Hello World!
+      m_DataTypeName: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
     - m_Key: Null
       m_SerializedData: 
-      m_DataType: 
+      m_DataTypeName: 
     - m_Key: Vector3
-      m_SerializedData: 
-      m_DataType: 
+      m_SerializedData: "{\n    \"x\": 0.0,\n    \"y\": 1.0,\n    \"z\": 2.0\n}"
+      m_DataTypeName: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
     - m_Key: Player data
-      m_SerializedData: 
-      m_DataType: 
+      m_SerializedData: "{\n    \"name\": \"AAA\",\n    \"score\": 12160\n}"
+      m_DataTypeName: MuffinDev.Core.Demos.BlackboardAssetDemo+PlayerData, MuffinDev.CoreLibrary,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_Key: Int
+      m_SerializedData: 19
+      m_DataTypeName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
