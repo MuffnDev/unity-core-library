@@ -43,22 +43,24 @@ namespace MuffinDev.Core.EditorOnly
             }
 
             Rect rect = new Rect(_Position);
-            rect.height = MuffinDevGUI.LINE_HEIGHT;
 
             SerializedProperty serializedDataList = _Property.FindPropertyRelative(SERIALIZED_DATA_LIST_PROP);
             for (int i = 0; i < serializedDataList.arraySize; i++)
             {
+                rect.height = MuffinDevGUI.LINE_HEIGHT;
                 SerializedProperty item = serializedDataList.GetArrayElementAtIndex(i);
                 Type dataType = Type.GetType(item.FindPropertyRelative(DATA_TYPE_NAME_PROP).stringValue);
+
                 if (dataType == null)
                 {
                     EditorGUI.HelpBox(rect, "Invalid Type", MessageType.Warning);
-                    rect.y += MuffinDevGUI.LINE_HEIGHT + MuffinDevGUI.VERTICAL_MARGIN;
+                    rect.y += rect.height + MuffinDevGUI.VERTICAL_MARGIN;
                     continue;
                 }
 
                 if (VALUE_EDITORS.TryGetValue(dataType, out IBlackboardValueEditor editor))
                 {
+                    rect.height = editor.GetPropertyHeight(item, new GUIContent(item.FindPropertyRelative("m_Key").stringValue));
                     editor.OnGUI(rect, item, new GUIContent(item.FindPropertyRelative("m_Key").stringValue));
                 }
                 else
@@ -68,7 +70,7 @@ namespace MuffinDev.Core.EditorOnly
                     keyProperty.stringValue = EditorGUI.TextField(labelRect, keyProperty.stringValue);
                     EditorGUI.LabelField(fieldRect, $"No editor for type {dataType.Name}", new GUIStyle(EditorStyles.helpBox).WordWrap(false));
                 }
-                rect.y += MuffinDevGUI.LINE_HEIGHT + MuffinDevGUI.VERTICAL_MARGIN;
+                rect.y += rect.height + MuffinDevGUI.VERTICAL_MARGIN;
             }
 
             if (GUI.Button(rect, "Add entry"))
@@ -88,8 +90,30 @@ namespace MuffinDev.Core.EditorOnly
 
         public override float GetPropertyHeight(SerializedProperty _Property, GUIContent _Label)
         {
+            if (_Property.hasMultipleDifferentValues)
+                return base.GetPropertyHeight(_Property, _Label);
+
+            float height = 0f;
             SerializedProperty serializedDataList = _Property.FindPropertyRelative(SERIALIZED_DATA_LIST_PROP);
-            return (serializedDataList.arraySize + 1) * MuffinDevGUI.LINE_HEIGHT + (serializedDataList.arraySize + 1) * MuffinDevGUI.VERTICAL_MARGIN + 1000;
+
+            for (int i = 0; i < serializedDataList.arraySize; i++)
+            {
+                SerializedProperty item = serializedDataList.GetArrayElementAtIndex(i);
+                Type dataType = Type.GetType(item.FindPropertyRelative(DATA_TYPE_NAME_PROP).stringValue);
+                if (dataType == null)
+                {
+                    Debug.Log("Adding default height for type NULL: " + (MuffinDevGUI.LINE_HEIGHT + MuffinDevGUI.VERTICAL_MARGIN));
+                    height += MuffinDevGUI.LINE_HEIGHT + MuffinDevGUI.VERTICAL_MARGIN;
+                    continue;
+                }
+
+                height += VALUE_EDITORS.TryGetValue(dataType, out IBlackboardValueEditor editor)
+                    ? editor.GetPropertyHeight(item, new GUIContent(item.FindPropertyRelative("m_Key").stringValue))
+                    : MuffinDevGUI.LINE_HEIGHT + MuffinDevGUI.VERTICAL_MARGIN;
+            }
+
+            Debug.Log("Output: " + height);
+            return height;
         }
 
     }
