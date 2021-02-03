@@ -14,6 +14,8 @@ namespace MuffinDev.Core.EditorOnly
     public class BlackboardPropertyDrawer : PropertyDrawer
 	{
 
+        #region Properties
+
         private static readonly Dictionary<Type, IBlackboardValueEditor> VALUE_EDITORS = null;
 
         private const string SERIALIZED_DATA_LIST_PROP = "m_SerializedEntries";
@@ -22,6 +24,14 @@ namespace MuffinDev.Core.EditorOnly
         public const string SERIALIZED_DATA_PROP = "m_SerializedData";
         public const string KEY_PROP = "m_Key";
 
+        #endregion
+
+
+        #region Initialization
+
+        /// <summary>
+        /// Loads all IBlackboardValueEditor implementations.
+        /// </summary>
         static BlackboardPropertyDrawer()
         {
             IEnumerable<Type> valueEditorsTypes = ReflectionUtility.GetAllTypesAssignableFrom<IBlackboardValueEditor>();
@@ -33,6 +43,14 @@ namespace MuffinDev.Core.EditorOnly
             }
         }
 
+        #endregion
+
+
+        #region GUI
+
+        /// <summary>
+        /// Draws the Blackboard property GUI.
+        /// </summary>
         public override void OnGUI(Rect _Position, SerializedProperty _Property, GUIContent _Label)
         {
             // Avoid strange behaviours when multi-selecting elements
@@ -43,14 +61,16 @@ namespace MuffinDev.Core.EditorOnly
             }
 
             Rect rect = new Rect(_Position);
+            rect.height = MuffinDevGUI.LINE_HEIGHT;
 
             SerializedProperty serializedDataList = _Property.FindPropertyRelative(SERIALIZED_DATA_LIST_PROP);
+            // For each Blackboard entry
             for (int i = 0; i < serializedDataList.arraySize; i++)
             {
-                rect.height = MuffinDevGUI.LINE_HEIGHT;
                 SerializedProperty item = serializedDataList.GetArrayElementAtIndex(i);
                 Type dataType = Type.GetType(item.FindPropertyRelative(DATA_TYPE_NAME_PROP).stringValue);
 
+                // Display a warning field if the entry's type can't be found
                 if (dataType == null)
                 {
                     EditorGUI.HelpBox(rect, "Invalid Type", MessageType.Warning);
@@ -58,11 +78,13 @@ namespace MuffinDev.Core.EditorOnly
                     continue;
                 }
 
+                // If an editor exists for the entry's type, draw its GUI
                 if (VALUE_EDITORS.TryGetValue(dataType, out IBlackboardValueEditor editor))
                 {
                     rect.height = editor.GetPropertyHeight(item, new GUIContent(item.FindPropertyRelative("m_Key").stringValue));
                     editor.OnGUI(rect, item, new GUIContent(item.FindPropertyRelative("m_Key").stringValue));
                 }
+                // Else, draw the key field and display property type as a label
                 else
                 {
                     SerializedProperty keyProperty = item.FindPropertyRelative(KEY_PROP);
@@ -71,9 +93,19 @@ namespace MuffinDev.Core.EditorOnly
                     EditorGUI.LabelField(fieldRect, $"No editor for type {dataType.Name}", new GUIStyle(EditorStyles.helpBox).WordWrap(false));
                 }
                 rect.y += rect.height + MuffinDevGUI.VERTICAL_MARGIN;
+                rect.height = MuffinDevGUI.LINE_HEIGHT;
             }
 
-            if (GUI.Button(rect, "Add entry"))
+            // Draw the "Add entry" button
+            DrawAddEntryButton(rect, serializedDataList);
+        }
+
+        /// <summary>
+        /// Draws the "Add entry" button and the context menu
+        /// </summary>
+        private void DrawAddEntryButton(Rect _Position, SerializedProperty _DataList)
+        {
+            if (GUI.Button(_Position, "Add entry"))
             {
                 GenericMenu menu = new GenericMenu();
                 menu.AddDisabledItem(new GUIContent("New Entry Type"));
@@ -81,40 +113,60 @@ namespace MuffinDev.Core.EditorOnly
                 {
                     menu.AddItem(new GUIContent(ObjectNames.NicifyVariableName(valueEditor.Key.Name)), false, () =>
                     {
-                        Debug.LogWarning("@todo: Create new entry of type: " + valueEditor.Key.FullName);
+                        int index = _DataList.arraySize;
+                        _DataList.InsertArrayElementAtIndex(index);
+
+                        SerializedProperty prop = _DataList.GetArrayElementAtIndex(index);
+                        prop.FindPropertyRelative(KEY_PROP).stringValue = $"New{valueEditor.Key.Name}";
+                        prop.FindPropertyRelative(DATA_TYPE_NAME_PROP).stringValue = valueEditor.Key.AssemblyQualifiedName;
+
+                        object data = SerializationUtility.DeserializeFromString(valueEditor.Key, string.Empty);
+                        prop.FindPropertyRelative(SERIALIZED_DATA_PROP).stringValue = SerializationUtility.SerializeToString(data);
+                        Debug.Log("Create new property: " + $"New{valueEditor.Key.Name}");
+
+                        prop.serializedObject.ApplyModifiedProperties();
                     });
                 }
                 menu.ShowAsContext();
             }
         }
 
+        /// <summary>
+        /// Gets the height of the property to display.
+        /// </summary>
         public override float GetPropertyHeight(SerializedProperty _Property, GUIContent _Label)
         {
+            // Gets the default property height if several properties are selected
             if (_Property.hasMultipleDifferentValues)
                 return base.GetPropertyHeight(_Property, _Label);
 
             float height = 0f;
             SerializedProperty serializedDataList = _Property.FindPropertyRelative(SERIALIZED_DATA_LIST_PROP);
 
+            // For each entry on the blackboard...
             for (int i = 0; i < serializedDataList.arraySize; i++)
             {
                 SerializedProperty item = serializedDataList.GetArrayElementAtIndex(i);
                 Type dataType = Type.GetType(item.FindPropertyRelative(DATA_TYPE_NAME_PROP).stringValue);
+
+                // Set default height if the data type can't be found
                 if (dataType == null)
                 {
-                    Debug.Log("Adding default height for type NULL: " + (MuffinDevGUI.LINE_HEIGHT + MuffinDevGUI.VERTICAL_MARGIN));
                     height += MuffinDevGUI.LINE_HEIGHT + MuffinDevGUI.VERTICAL_MARGIN;
                     continue;
                 }
 
+                // Use the found editor's property height, or the default one
                 height += VALUE_EDITORS.TryGetValue(dataType, out IBlackboardValueEditor editor)
                     ? editor.GetPropertyHeight(item, new GUIContent(item.FindPropertyRelative("m_Key").stringValue))
-                    : MuffinDevGUI.LINE_HEIGHT + MuffinDevGUI.VERTICAL_MARGIN;
+                    : MuffinDevGUI.LINE_HEIGHT;
+                height += MuffinDevGUI.VERTICAL_MARGIN;
             }
 
-            Debug.Log("Output: " + height);
-            return height;
+            return height + MuffinDevGUI.LINE_HEIGHT + MuffinDevGUI.VERTICAL_MARGIN;
         }
+
+        #endregion
 
     }
 
