@@ -60,18 +60,28 @@ namespace MuffinDev.Core.EditorOnly
                 return;
             }
 
+            SerializedProperty serializedDataList = _Property.FindPropertyRelative(SERIALIZED_DATA_LIST_PROP);
+
             // Draw box and header
             Rect rect = new Rect(_Position);
             GUI.Box(_Position, "", MuffinDevGUI.ReorderableListBoxStyle);
             rect.height = MuffinDevGUI.LINE_HEIGHT;
             GUI.Box(rect, _Property.displayName, MuffinDevGUI.ReorderableListHeaderStyle);
 
+            Rect buttonRect = new Rect(rect);
+            //buttonRect.width = Mathf.Clamp(rect.width * 40 / 100, 68, 100);
+            buttonRect.width = 200f;
+            buttonRect.x = rect.x + rect.width - MuffinDevGUI.HORIZONTAL_MARGIN - buttonRect.width;
+            buttonRect.height -= MuffinDevGUI.VERTICAL_MARGIN;
+            buttonRect.y += MuffinDevGUI.VERTICAL_MARGIN;
+            DrawAddEntryButton(buttonRect, serializedDataList);
+
+            // Setup layout
             rect.height = MuffinDevGUI.LINE_HEIGHT;
             rect.y += MuffinDevGUI.LINE_HEIGHT + MuffinDevGUI.VERTICAL_MARGIN * 2;
             rect.width -= MuffinDevGUI.HORIZONTAL_MARGIN * 2;
             rect.x += MuffinDevGUI.HORIZONTAL_MARGIN;
 
-            SerializedProperty serializedDataList = _Property.FindPropertyRelative(SERIALIZED_DATA_LIST_PROP);
             // For each Blackboard entry
             for (int i = 0; i < serializedDataList.arraySize; i++)
             {
@@ -116,8 +126,11 @@ namespace MuffinDev.Core.EditorOnly
                 rect.height = MuffinDevGUI.LINE_HEIGHT;
             }
 
-            // Draw the "Add entry" button
-            DrawAddEntryButton(rect, serializedDataList);
+            // Draw "is empty" label if the list is empty
+            if (serializedDataList.arraySize == 0)
+            {
+                EditorGUI.LabelField(rect, "This Blackboard is empty...");
+            }
         }
 
         /// <summary>
@@ -125,7 +138,7 @@ namespace MuffinDev.Core.EditorOnly
         /// </summary>
         private void DrawAddEntryButton(Rect _Position, SerializedProperty _DataList)
         {
-            if (GUI.Button(_Position, "Add entry"))
+            if (GUI.Button(_Position, EditorIcons.IconContent(EEditorIcon.AddDropdown, "Add Entry", "Creates a new entry on this Blackboard"), MuffinDevGUI.PropertyFieldButtonStyle))
             {
                 GenericMenu menu = new GenericMenu();
                 menu.AddDisabledItem(new GUIContent("New Entry Type"));
@@ -162,6 +175,9 @@ namespace MuffinDev.Core.EditorOnly
             float height = 0f;
             SerializedProperty serializedDataList = _Property.FindPropertyRelative(SERIALIZED_DATA_LIST_PROP);
 
+            if (serializedDataList.arraySize == 0)
+                return MuffinDevGUI.LINE_HEIGHT * 2 + MuffinDevGUI.VERTICAL_MARGIN * 3;
+
             // For each entry on the blackboard...
             for (int i = 0; i < serializedDataList.arraySize; i++)
             {
@@ -182,7 +198,7 @@ namespace MuffinDev.Core.EditorOnly
                 height += MuffinDevGUI.VERTICAL_MARGIN;
             }
 
-            return height + MuffinDevGUI.LINE_HEIGHT * 2 + MuffinDevGUI.VERTICAL_MARGIN * 3;
+            return height + MuffinDevGUI.LINE_HEIGHT + MuffinDevGUI.VERTICAL_MARGIN * 2;
         }
 
         #endregion
