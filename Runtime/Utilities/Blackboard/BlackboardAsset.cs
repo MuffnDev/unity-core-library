@@ -95,6 +95,14 @@ namespace MuffinDev.Core
 		}
 
 		/// <summary>
+		/// Gets the number of entries on this Blackboard.
+		/// </summary>
+		public int Count
+		{
+			get { return m_Blackboard.Count; }
+		}
+
+		/// <summary>
 		/// Gets the Blackboard instance of this asset.
 		/// </summary>
 		public Blackboard Blackboard

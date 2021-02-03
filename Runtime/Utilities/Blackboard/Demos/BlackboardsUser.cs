@@ -19,7 +19,7 @@ namespace MuffinDev.Core.Demos
 
         private void Start()
         {
-            if (m_BlackboardAsset != null && m_BlackboardAsset.Blackboard.Count > 0)
+            if (m_BlackboardAsset != null && m_BlackboardAsset.Count > 0)
             {
                 Debug.Log("----- BLACKBOARD ASSET -----");
 
