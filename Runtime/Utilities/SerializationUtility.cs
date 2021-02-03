@@ -102,34 +102,36 @@ namespace MuffinDev.Core
 			object data = null;
 			if (_DataType.IsReallyPrimitive())
 			{
+				bool notEmpty = !string.IsNullOrEmpty(_SerializedData);
+
 				if (_DataType == typeof(bool))
-					data = bool.Parse(_SerializedData);
+					data = notEmpty ? bool.Parse(_SerializedData) : false;
 				else if (_DataType == typeof(int))
-					data = int.Parse(_SerializedData);
+					data = notEmpty ? int.Parse(_SerializedData) : 0;
 				else if (_DataType == typeof(float))
-					data = float.Parse(_SerializedData);
+					data = notEmpty ? float.Parse(_SerializedData) : 0f;
 				else if (_DataType == typeof(string))
 					data = _SerializedData;
 				else if (_DataType == typeof(char))
-					data = char.Parse(_SerializedData);
+					data = notEmpty ? char.Parse(_SerializedData) : 0;
 				else if (_DataType == typeof(double))
-					data = double.Parse(_SerializedData);
+					data = notEmpty ? double.Parse(_SerializedData) : 0;
 				else if (_DataType == typeof(byte))
-					data = byte.Parse(_SerializedData);
+					data = notEmpty ? byte.Parse(_SerializedData) : 0;
 				else if (_DataType == typeof(sbyte))
-					data = sbyte.Parse(_SerializedData);
+					data = notEmpty ? sbyte.Parse(_SerializedData) : 0;
 				else if (_DataType == typeof(decimal))
-					data = decimal.Parse(_SerializedData);
+					data = notEmpty ? decimal.Parse(_SerializedData) : 0;
 				else if (_DataType == typeof(uint))
-					data = uint.Parse(_SerializedData);
+					data = notEmpty ? uint.Parse(_SerializedData) : 0;
 				else if (_DataType == typeof(long))
-					data = long.Parse(_SerializedData);
+					data = notEmpty ? long.Parse(_SerializedData) : 0;
 				else if (_DataType == typeof(ulong))
-					data = ulong.Parse(_SerializedData);
+					data = notEmpty ? ulong.Parse(_SerializedData) : 0;
 				else if (_DataType == typeof(short))
-					data = short.Parse(_SerializedData);
+					data = notEmpty ? short.Parse(_SerializedData) : 0;
 				else if (_DataType == typeof(ushort))
-					data = ushort.Parse(_SerializedData);
+					data = notEmpty ? ushort.Parse(_SerializedData) : 0;
 				else
 				{
 					Debug.LogWarning("Impossible to deserialize data of type: " + _DataType.FullName);
