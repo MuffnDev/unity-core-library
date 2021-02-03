@@ -67,32 +67,43 @@ namespace MuffinDev.Core.EditorOnly
             // For each Blackboard entry
             for (int i = 0; i < serializedDataList.arraySize; i++)
             {
+                Rect itemRect = new Rect(rect);
+                itemRect.width = itemRect.height;
+                if (GUI.Button(itemRect, EditorIcons.IconContent(EEditorIcon.Close, "Deletes this entry from the Blackboard"), MuffinDevGUI.PropertyFieldButtonStyle))
+                {
+                    serializedDataList.DeleteArrayElementAtIndex(i);
+                    return;
+                }
+
+                itemRect.x += itemRect.width + MuffinDevGUI.HORIZONTAL_MARGIN;
+                itemRect.width = rect.width - itemRect.width - MuffinDevGUI.HORIZONTAL_MARGIN;
+
                 SerializedProperty item = serializedDataList.GetArrayElementAtIndex(i);
                 Type dataType = Type.GetType(item.FindPropertyRelative(DATA_TYPE_NAME_PROP).stringValue);
 
                 // Display a warning field if the entry's type can't be found
                 if (dataType == null)
                 {
-                    EditorGUI.HelpBox(rect, "Invalid Type", MessageType.Warning);
-                    rect.y += rect.height + MuffinDevGUI.VERTICAL_MARGIN;
+                    EditorGUI.HelpBox(itemRect, "Invalid Type", MessageType.Warning);
+                    rect.y += itemRect.height + MuffinDevGUI.VERTICAL_MARGIN;
                     continue;
                 }
 
                 // If an editor exists for the entry's type, draw its GUI
                 if (VALUE_EDITORS.TryGetValue(dataType, out IBlackboardValueEditor editor))
                 {
-                    rect.height = editor.GetPropertyHeight(item, new GUIContent(item.FindPropertyRelative("m_Key").stringValue));
-                    editor.OnGUI(rect, item, new GUIContent(item.FindPropertyRelative("m_Key").stringValue));
+                    itemRect.height = editor.GetPropertyHeight(item, new GUIContent(item.FindPropertyRelative("m_Key").stringValue));
+                    editor.OnGUI(itemRect, item, new GUIContent(item.FindPropertyRelative("m_Key").stringValue));
                 }
                 // Else, draw the key field and display property type as a label
                 else
                 {
                     SerializedProperty keyProperty = item.FindPropertyRelative(KEY_PROP);
-                    MuffinDevGUI.ComputeLabelledFieldRects(rect, out Rect labelRect, out Rect fieldRect);
+                    MuffinDevGUI.ComputeLabelledFieldRects(itemRect, out Rect labelRect, out Rect fieldRect);
                     keyProperty.stringValue = EditorGUI.TextField(labelRect, keyProperty.stringValue);
                     EditorGUI.LabelField(fieldRect, $"No editor for type {dataType.Name}", new GUIStyle(EditorStyles.helpBox).WordWrap(false));
                 }
-                rect.y += rect.height + MuffinDevGUI.VERTICAL_MARGIN;
+                rect.y += itemRect.height + MuffinDevGUI.VERTICAL_MARGIN;
                 rect.height = MuffinDevGUI.LINE_HEIGHT;
             }
 
