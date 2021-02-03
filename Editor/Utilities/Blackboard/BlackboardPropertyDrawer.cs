@@ -24,6 +24,9 @@ namespace MuffinDev.Core.EditorOnly
         public const string SERIALIZED_DATA_PROP = "m_SerializedData";
         public const string KEY_PROP = "m_Key";
 
+        private const float MIN_ADD_ENTRY_BUTTON_WIDTH = 68f;
+        private const float MAX_ADD_ENTRY_BUTTON_WIDTH = 200f;
+
         #endregion
 
 
@@ -69,8 +72,7 @@ namespace MuffinDev.Core.EditorOnly
             GUI.Box(rect, _Property.displayName, MuffinDevGUI.ReorderableListHeaderStyle);
 
             Rect buttonRect = new Rect(rect);
-            //buttonRect.width = Mathf.Clamp(rect.width * 40 / 100, 68, 100);
-            buttonRect.width = 200f;
+            buttonRect.width = Mathf.Clamp(rect.width * 40 / 100, MIN_ADD_ENTRY_BUTTON_WIDTH, MAX_ADD_ENTRY_BUTTON_WIDTH);
             buttonRect.x = rect.x + rect.width - MuffinDevGUI.HORIZONTAL_MARGIN - buttonRect.width;
             buttonRect.height -= MuffinDevGUI.VERTICAL_MARGIN;
             buttonRect.y += MuffinDevGUI.VERTICAL_MARGIN;

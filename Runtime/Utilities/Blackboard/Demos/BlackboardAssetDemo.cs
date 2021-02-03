@@ -19,11 +19,14 @@ namespace MuffinDev.Core.Demos
 
         private void OnEnable()
         {
-            //SetValue("String", "Hello World!");
-            //SetValue("Null", null);
-            //SetValue("Vector3", new Vector3(0, 1, 2));
-            //SetValue("Int", 5);
-            //SetValue("Player data", new PlayerData { name = "AAA", score = 12160 });
+            if (Blackboard.Count == 0)
+            {
+                SetValue("String", "Hello World!");
+                SetValue("Null", null);
+                SetValue("Vector3", new Vector3(0, 1, 2));
+                SetValue("Int", 5);
+                SetValue("Player data", new PlayerData { name = "AAA", score = 12160 });
+            }
         }
 
     }

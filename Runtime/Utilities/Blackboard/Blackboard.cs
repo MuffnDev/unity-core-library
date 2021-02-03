@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
@@ -11,13 +12,16 @@ namespace MuffinDev.Core
 	/// Represents a serializable ensemble of data which can have different types of values.
 	///</summary>
 	[Serializable]
-	public class Blackboard
+	public class Blackboard : IEnumerable<object>
 	{
 
 		#region Subclasses
 
+		/// <summary>
+		/// Represents an entry in a Blackboard field.
+		/// </summary>
 		[Serializable]
-		private class SerializedEntry : ISerializationCallbackReceiver
+		private class BlackboardEntry : ISerializationCallbackReceiver
 		{
 
 			#region Properties
@@ -38,7 +42,10 @@ namespace MuffinDev.Core
 
 			#region Initialization
 
-			public SerializedEntry(string _Key, object _Value)
+			/// <summary>
+			/// Class constructor.
+			/// </summary>
+			public BlackboardEntry(string _Key, object _Value)
 			{
 				m_Key = _Key;
 				m_Data = _Value;
@@ -49,11 +56,17 @@ namespace MuffinDev.Core
 
 			#region Serialization
 
+			/// <summary>
+			/// Called after Unity deserializes this class.
+			/// </summary>
 			public void OnAfterDeserialize()
             {
 				m_Data = SerializationUtility.DeserializeFromString(m_DataTypeName, m_SerializedData);
 			}
 
+			/// <summary>
+			/// Called before Unity serializes this class.
+			/// </summary>
 			public void OnBeforeSerialize()
 			{
 				if(m_Data == null)
@@ -73,11 +86,17 @@ namespace MuffinDev.Core
 
 			#region Public API
 
+			/// <summary>
+			/// Gets the key of this Blackboard Entry.
+			/// </summary>
 			public string Key
 			{
 				get { return m_Key; }
 			}
 
+			/// <summary>
+			/// Gets the deserialized data of this Blackboard entry.
+			/// </summary>
 			public object Data
 			{
 				get { return m_Data; }
@@ -88,13 +107,45 @@ namespace MuffinDev.Core
 
 		}
 
+		/// <summary>
+		/// Defines an enumerator for a Blackboard, allowing you to iterate through each data directly.
+		/// </summary>
+		private class BlackboardEnumerator : IEnumerator<object>
+		{
+			private Blackboard m_Blackboard = null;
+			private int m_Index = -1;
+
+			public BlackboardEnumerator(Blackboard _Blackboard)
+			{
+				m_Blackboard = _Blackboard;
+			}
+
+			public object Current
+			{
+				get { return m_Blackboard.m_SerializedEntries[m_Index].Data; }
+			}
+
+			public void Dispose() { }
+
+			public bool MoveNext()
+			{
+				m_Index++;
+				return m_Index < m_Blackboard.Count;
+			}
+
+			public void Reset()
+			{
+				m_Index = -1;
+			}
+		}
+
 		#endregion
 
 
 		#region Properties
 
 		[SerializeField]
-		private List<SerializedEntry> m_SerializedEntries = new List<SerializedEntry>();
+		private List<BlackboardEntry> m_SerializedEntries = new List<BlackboardEntry>();
 
         #endregion
 
@@ -209,8 +260,32 @@ namespace MuffinDev.Core
 			if (i != -1)
 				m_SerializedEntries[i].Data = _Value;
 			else
-				m_SerializedEntries.Add(new SerializedEntry(_Key, _Value));
+				m_SerializedEntries.Add(new BlackboardEntry(_Key, _Value));
 		}
+
+		/// <summary>
+		/// Gets the default enumerator of this Blackboard.
+		/// </summary>
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
+		}
+
+		/// <summary>
+		/// Gets the data enumerator of this Blackboard.
+		/// </summary>
+		public IEnumerator<object> GetEnumerator()
+        {
+			return new BlackboardEnumerator(this);
+        }
+
+		/// <summary>
+		/// Gets the number of entries on this Blackboard.
+		/// </summary>
+		public int Count
+        {
+            get { return m_SerializedEntries.Count; }
+        }
 
 		#endregion
 
@@ -232,8 +307,8 @@ namespace MuffinDev.Core
 			return -1;
 		}
 
-		#endregion
+        #endregion
 
-	}
+    }
 
 }
