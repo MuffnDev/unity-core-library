@@ -60,8 +60,16 @@ namespace MuffinDev.Core.EditorOnly
                 return;
             }
 
+            // Draw box and header
             Rect rect = new Rect(_Position);
+            GUI.Box(_Position, "", MuffinDevGUI.ReorderableListBoxStyle);
             rect.height = MuffinDevGUI.LINE_HEIGHT;
+            GUI.Box(rect, _Property.displayName, MuffinDevGUI.ReorderableListHeaderStyle);
+
+            rect.height = MuffinDevGUI.LINE_HEIGHT;
+            rect.y += MuffinDevGUI.LINE_HEIGHT + MuffinDevGUI.VERTICAL_MARGIN * 2;
+            rect.width -= MuffinDevGUI.HORIZONTAL_MARGIN * 2;
+            rect.x += MuffinDevGUI.HORIZONTAL_MARGIN;
 
             SerializedProperty serializedDataList = _Property.FindPropertyRelative(SERIALIZED_DATA_LIST_PROP);
             // For each Blackboard entry
@@ -69,6 +77,7 @@ namespace MuffinDev.Core.EditorOnly
             {
                 Rect itemRect = new Rect(rect);
                 itemRect.width = itemRect.height;
+                // Draw "remove entry" button
                 if (GUI.Button(itemRect, EditorIcons.IconContent(EEditorIcon.Close, "Deletes this entry from the Blackboard"), MuffinDevGUI.PropertyFieldButtonStyle))
                 {
                     serializedDataList.DeleteArrayElementAtIndex(i);
@@ -133,7 +142,6 @@ namespace MuffinDev.Core.EditorOnly
 
                         object data = SerializationUtility.DeserializeFromString(valueEditor.Key, string.Empty);
                         prop.FindPropertyRelative(SERIALIZED_DATA_PROP).stringValue = SerializationUtility.SerializeToString(data);
-                        Debug.Log("Create new property: " + $"New{valueEditor.Key.Name}");
 
                         prop.serializedObject.ApplyModifiedProperties();
                     });
@@ -174,7 +182,7 @@ namespace MuffinDev.Core.EditorOnly
                 height += MuffinDevGUI.VERTICAL_MARGIN;
             }
 
-            return height + MuffinDevGUI.LINE_HEIGHT + MuffinDevGUI.VERTICAL_MARGIN;
+            return height + MuffinDevGUI.LINE_HEIGHT * 2 + MuffinDevGUI.VERTICAL_MARGIN * 3;
         }
 
         #endregion
