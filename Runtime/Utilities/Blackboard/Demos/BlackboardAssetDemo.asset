@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01b9905427b1c074f9d291d3cc65af7e, type: 3}
+  m_Name: BlackboardAssetDemo
+  m_EditorClassIdentifier: 
+  m_Blackboard:
+    m_SerializedEntries:
+    - m_Key: String
+      m_SerializedData: Hello World!
+      m_DataTypeName: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+    - m_Key: Null
+      m_SerializedData: 
+      m_DataTypeName: 
+    - m_Key: Vector3
+      m_SerializedData: "{\n    \"x\": 0.0,\n    \"y\": 1.0,\n    \"z\": 2.0\n}"
+      m_DataTypeName: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    - m_Key: Player data
+      m_SerializedData: "{\n    \"name\": \"AAA\",\n    \"score\": 12160\n}"
+      m_DataTypeName: MuffinDev.Core.Demos.BlackboardAssetDemo+PlayerData, MuffinDev.CoreLibrary,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
