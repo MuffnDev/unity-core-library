@@ -307,6 +307,16 @@ public class ExtendedObjectFieldExamplePropertyDrawer : PropertyDrawer
 
 Place the `ExtendedObjectFieldExample` component on an object in your scene to see the result.
 
+### Layout helpers
+
+#### `ComputeLabelledFieldRects()`
+
+```cs
+public static void ComputeLabelledFieldRects(Rect _Position, out Rect _LabelRect, out Rect _FieldRect);
+```
+
+Computes the size and position of a label and a field, depending on the given available screen space.
+
 ### Editor styles helpers
 
 #### `HelpBoxStyle`
