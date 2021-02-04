@@ -59,3 +59,33 @@
 # Changed
 - `ReflectionUtility` improvements (also renamed `GetAllTypesImplementingGenericType()` to `GetAllTypesAssignableFrom()`)
 - Update docs
+
+## [2.1.1] - 2020-01-12 15:10
+### Added
+- Pagination utilities (`Pagination` class and editor GUI)
+- Added editor GUI for drawing "path fields" (text field with *Browse* button)
+### Changed
+- Removed `ArrayExtension`, useless since `ListExtensions` also applies to arrays
+
+## [2.2.0] - 2020-01-12 16:51
+### Added
+- Added `MuffinDevGUI` utility class for drawing custom editor GUI
+### Changed
+- Moved `EditorHelpers` methods for drawing editor GUI into `MuffinDevGUI` (making it obsolete)
+- Classes that used `EditorHelpers` now use `MuffinDevGUI` utility
+- Refactored documentation structure (separated `/Editor` and `/Runtime` elements), as Unity recommends
+
+## [2.2.1] - 2020-02-02
+### Added
+- Added `GetComponentInHierarchy()` and `Find()` methods for `ComponentExtension` and `GameObjectExtension`
+- Added `GameObject.GetComponentInHierarchy()` and `GameObject.Find()` methods
+- Added `ComponentRef` attribute, making `AutoAssign` attribute obsolete
+### Changed
+- Removed `MonoBehaviourExtension` extensions, useless since `ComponentExtension` also applies to `Monobehaviour`s
+
+## [2.3.0] - 2020-02-04
+### Added
+- Added `SerializationUtility` utility class
+- Added `Blackboard` system and custom editor
+- Added `TypeExtension.IsReallyPrimitive()` method
+- Added `MuffinDevGUI.ComputeLabelledFieldRect()` method

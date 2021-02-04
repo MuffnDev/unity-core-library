@@ -64,7 +64,7 @@ namespace MuffinDev.Core
             }
 
             position.y += size.y;
-            size.y = EditorHelpers.LINE_HEIGHT + EditorHelpers.VERTICAL_MARGIN;
+            size.y = MuffinDevGUI.LINE_HEIGHT + MuffinDevGUI.VERTICAL_MARGIN;
 
             // If event property does not exist, display dialog.
             SerializedProperty eventProperty = GetEventProperty(_Property);
@@ -128,7 +128,7 @@ namespace MuffinDev.Core
             if(valueProperty == null)
             {
                 // Just return the height of a help box if value property does not exist
-                return EditorHelpers.LINE_HEIGHT;
+                return MuffinDevGUI.LINE_HEIGHT;
             }
             float height = EditorGUI.GetPropertyHeight(valueProperty);
 
@@ -136,7 +136,7 @@ namespace MuffinDev.Core
             if(eventProperty == null)
             {
                 // Add the height of a help box if event property does not exist
-                height += EditorHelpers.LINE_HEIGHT + EditorHelpers.VERTICAL_MARGIN;
+                height += MuffinDevGUI.LINE_HEIGHT + MuffinDevGUI.VERTICAL_MARGIN;
             }
             else if(m_ShowEvent)
             {

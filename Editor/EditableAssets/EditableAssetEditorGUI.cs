@@ -92,7 +92,7 @@ namespace MuffinDev.Core.EditorOnly
         /// </summary>
         protected virtual void DrawAssetGUI()
         {
-            EditorHelpers.DrawDefaultInspector(Asset);
+            MuffinDevGUI.DrawDefaultInspector(Asset);
         }
 
         /// <summary>
