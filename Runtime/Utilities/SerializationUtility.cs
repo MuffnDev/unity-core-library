@@ -6,7 +6,10 @@ namespace MuffinDev.Core
 {
 
 	///<summary>
+	/// Utility class for serializing data not managed by the built-in Unity serialization.
 	/// 
+	/// Note that for now, this class is not as magic as you could think: since it uses JSONUtility, only the serializable properties of
+	/// the objects you want to serialize are supported.
 	///</summary>
 	public static class SerializationUtility
 	{
@@ -55,7 +58,7 @@ namespace MuffinDev.Core
 		/// method in order to work as expected.
 		/// </summary>
 		/// <typeparam name="T">The expected type of the data to deserialize.</typeparam>
-		/// <param name="_SerializedData">The serializdd data as string.</param>
+		/// <param name="_SerializedData">The serialized data as string.</param>
 		/// <returns>Returns the deserialized data, or null if it failed.</returns>
 		public static T DeserializeFromString<T>(string _SerializedData)
         {
@@ -77,7 +80,7 @@ namespace MuffinDev.Core
 		/// method in order to work as expected.
 		/// </summary>
 		/// <param name="_DataType">The expected type of the data to deserialize.</param>
-		/// <param name="_SerializedData">The serializdd data as string.</param>
+		/// <param name="_SerializedData">The serialized data as string.</param>
 		/// <returns>Returns the deserialized data, or null if it failed.</returns>
 		public static object DeserializeFromString(string _DataType, string _SerializedData)
         {
@@ -92,7 +95,7 @@ namespace MuffinDev.Core
 		/// method in order to work as expected.
 		/// </summary>
 		/// <param name="_DataType">The expected type of the data to deserialize.</param>
-		/// <param name="_SerializedData">The serializdd data as string.</param>
+		/// <param name="_SerializedData">The serialized data as string.</param>
 		/// <returns>Returns the deserialized data, or null if it failed.</returns>
 		public static object DeserializeFromString(Type _DataType, string _SerializedData)
 		{
