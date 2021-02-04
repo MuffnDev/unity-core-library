@@ -42,12 +42,28 @@ namespace MuffinDev.Core.EditorOnly
         public static IEnumerable<Type> GetAllTypesAssignableFrom(Type _ParentType, Assembly _Assembly)
         {
             return
+                // type = The current type among the assembly's
                 from type in _Assembly.GetTypes()
+                // baseType = The type of which the current type inherits
                 let baseType = type.BaseType
-                where baseType != null &&
+                where
                 (
-                    (baseType.IsGenericType && !type.IsGenericType && _ParentType.IsAssignableFrom(baseType.GetGenericTypeDefinition())) ||
-                    (!baseType.IsGenericType && !type.IsGenericType && _ParentType.IsAssignableFrom(baseType))
+                    // If the query type is an interface
+                    _ParentType.IsInterface &&
+                    (
+                        // Include the current type if it implements the interface
+                        !type.IsGenericType && type.GetInterfaces().Contains(_ParentType)
+                    ) ||
+                    // Or, if the current type inherits from another type
+                    baseType != null &&
+                    (
+                        // Include the current type only if the type of which the current type inherits is generic, the current type itself is
+                        // not generic, and the inherited type is assignable from the queried one
+                        (baseType.IsGenericType && !type.IsGenericType && _ParentType.IsAssignableFrom(baseType.GetGenericTypeDefinition())) ||
+                        // Include the current type only if the type of which the current type inherits is not generic, the current type itself
+                        // is not generic too, and if the inherited type is assignable from the queried one
+                        (!baseType.IsGenericType && !type.IsGenericType && _ParentType.IsAssignableFrom(baseType))
+                    )
                 )
                 select type;
         }

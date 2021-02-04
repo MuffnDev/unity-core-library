@@ -20,6 +20,24 @@ namespace MuffinDev.Core
             return _Type != null ? $"{_Type.FullName}, {_Type.Assembly}" : null;
         }
 
+        /// <summary>
+        /// Checks if the type is "really" a primitive. This method is meant to replace the Type.IsPrimitive property, which will return
+        /// false even if the type is a string, decimal, long, ulong, short or ushort.
+        /// </summary>
+        /// <param name="_Type">The type you want to check as primitive.</param>
+        /// <returns>Returns true if the type is "really" a primitive, otherwise false.</returns>
+        public static bool IsReallyPrimitive(this Type _Type)
+        {
+            return
+                _Type.IsPrimitive ||
+                _Type == typeof(string) ||
+                _Type == typeof(decimal) ||
+                _Type == typeof(long) ||
+                _Type == typeof(ulong) ||
+                _Type == typeof(short) ||
+                _Type == typeof(ushort);
+        }
+
     }
 
 }

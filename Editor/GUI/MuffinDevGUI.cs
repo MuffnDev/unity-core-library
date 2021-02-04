@@ -1014,6 +1014,36 @@ namespace MuffinDev.Core.EditorOnly
 
         #endregion
 
+
+        #region Layout Helpers
+
+        /// <summary>
+        /// Computes the size and position of a label and a field, depending on the given available screen space.
+        /// </summary>
+        public static void ComputeLabelledFieldRects(Rect _Position, out Rect _LabelRect, out Rect _FieldRect)
+        {
+            float fieldWidth = _Position.width - EditorGUIUtility.labelWidth - MuffinDevGUI.HORIZONTAL_MARGIN;
+
+            if (fieldWidth < 0)
+            {
+                _LabelRect = new Rect();
+                _FieldRect = _Position;
+            }
+
+            else
+            {
+                _LabelRect = new Rect(_Position);
+                _LabelRect.width = EditorGUIUtility.labelWidth;
+
+                _FieldRect = new Rect(_Position);
+                _FieldRect.width = fieldWidth;
+                _FieldRect.x += _LabelRect.width + MuffinDevGUI.HORIZONTAL_MARGIN;
+            }
+        }
+
+        #endregion
+
+
         #region Editor Styles
 
         public static GUIStyle HelpBoxStyle
