@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01b9905427b1c074f9d291d3cc65af7e, type: 3}
-  m_Name: NewBlackboardAssetDemo
+  m_Name: BlackboardAssetDemo
   m_EditorClassIdentifier: 
   m_Blackboard:
     m_SerializedEntries:
@@ -29,6 +29,3 @@ MonoBehaviour:
       m_SerializedData: "{\n    \"name\": \"AAA\",\n    \"score\": 12160\n}"
       m_DataTypeName: MuffinDev.Core.Demos.BlackboardAssetDemo+PlayerData, MuffinDev.CoreLibrary,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    - m_Key: Int
-      m_SerializedData: 5
-      m_DataTypeName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089

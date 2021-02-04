@@ -307,7 +307,7 @@ GameObject:
   - component: {fileID: 1870050290}
   - component: {fileID: 1870050289}
   m_Layer: 0
-  m_Name: Blackboard Asset Reader
+  m_Name: Blackboards User
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -326,6 +326,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BlackboardAsset: {fileID: 11400000, guid: 552d6086b192d8348a822d87f68f0297, type: 2}
+  m_RawBlackboardProperty:
+    m_SerializedEntries:
+    - m_Key: entityID
+      m_SerializedData: bfae76b716ea86e1baab861
+      m_DataTypeName: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+    - m_Key: isEnabled
+      m_SerializedData: True
+      m_DataTypeName: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+    - m_Key: nextTarget
+      m_SerializedData: "{\n    \"x\": 2.0,\n    \"y\": 5.0,\n    \"z\": 10.0\n}"
+      m_DataTypeName: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    - m_Key: colorWhenEnabled
+      m_SerializedData: "{\n    \"r\": 0.37940549850463869,\n    \"g\": 0.9245283007621765,\n   
+        \"b\": 0.5373382568359375,\n    \"a\": 1.0\n}"
+      m_DataTypeName: UnityEngine.Color, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    - m_Key: colorWhenDisabled
+      m_SerializedData: "{\n    \"r\": 0.849056601524353,\n    \"g\": 0.7658218741416931,\n   
+        \"b\": 0.7088821530342102,\n    \"a\": 1.0\n}"
+      m_DataTypeName: UnityEngine.Color, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    - m_Key: average
+      m_SerializedData: 12,88
+      m_DataTypeName: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
 --- !u!4 &1870050290
 Transform:
   m_ObjectHideFlags: 0

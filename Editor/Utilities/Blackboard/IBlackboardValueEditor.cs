@@ -26,14 +26,19 @@ namespace MuffinDev.Core.EditorOnly
 		/// </summary>
 		/// <param name="_Item">The serialized property that represent an entry of a blackboard.</param>
 		/// <param name="_Label">The label of the property.</param>
+		/// <returns>Returns the height of the property to display.</returns>
 		float GetPropertyHeight(SerializedProperty _Item, GUIContent _Label);
 
 		/// <summary>
 		/// Creates a VisualElement to draw the GUI of the item.
 		/// </summary>
 		/// <param name="_Item">The serialized property that represent an entry of a blackboard.</param>
+		/// <returns>Returns the element to attach to the panel.</returns>
 		VisualElement CreatePropertyGUI(SerializedProperty _Item);
 
+		/// <summary>
+		/// Gets the type of the decorated value.
+		/// </summary>
 		Type ValueType { get; }
 
 	}

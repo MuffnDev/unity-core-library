@@ -10,6 +10,7 @@ namespace MuffinDev.Core.EditorOnly
 	///<summary>
 	/// Creates a custom editor GUI for a value to set on a Blackboard object.
 	///</summary>
+	///<typeparam name="T">The type of the value to decorate.</typeparam>
 	[Serializable]
 	public abstract class BlackboardValueEditor<T> : IBlackboardValueEditor
 	{

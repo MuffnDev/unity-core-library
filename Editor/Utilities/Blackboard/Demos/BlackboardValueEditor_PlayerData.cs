@@ -1,4 +1,7 @@
-﻿using System;
+﻿//#define BLACKBOARD_DEMO // Uncomment this line in order to enable the BlackboardValueEditor_PlayerData custom value from Blackboard editor
+#if BLACKBOARD_DEMO
+
+using System;
 
 using UnityEngine;
 using UnityEditor;
@@ -53,3 +56,5 @@ namespace MuffinDev.Core.Demos
     }
 
 }
+
+#endif

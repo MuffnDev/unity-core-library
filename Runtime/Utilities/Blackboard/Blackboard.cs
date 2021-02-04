@@ -163,16 +163,14 @@ namespace MuffinDev.Core
         /// exist.</returns>
         public bool TryGetValue<T>(string _Key, out T _Value)
 		{
-			int i = GetValueIndex(_Key);
-			if (i != -1)
-			{
+			if(TryGetValue(_Key, out object value))
+            {
 				try
 				{
-					_Value = (T)m_SerializedEntries[i].Data;
+					_Value = (T)value;
 					return true;
 				}
 				catch (InvalidCastException) { }
-				catch (NullReferenceException) { }
 			}
 
 			_Value = default;
@@ -191,12 +189,11 @@ namespace MuffinDev.Core
 		/// exist.</returns>
 		public bool TryGetValue<T>(string _Key, out T _Value, T _DefaultValue)
 		{
-			int i = GetValueIndex(_Key);
-			if (i != -1)
+			if (TryGetValue(_Key, out object value, _DefaultValue))
 			{
 				try
 				{
-					_Value = (T)m_SerializedEntries[i].Data;
+					_Value = (T)value;
 					return true;
 				}
 				catch (InvalidCastException) { }
@@ -205,6 +202,27 @@ namespace MuffinDev.Core
 			_Value = _DefaultValue;
 			return false;
 		}
+
+		/// <summary>
+		/// Try to get the value by its key.
+		/// </summary>
+		/// <typeparam name="T">The expected type of the value.</typeparam>
+		/// <param name="_Key">The key of the value you want to get.</param>
+		/// <param name="_Value">The found value, or null if the key doesn't exist.</param>
+		/// <param name="_DefaultValue">The default value to return if the key doesn't exist.</param>
+		/// <returns>Returns true if the value has been found, or false if the key doesn't exist.</returns>
+		public bool TryGetValue(string _Key, out object _Value, object _DefaultValue = null)
+        {
+			int i = GetValueIndex(_Key);
+			if (i != -1)
+            {
+				_Value = m_SerializedEntries[i].Data;
+				return true;
+            }
+
+			_Value = _DefaultValue;
+			return false;
+        }
 
 		/// <summary>
 		/// Gets a value by its key.
@@ -216,9 +234,7 @@ namespace MuffinDev.Core
 		public T GetValue<T>(string _Key)
 		{
 			if (TryGetValue(_Key, out T value))
-			{
 				return value;
-			}
 			return default;
 		}
 
@@ -228,13 +244,25 @@ namespace MuffinDev.Core
 		/// <typeparam name="T">The expected type of the value.</typeparam>
 		/// <param name="_Key">The key of the value you want to get.</param>
 		/// <param name="_DefaultValue">The default value to use if the expected value can't be found on the blackboard.</param>
-		/// <returns>Returns the found value, or the default value if the expected type doesn't match, or if the key doesn't exist.</returns>
+		/// <returns>Returns the found value, or the default value if the expected type doesn't match, or if the key doesn't
+		/// exist.</returns>
 		public T GetValue<T>(string _Key, T _DefaultValue)
 		{
 			if (TryGetValue(_Key, out T value))
-			{
 				return value;
-			}
+			return _DefaultValue;
+		}
+
+		/// <summary>
+		/// Gets a value by its key.
+		/// </summary>
+		/// <param name="_Key">The key of the value you want to get.</param>
+		/// <param name="_DefaultValue">The default value to use if the expected value can't be found on the blackboard.</param>
+		/// <returns>Returns the found value, or null if the key doesn't exist.</returns>
+		public object GetValue(string _Key, object _DefaultValue = null)
+        {
+			if (TryGetValue(_Key, out object value))
+				return value;
 			return _DefaultValue;
 		}
 

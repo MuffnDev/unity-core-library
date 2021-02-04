@@ -5,7 +5,7 @@ Unclassified utility classes.
 ## Summary
 
 - [`AnimationCurves`](./animation-curves.md): Bundle of pre-defined animation curves
-- [`Blackboard`](./Blackboard/README.md): Serializable data which can contain several different types of values
+- [`Blackboard`](./blackboard.md): Serializable data which can contain several different types of values
 - [`Colors`](./colors.md): Color utilities
 - [`Enums`](./enums.md): Collection of utility enumerations
 - [`Log`](./log.md): Container for log entry
