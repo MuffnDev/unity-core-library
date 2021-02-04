@@ -2,7 +2,7 @@
 
 Represents a serializable ensemble of data which can have different types of serializable values.
 
-![`BlackboardAsset` inspector preview](./Images/blackboard-example.png)
+![`Blackboard` usage demo](./Images/blackboard-demo.gif)
 
 ## Why?
 
